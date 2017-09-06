@@ -9,21 +9,22 @@
  * @author dbb09
  */
 import java.util.Scanner;
+
 public class HealthyHearts {
-    public static void main(String[] args){
-        
+
+    public static void main(String[] args) {
+
         Scanner userInput = new Scanner(System.in);
         int userAge, rateMax;
-        String stringUserAge;
-       
+
         System.out.println("To receive your ideal and naximum heart rate, please enter your age: ");
-        stringUserAge = userInput.nextLine();
-        
-        userAge = Integer.parseInt(stringUserAge);
+
+        userAge = Integer.parseInt(userInput.nextLine());
+
         rateMax = 220 - userAge;
         System.out.println("At your spry young age, " + userAge + ", your maximum heartrate is: " + rateMax);
-        System.out.println("...and your target heart rate is between: " + (rateMax * .5) + " and " + (rateMax * .85));
-    
-    
+        System.out.println("...and your target heart rate is between: "
+                + (rateMax * .5) + " and " + (rateMax * .85));
+
     }
 }

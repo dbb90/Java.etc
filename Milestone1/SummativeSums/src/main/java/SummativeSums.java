@@ -25,6 +25,7 @@ public class SummativeSums {
         System.out.println("#1 Array Sum: " + sum1);
         System.out.println("#2 Array Sum: " + sum2);
         System.out.println("#3 Array Sum: " + sum3);
+        
     }
     public static int addArrays(int[] a) {
         int sum = 0;
