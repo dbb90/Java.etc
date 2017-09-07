@@ -1,5 +1,3 @@
-
-
 /*
 
  * To change this license header, choose License Headers in Project Properties.
@@ -9,144 +7,105 @@
  * and open the template in the editor.
 
  */
-
 package com.sg.dvdlibrary.dto;
 
- 
-
 /**
-
  *
-
+ *
+ *
  * @author dbb09-
-
+ *
  */
-
 public class DVD {
 
-   
+    private String title;
 
-   private String title;
+    private String releaseYear;
 
-   private String releaseYear;
+    private String mpaa;
 
-   private String mpaa;
+    private String director;
 
-   private String director;
+    private String studio;
 
-   private String studio;
+    private String rating;
 
-   private String rating;
+    public DVD(String title) {
 
-   
+        this.title = title;
 
-   public DVD(String title){
+    }
 
-       this.title = title;
+    public String getTitle() {
 
-   }
+        return title;
 
-   
+    }
 
-   
+    public void setTitle(String title) {
 
-   public String getTitle() {
+        this.title = title;
 
-       return title;
+    }
 
-   }
+    public String getReleaseYear() {
 
-   
+        return releaseYear;
 
-   public void setTitle(String title) {
+    }
 
-       this.title = title;
+    public void setReleaseYear(String releaseYear) {
 
-   }
+        this.releaseYear = releaseYear;
 
- 
+    }
 
-   public String getReleaseYear() {
+    public String getMpaa() {
 
-       return releaseYear;
+        return mpaa;
 
-   }
+    }
 
- 
+    public void setMpaa(String mpaa) {
 
-   public void setReleaseYear(String releaseYear) {
+        this.mpaa = mpaa;
 
-       this.releaseYear = releaseYear;
+    }
 
-   }
+    public String getDirector() {
 
- 
+        return director;
 
-   public String getMpaa() {
+    }
 
-       return mpaa;
+    public void setDirector(String director) {
 
-   }
+        this.director = director;
 
- 
+    }
 
-   public void setMpaa(String mpaa) {
+    public String getStudio() {
 
-       this.mpaa = mpaa;
+        return studio;
 
-   }
+    }
 
- 
+    public void setStudio(String studio) {
 
-   public String getDirector() {
+        this.studio = studio;
 
-       return director;
+    }
 
-   }
+    public String getRating() {
 
- 
+        return rating;
 
-   public void setDirector(String director) {
+    }
 
-       this.director = director;
+    public void setRating(String rating) {
 
-   }
+        this.rating = rating;
 
- 
-
-   public String getStudio() {
-
-       return studio;
-
-   }
-
- 
-
-   public void setStudio(String studio) {
-
-       this.studio = studio;
-
-   }
-
- 
-
-   public String getRating() {
-
-       return rating;
-
-   }
-
- 
-
-   public void setRating(String rating) {
-
-       this.rating = rating;
-
-   }
-
-   
-
-   
+    }
 
 }
-

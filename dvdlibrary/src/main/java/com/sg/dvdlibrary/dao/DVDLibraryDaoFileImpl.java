@@ -1,5 +1,3 @@
-
-
 /*
 
  * To change this license header, choose License Headers in Project Properties.
@@ -9,10 +7,7 @@
  * and open the template in the editor.
 
  */
-
 package com.sg.dvdlibrary.dao;
-
- 
 
 import com.sg.dvdlibrary.dto.DVD;
 
@@ -40,292 +35,231 @@ import java.util.Scanner;
 
 import java.util.Set;
 
- 
-
 /**
-
  *
-
+ *
+ *
  * @author dbb09-
-
+ *
  */
+public class DVDLibraryDaoFileImpl implements DVDLibraryDao {
 
-public class DVDLibraryDaoFileImpl implements DVDLibraryDao{
+    Map<String, DVD> DVDs = new HashMap<>();
 
-   
+    public static final String DVD_FILE = "dvd.txt";
 
-   Map<String, DVD> DVDs = new HashMap<>();
+    public static final String DELIMITER = "::";
 
-   public static final String DVD_FILE = "dvd.txt";
+    @Override
+    public DVD addDVD(String title, DVD dvd) throws DVDLibraryDaoException {
 
-   public static final String DELIMITER = "::";
+        DVD newDVD = DVDs.put(title, dvd);
 
-   
+        writeLibrary();
 
-   @Override
+        return newDVD;
 
-   public DVD addDVD(String title, DVD dvd) throws DVDLibraryDaoException{
+    }
 
-       DVD newDVD = DVDs.put(title, dvd);
+    @Override
+    public DVD removeDVD(String title) throws DVDLibraryDaoException {
 
-       writeLibrary();
+        DVD removedDVD = DVDs.remove(title);
 
-       return newDVD;
+        writeLibrary();
 
-   
+        return removedDVD;
 
-   }
+    }
 
- 
+    @Override
+    public DVD getDVD(String title) throws DVDLibraryDaoException {
 
-   @Override
+        readLibrary();
 
-   public DVD removeDVD(String title) throws DVDLibraryDaoException{
+        return DVDs.get(title);
 
-       DVD removedDVD = DVDs.remove(title);
+    }
 
-       writeLibrary();
+    @Override
+    public List<DVD> getAllDVDs() throws DVDLibraryDaoException {
 
-       return removedDVD;
+        readLibrary();
 
-   }
+        return new ArrayList<DVD>(DVDs.values());
 
- 
+    }
 
-   @Override
+    @Override
+    public DVD editTitle(DVD dvd, String newTitle, String title) throws DVDLibraryDaoException {
 
-   public DVD getDVD(String title) throws DVDLibraryDaoException{
+        dvd.setTitle(newTitle);
 
-       readLibrary();
+        DVDs.put(newTitle, dvd);
 
-       return DVDs.get(title);
+        writeLibrary();
 
-   }
+        return dvd;
 
- 
+    }
 
-   @Override
+    @Override
+    public DVD editReleaseDate(DVD dvd, String newRelease, String title) throws DVDLibraryDaoException {
 
-   public List<DVD> getAllDVDs() throws DVDLibraryDaoException{
+        dvd.setReleaseYear(newRelease);
 
-       readLibrary();
+        DVDs.put(title, dvd);
 
-       return new ArrayList<DVD>(DVDs.values());
+        writeLibrary();
 
-   }
+        return dvd;
 
-   
+    }
 
-   @Override
+    @Override
+    public DVD editDirector(DVD dvd, String newDirector, String title) throws DVDLibraryDaoException {
 
-   public DVD editTitle(DVD dvd, String newTitle, String title) throws DVDLibraryDaoException{
+        dvd.setDirector(newDirector);
 
-       dvd.setTitle(newTitle);
+        DVDs.put(title, dvd);
 
-       DVDs.put(newTitle, dvd);
+        writeLibrary();
 
-       writeLibrary();
+        return dvd;
 
-       return dvd;
+    }
 
-   }
+    @Override
+    public DVD editMPAA(DVD dvd, String newMpaa, String title) throws DVDLibraryDaoException {
 
-   
+        dvd.setMpaa(newMpaa);
 
-   @Override
+        DVDs.put(title, dvd);
 
-   public DVD editReleaseDate(DVD dvd, String newRelease, String title) throws DVDLibraryDaoException{
+        writeLibrary();
 
-       dvd.setReleaseYear(newRelease);
+        return dvd;
 
-       DVDs.put(title , dvd);
+    }
 
-       writeLibrary();
+    @Override
+    public DVD editStudio(DVD dvd, String newStudio, String title) throws DVDLibraryDaoException {
 
-       return dvd;
+        dvd.setStudio(newStudio);
 
-   }
+        DVDs.put(title, dvd);
 
-   
+        writeLibrary();
 
-   @Override
+        return dvd;
 
-   public DVD editDirector(DVD dvd, String newDirector, String title) throws DVDLibraryDaoException{
+    }
 
-       dvd.setDirector(newDirector);
+    @Override
+    public DVD editRating(DVD dvd, String newRating, String title) throws DVDLibraryDaoException {
 
-       DVDs.put(title, dvd);
+        dvd.setRating(newRating);
 
-       writeLibrary();
+        DVDs.put(title, dvd);
 
-       return dvd;
+        writeLibrary();
 
-   }
+        return dvd;
 
-   
+    }
 
-   @Override
+    @Override
+    public void readLibrary() throws DVDLibraryDaoException {
 
-   public DVD editMPAA(DVD dvd, String newMPAA, String title) throws DVDLibraryDaoException{
+        Scanner scanner;
 
-       dvd.setMpaa(newMPAA);
+        try {
 
-       DVDs.put(title, dvd);
+            scanner = new Scanner(new BufferedReader(new FileReader(DVD_FILE)));
 
-       writeLibrary();
+        } catch (FileNotFoundException e) {
 
-       return dvd;
+            throw new DVDLibraryDaoException("Could not load DVD library", e);
 
-   }
+        }
 
-   
+        String currentLine;
 
-   @Override
+        String[] currentTokens;
 
-   public DVD editStudio(DVD dvd, String newStudio, String title) throws DVDLibraryDaoException{
+        while (scanner.hasNextLine()) {
 
-       dvd.setStudio(newStudio);
+            currentLine = scanner.nextLine();
 
-       DVDs.put(title, dvd);
+            currentTokens = currentLine.split(DELIMITER);
 
-       writeLibrary();
+            DVD newDVD = new DVD(currentTokens[0]);
 
-       return dvd;
+            newDVD.setReleaseYear(currentTokens[1]);
 
-   }
+            newDVD.setMpaa(currentTokens[2]);
 
-   
+            newDVD.setDirector(currentTokens[3]);
 
- @Override
+            newDVD.setStudio(currentTokens[4]);
 
-   public DVD editRating(DVD dvd, String newRating, String title) throws DVDLibraryDaoException{
+            newDVD.setRating(currentTokens[5]);
 
-       dvd.setRating(newRating);
+            DVDs.put(newDVD.getTitle(), newDVD);
 
-       DVDs.put(title, dvd);
+        }
 
-       writeLibrary();
+        scanner.close();
 
-       return dvd;
+    }
 
-   }
+    @Override
+    public void writeLibrary() throws DVDLibraryDaoException {
 
-   
+        PrintWriter out;
 
-   @Override
+        try {
 
-   public void readLibrary() throws DVDLibraryDaoException{
+            out = new PrintWriter(new FileWriter(DVD_FILE));
 
-       
+        } catch (IOException e) {
 
-       Scanner scanner;
+            throw new DVDLibraryDaoException("Could not save DVD library", e);
 
-       
+        }
 
-       try{
+        List<DVD> DVDList = this.getAllDVDs();
 
-           scanner = new Scanner(new BufferedReader(new FileReader(DVD_FILE)));
+        for (DVD currentDVD : DVDList) {
 
-       }catch (FileNotFoundException e){
+            out.println(currentDVD.getTitle()
+                    + DELIMITER + currentDVD.getReleaseYear()
+                    + DELIMITER + currentDVD.getMpaa()
+                    + DELIMITER + currentDVD.getDirector()
+                    + DELIMITER + currentDVD.getStudio()
+                    + DELIMITER + currentDVD.getRating());
 
-           throw new DVDLibraryDaoException("Could not load DVD library" , e);
+            out.flush();
 
-       }
+        }
 
-       String currentLine;
+        out.close();
 
-       String[] currentTokens;
+    }
 
-       while(scanner.hasNextLine()){
+    public List<DVD> searchDVDs(String searchInput) throws DVDLibraryDaoException {
+        readLibrary();
 
-           currentLine = scanner.nextLine();
+        Set<String> keys = DVDs.keySet();
 
-           currentTokens = currentLine.split(DELIMITER);
+        List<DVD> containerList = new ArrayList<>();
+        for (String currentKey : keys) {
+            if (currentKey.contains(searchInput)) {
+                containerList.add(DVDs.get(currentKey));
 
-           DVD newDVD = new DVD(currentTokens[0]);
-
-           newDVD.setReleaseYear(currentTokens[1]);
-
-           newDVD.setMpaa(currentTokens[2]);
-
-           newDVD.setDirector(currentTokens[3]);
-
-           newDVD.setStudio(currentTokens[4]);
-
-           newDVD.setRating(currentTokens[5]);
-
-           
-
-           DVDs.put(newDVD.getTitle(), newDVD);
-
-       }
-
-       scanner.close();
-
-   }
-
-   
-
-   @Override
-
-   public void writeLibrary() throws DVDLibraryDaoException{
-
-       PrintWriter out;
-
-       
-
-       try{
-
-           out = new PrintWriter(new FileWriter(DVD_FILE));
-
-       }catch(IOException e){
-
-           throw new DVDLibraryDaoException("Could not save DVD library" , e);
-
-       }
-
-       List<DVD> DVDList = this.getAllDVDs();
-
-       for (DVD currentDVD : DVDList){
-
-           out.println(currentDVD.getTitle() + DELIMITER + currentDVD.getReleaseYear() + DELIMITER +
-
-                   currentDVD.getMpaa() + DELIMITER + currentDVD.getDirector() + DELIMITER +
-
-                   currentDVD.getStudio() + DELIMITER + currentDVD.getRating());
-
-           out.flush();
-
-       }
-
-       out.close();
-
-   }
-
-   
-
-   public List<DVD> searchDVDs(String searchInput)throws DVDLibraryDaoException{
-
-       readLibrary();
-
-       Set<String> keys = DVDs.keySet();
-
-       List<DVD> containsList = new ArrayList<>();
-
-       for (String currentKey : keys){
-
-           if (currentKey.contains(searchInput)){
-
-               containsList.add(DVDs.get(currentKey));
-
-           }
-
-       }
-
-       return containsList;
-
-   }
-
-   
+            }
+        }
+        return containerList;
+    }
 
 }
