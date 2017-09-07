@@ -50,9 +50,9 @@ public class DVDLibraryView {
 
        io.print("2) Add a DVD");
 
-       io.print("3) Remove a DVD");
+       io.print("3) Edit a DVD");
 
-       io.print("4) Edit a DVD");
+       io.print("4) Remove a DVD");
 
        io.print("5) View a specific DVD");
 
@@ -120,7 +120,8 @@ public class DVDLibraryView {
 
                    currentDVD.getMpaa() + "\n" + currentDVD.getDirector() + "\n" +
 
-                   currentDVD.getStudio() + "\n" + currentDVD.getRating() + "\n\n\n\n");
+                   currentDVD.getStudio() + "\n" + currentDVD.getRating() + "\n\n");
+           io.print("~~~~~~~~~~~~~~~~~~~~");
 
        }
 
@@ -133,7 +134,8 @@ public class DVDLibraryView {
    public void displayDVD(DVD dvd){
 
        if (dvd != null){
-
+           
+         
            io.print(dvd.getTitle() + "\n" + dvd.getReleaseYear() + "\n" +
 
                    dvd.getMpaa() + "\n" + dvd.getDirector() + "\n" +

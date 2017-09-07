@@ -88,13 +88,13 @@ public class DVDLibraryController {
 
                case 3:
 
-                   removeDVD();
+                   editDVD();
 
                    break;
 
                case 4:
 
-                   editDVD();
+                   removeDVD();
 
                    break;
 
