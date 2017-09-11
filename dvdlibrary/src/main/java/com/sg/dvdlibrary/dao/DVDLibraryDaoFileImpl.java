@@ -44,7 +44,7 @@ import java.util.Set;
  */
 public class DVDLibraryDaoFileImpl implements DVDLibraryDao {
 
-    Map<String, DVD> DVDs = new HashMap<>();
+    Map<String, DVD> dvds = new HashMap<>();
 
     public static final String DVD_FILE = "dvd.txt";
 
@@ -52,8 +52,10 @@ public class DVDLibraryDaoFileImpl implements DVDLibraryDao {
 
     @Override
     public DVD addDVD(String title, DVD dvd) throws DVDLibraryDaoException {
-
-        DVD newDVD = DVDs.put(title, dvd);
+        
+        readLibrary();
+        
+        DVD newDVD = dvds.put(title, dvd);
 
         writeLibrary();
 
@@ -64,7 +66,7 @@ public class DVDLibraryDaoFileImpl implements DVDLibraryDao {
     @Override
     public DVD removeDVD(String title) throws DVDLibraryDaoException {
 
-        DVD removedDVD = DVDs.remove(title);
+        DVD removedDVD = dvds.remove(title);
 
         writeLibrary();
 
@@ -77,7 +79,7 @@ public class DVDLibraryDaoFileImpl implements DVDLibraryDao {
 
         readLibrary();
 
-        return DVDs.get(title);
+        return dvds.get(title);
 
     }
 
@@ -86,7 +88,7 @@ public class DVDLibraryDaoFileImpl implements DVDLibraryDao {
 
         readLibrary();
 
-        return new ArrayList<DVD>(DVDs.values());
+        return new ArrayList<DVD>(dvds.values());
 
     }
 
@@ -95,7 +97,7 @@ public class DVDLibraryDaoFileImpl implements DVDLibraryDao {
 
         dvd.setTitle(newTitle);
 
-        DVDs.put(newTitle, dvd);
+        dvds.put(newTitle, dvd);
 
         writeLibrary();
 
@@ -108,7 +110,7 @@ public class DVDLibraryDaoFileImpl implements DVDLibraryDao {
 
         dvd.setReleaseYear(newRelease);
 
-        DVDs.put(title, dvd);
+        dvds.put(title, dvd);
 
         writeLibrary();
 
@@ -121,7 +123,7 @@ public class DVDLibraryDaoFileImpl implements DVDLibraryDao {
 
         dvd.setDirector(newDirector);
 
-        DVDs.put(title, dvd);
+        dvds.put(title, dvd);
 
         writeLibrary();
 
@@ -134,7 +136,7 @@ public class DVDLibraryDaoFileImpl implements DVDLibraryDao {
 
         dvd.setMpaa(newMpaa);
 
-        DVDs.put(title, dvd);
+        dvds.put(title, dvd);
 
         writeLibrary();
 
@@ -147,7 +149,7 @@ public class DVDLibraryDaoFileImpl implements DVDLibraryDao {
 
         dvd.setStudio(newStudio);
 
-        DVDs.put(title, dvd);
+        dvds.put(title, dvd);
 
         writeLibrary();
 
@@ -160,7 +162,7 @@ public class DVDLibraryDaoFileImpl implements DVDLibraryDao {
 
         dvd.setRating(newRating);
 
-        DVDs.put(title, dvd);
+        dvds.put(title, dvd);
 
         writeLibrary();
 
@@ -205,7 +207,7 @@ public class DVDLibraryDaoFileImpl implements DVDLibraryDao {
 
             newDVD.setRating(currentTokens[5]);
 
-            DVDs.put(newDVD.getTitle(), newDVD);
+            dvds.put(newDVD.getTitle(), newDVD);
 
         }
 
@@ -250,12 +252,12 @@ public class DVDLibraryDaoFileImpl implements DVDLibraryDao {
     public List<DVD> searchDVDs(String searchInput) throws DVDLibraryDaoException {
         readLibrary();
 
-        Set<String> keys = DVDs.keySet();
+        Set<String> keys = dvds.keySet();
 
         List<DVD> containerList = new ArrayList<>();
         for (String currentKey : keys) {
             if (currentKey.contains(searchInput)) {
-                containerList.add(DVDs.get(currentKey));
+                containerList.add(dvds.get(currentKey));
 
             }
         }
