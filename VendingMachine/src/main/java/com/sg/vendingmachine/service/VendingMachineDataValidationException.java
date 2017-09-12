@@ -3,19 +3,23 @@
  	 * To change this template file, choose Tools | Templates
  	 * and open the template in the editor.
  */
-package com.sg.vendingmachine.dao;
+package com.sg.vendingmachine.service;
 
 /**
  *
  * @author dbb09
  */
-public class InventoryFileException extends Exception {
+public class VendingMachineDataValidationException extends Exception {
 
-    public InventoryFileException(String message) {
+    public VendingMachineDataValidationException(String message) {
+
         super(message);
     }
 
-    public InventoryFileException(String message, Throwable cause) {
+    public VendingMachineDataValidationException(String message,
+            Throwable cause) {
+
         super(message, cause);
     }
+
 }

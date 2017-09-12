@@ -9,9 +9,9 @@ import com.sg.vendingmachine.controller.VendingMachineController;
 import com.sg.vendingmachine.dao.VendingMachineDao;
 import com.sg.vendingmachine.dao.VendingMachineDaoFileImpl;
 import com.sg.vendingmachine.service.VendingMachineService;
-import com.sg.vendingmachine.service.VendingMachineServiceFileImpl;
-import com.sg.vendingmachine.ui.UserIo;
-import com.sg.vendingmachine.ui.UserIoConsoleImpl;
+import com.sg.vendingmachine.service.VendingMachineServiceImpl;
+import com.sg.vendingmachine.ui.UserIO;
+import com.sg.vendingmachine.ui.UserIOConsoleImpl;
 import com.sg.vendingmachine.ui.VendingMachineView;
 
 /**
@@ -21,14 +21,13 @@ import com.sg.vendingmachine.ui.VendingMachineView;
 public class App {
 
     public static void main(String[] args) {
-
-        VendingMachineDao dao = new VendingMachineDaoFileImpl();
-        VendingMachineService service = new VendingMachineServiceFileImpl(dao);
-        UserIo io = new UserIoConsoleImpl();
-        VendingMachineView view = new VendingMachineView(io);
-        VendingMachineController controller = new VendingMachineController(
-                service, view);
-
+        
+        UserIO myIO = new UserIOConsoleImpl();
+        VendingMachineDao myDao = new VendingMachineDaoFileImpl();
+        VendingMachineView myView = new VendingMachineView(myIO);
+        VendingMachineService myService = new VendingMachineServiceImpl(myDao);
+        VendingMachineController controller = new VendingMachineController(myService, myView);
         controller.run();
+        
     }
 }

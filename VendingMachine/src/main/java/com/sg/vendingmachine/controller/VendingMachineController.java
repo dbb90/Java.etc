@@ -5,12 +5,14 @@
  */
 package com.sg.vendingmachine.controller;
 
-import java.util.List;
-
-import com.sg.vendingmachine.dao.InventoryFileException;
-import com.sg.vendingmachine.dto.Slot;
+import com.sg.vendingmachine.dao.VMPersistenceException;
+import com.sg.vendingmachine.dto.Products;
+import com.sg.vendingmachine.service.NotEnoughMoneyException;
+import com.sg.vendingmachine.service.noProductStockedException;
 import com.sg.vendingmachine.service.VendingMachineService;
 import com.sg.vendingmachine.ui.VendingMachineView;
+import java.math.BigDecimal;
+import java.util.List;
 
 /**
  *
@@ -18,114 +20,119 @@ import com.sg.vendingmachine.ui.VendingMachineView;
  */
 public class VendingMachineController {
 
-    VendingMachineService service;
-    VendingMachineView view;
+    private VendingMachineService service;
+    private VendingMachineView view;
 
-    public VendingMachineController(
-            VendingMachineService service, VendingMachineView view) {
+    public VendingMachineController(VendingMachineService service, VendingMachineView view) {
+
         this.service = service;
         this.view = view;
+
     }
 
     public void run() {
-        int option;
-        boolean run;
 
-        try {
-            service.loadInventory();
-            List<Slot> slotList = service.getAllSlots();
+        boolean errorTrue = true;
+        boolean run = true;
 
-            run = true;
-            while (run) {
-                view.machineBanner();
-                view.printInventory(slotList);
-                option = view.mainMenu();
-                switch (option) {
+        view.displayIntroBanner();
 
-                    case 0:
-                        // quit
-                        run = false;
-                        break;
+        do {
 
-                    case 1:
-                        selectSlot();
-                        break;
+            try {
 
-                    case 2:
-                        insertMoney();
-                        break;
+                int userChoice = displayProductOptions();
+                if (!(quitChoice(userChoice))) {
+                    Products product = processUserChoice(userChoice);
 
-                    case 3:
-                        returnMoney();
-                        break;
+                    do {
 
-                    case 4:
-                        service();
-                        break;
+                        try {
 
-                    default:
-                        view.errorMessage("Menu error!");
+                            purchaseProduct(product);
+                            errorTrue = false;
+                        } catch (NotEnoughMoneyException e) {
+
+                            view.displayErrorMessage(e.getMessage());
+                            errorTrue = true;
+
+                        } catch (NumberFormatException e) {
+
+                            view.displayErrorMessage("ERROR: Unknown currency format!");
+                            errorTrue = true;
+
+                        }
+
+                    } while (errorTrue);
+
+                } else {
+
+                    run = false;
+                    view.displayExitBanner();
 
                 }
-            }
-        } catch (InventoryFileException e) {
-            view.errorMessage(e.getMessage());
-        }
 
-        // saves
-        try {
-            service.saveInventory();
-        } catch (InventoryFileException e) {
-            view.errorMessage(e.getMessage());
-        }
+            } catch (VMPersistenceException
+                    | noProductStockedException e) {
 
-        view.quitMessage();
-    }
-
-    private void selectSlot() {
-
-    }
-
-    private void insertMoney() {
-
-    }
-
-    private void returnMoney() {
-
-    }
-
-    private void service() {
-        int option;
-        boolean run;
-
-        run = true;
-        while (run) {
-            view.serviceMenuBanner();
-            option = view.serviceMenu();
-            switch (option) {
-                case 0:
-                    // back
-                    run = false;
-                    break;
-                case 1:
-                    // select
-                    break;
-                case 2:
-                    // stock
-                    stock();
-                    break;
-                case 3:
-                    // clear
-                    break;
-                default:
-                    view.errorMessage("Menu error!");
+                view.displayErrorMessage(e.getMessage());
 
             }
-        }
+        } while (run);
+
     }
 
-    private void stock() {
-        Slot slot = view.stockSlot();
-        service.stockSlot(slot);
+    private boolean quitChoice(int userChoice) throws VMPersistenceException {
+        return userChoice == 0;
+    }
+
+
+//    private void addFirst() throws
+//            WrongCashFormatException, 
+//            NumberFormatException {
+//        BigDecimal userBalance = new BigDecimal(view.getCashInput());
+//       service.addFunds(userBalance);
+//    }
+    private int displayProductOptions() throws
+            VMPersistenceException,
+            noProductStockedException {
+
+        List<Products> products = service.getProductsInStock();
+        view.displayChoicePrompt();
+
+        return view.displayProducts(products);
+    }
+
+    private void purchaseProduct(Products product) throws
+            VMPersistenceException,
+            NotEnoughMoneyException,
+            noProductStockedException,
+            NumberFormatException {
+
+        BigDecimal userBalance = new BigDecimal(view.getCashInput());
+
+        BigDecimal change = service.processPurchase(userBalance, product);
+
+        view.displaySuccessBanner();
+        view.displayChange(change);
+        view.displayRemainingProductInv(product);
+
+        service.updateInv(product.getProductName(), product);
+    }
+
+    private Products processUserChoice(int userChoice) throws
+            VMPersistenceException,
+            noProductStockedException {
+        userChoice--;
+        List<Products> products = service.getProductsInStock();
+        Products product = view.displayUserProductChoice(userChoice, products);
+        service.checkInv(product);
+
+        return product;
+
+    }
+
+
+        
     }
 }

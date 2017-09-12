@@ -5,12 +5,8 @@
  */
 package com.sg.vendingmachine.dao;
 
-import java.math.BigDecimal;
-
+import com.sg.vendingmachine.dto.Products;
 import java.util.List;
-
-import com.sg.vendingmachine.dto.Change;
-import com.sg.vendingmachine.dto.Slot;
 
 /**
  *
@@ -18,23 +14,14 @@ import com.sg.vendingmachine.dto.Slot;
  */
 public interface VendingMachineDao {
 
-    public void loadInventoryFile() throws InventoryFileException;
+    Products addProduct(String productName, Products product) throws VMPersistenceException;
 
-    public void saveInventoryFile() throws InventoryFileException;
+    List<Products> getAllProducts() throws VMPersistenceException;
 
-    public Change getChange();
+    Products getProduct(String productName) throws VMPersistenceException;
 
-    public void makeChange(BigDecimal money);
+    void editProduct(String productName, Products product) throws VMPersistenceException;
 
-    public void zeroChange();
+    Products removeProduct(String productName) throws VMPersistenceException;
 
-    public Slot getSlot(int slotNumber);
-
-    public List<Slot> getAllSlots();
-
-    public void fillSlot(Slot slot);
-
-    public void removeSlot(int slotNumber);
-
-    public void updateSlot(Slot slot);
 }

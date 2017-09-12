@@ -1,25 +1,20 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ 	 * To change this license header, choose License Headers in Project Properties.
+ 	 * To change this template file, choose Tools | Templates
+ 	 * and open the template in the editor.
  */
 package com.sg.vendingmachine.ui;
 
 import java.math.BigDecimal;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-
 import java.util.Scanner;
 
 /**
  *
  * @author dbb09
  */
-public class UserIoConsoleImpl implements UserIo {
+public class UserIOConsoleImpl implements UserIO {
 
-    private Scanner scan = new Scanner(System.in);
+    private Scanner userInput = new Scanner(System.in);
 
     @Override
     public void print(String message) {
@@ -28,221 +23,145 @@ public class UserIoConsoleImpl implements UserIo {
 
     @Override
     public double readDouble(String prompt) {
-        double n;
-        String input;
+        System.out.println(prompt);
+        boolean isInvalid = true;
+        double myDouble = 0.0;
 
-        System.out.print(prompt);
-        input = scan.nextLine();
-        n = Double.parseDouble(input);
+        while (isInvalid) {
+            try {
+                myDouble = Double.parseDouble(userInput.nextLine());
+                isInvalid = false;
+            } catch (NumberFormatException e) {
+                System.out.println("Enter a valid cash input.");
+                System.out.println(prompt);
+            }
+        }
 
-        return n;
+        return myDouble;
     }
 
     @Override
     public double readDouble(String prompt, double min, double max) {
-        double n;
-        String input;
-
-        while (true) {
-            System.out.print(prompt);
-            input = scan.nextLine();
-
-            try {
-                n = Double.parseDouble(input);
-                if ((n >= min) && (n <= max)) {
-                    break;
-                }
-            } catch (NumberFormatException e) {
-
-            }
-
-            System.out.println("Invalid. Retry:");
-        }
-
-        return n;
+        double myDouble = readDouble(prompt);
+        return myDouble;
     }
 
     @Override
     public float readFloat(String prompt) {
-        float n;
-        String input;
+        System.out.println(prompt);
+        boolean isInvalid = true;
+        float myFloat = 0.0F;
 
-        System.out.print(prompt);
-        input = scan.nextLine();
-        n = Float.parseFloat(input);
-        return n;
+        while (isInvalid) {
+            try {
+                myFloat = Float.parseFloat(userInput.nextLine());
+                isInvalid = false;
+            } catch (NumberFormatException e) {
+                System.out.println("Enter a valid cash input.");
+                System.out.println(prompt);
+            }
+        }
+
+        return myFloat;
     }
 
     @Override
     public float readFloat(String prompt, float min, float max) {
-        float n;
-        String input;
-
-        while (true) {
-            System.out.print(prompt);
-            input = scan.nextLine();
-            n = Float.parseFloat(input);
-
-            if ((n >= min) && (n <= max)) {
-                break;
-            }
-            System.out.println("Invalid.");
-        }
-
-        return n;
+        float myFloat = readFloat(prompt);
+        return myFloat;
     }
 
     @Override
     public int readInt(String prompt) {
-        boolean valid;
-        int n = -1;
-        String input;
-
-        // get input
-        do {
-            System.out.print(prompt);
-            input = scan.nextLine();
-
-            // parse as integer
+        System.out.print(prompt);
+        boolean isInvalid = true;
+        int myInt = 0;
+        while (isInvalid) {
             try {
-                n = Integer.parseInt(input);
-                valid = true;
+                myInt = Integer.parseInt(userInput.nextLine());
+                isInvalid = false;
             } catch (NumberFormatException e) {
-                valid = false;
+                System.out.println("ERROR: Give me an integer!");
+                System.out.println("");
+                System.out.print(prompt);
             }
-
-            if (!valid) {
-                System.out.println("Invalid.");
-            }
-        } while (!valid);
-
-        return n;
+        }
+        return myInt;
     }
 
     @Override
     public int readInt(String prompt, int min, int max) {
-        boolean valid;
-        int n = -1;
-        String input;
+        int myInt = readInt(prompt);
 
-        // get input
-        do {
-            System.out.print(prompt);
-            input = scan.nextLine();
+        while (myInt < min || myInt > max) {
+            System.out.print("ERROR: ");
+            System.out.println("Please give me a number from " + min + " and " + max);
+            myInt = readInt(prompt);
+        }
 
-            // parse as integer
-            try {
-                n = Integer.parseInt(input);
-
-                // range test
-                valid = ((n >= min) && (n <= max));
-            } catch (NumberFormatException e) {
-                valid = false;
-            }
-
-            if (!valid) {
-                System.out.println("Invalid.");
-            }
-        } while (!valid);
-
-        return n;
+        return myInt;
     }
 
     @Override
     public long readLong(String prompt) {
-        long n;
-        String input;
+        System.out.println(prompt);
+        boolean isInvalid = true;
+        long myLong = 0L;
 
-        System.out.print(prompt);
-        input = scan.nextLine();
-        n = Long.parseLong(input);
+        while (isInvalid) {
+            try {
+                myLong = Long.parseLong(userInput.nextLine());
+                isInvalid = false;
+            } catch (NumberFormatException e) {
+                System.out.println("fill in error later");
+                System.out.println(prompt);
+            }
+        }
 
-        return n;
+        return myLong;
     }
 
     @Override
     public long readLong(String prompt, long min, long max) {
-        long n;
-        String input;
-
-        while (true) {
-            System.out.print(prompt);
-            input = scan.nextLine();
-            n = Long.parseLong(input);
-
-            if ((n >= min) && (n <= max)) {
-                break;
-            }
-            System.out.println("Invalid.");
-        }
-
-        return n;
+        long myLong = readLong(prompt);
+        return myLong;
     }
 
     @Override
     public String readString(String prompt) {
-        String input;
+        System.out.println(prompt);
 
-        System.out.print(prompt);
-        input = scan.nextLine();
-        return input;
-    }
+        String myString = userInput.nextLine();
 
-    @Override
-    public boolean readYesNo(String prompt) {
-        String input;
-
-        while (true) {
-            System.out.print(prompt);
-            input = scan.nextLine();
-            if (input.toLowerCase().startsWith("y")) {
-                return true;
-            } else if (input.toLowerCase().startsWith("n")) {
-                return false;
-            } else {
-                System.out.println("Invalid.");
-            }
-        }
-    }
-
-    @Override
-    public LocalDate readLocalDate(DateTimeFormatter formatter, String prompt) {
-        boolean valid;
-        String input;
-        LocalDate date = null;
-
-        do {
-            System.out.print(prompt);
-            input = scan.nextLine();
-            try {
-                date = LocalDate.parse(input, formatter);
-                valid = true;
-            } catch (DateTimeParseException e) {
-                valid = false;
-                System.out.println("Invalid.");
-            }
-
-        } while (!valid);
-        return date;
+        return myString;
     }
 
     @Override
     public BigDecimal readBigDecimal(String prompt) {
-        boolean valid;
-        String input;
-        BigDecimal bigdecimal = null;
+        System.out.println(prompt);
+        BigDecimal myBigDecimal = new BigDecimal(0);
+        boolean isInvalid = true;
 
-        do {
-            System.out.print(prompt);
-            input = scan.nextLine();
+        while (isInvalid) {
             try {
-                bigdecimal = new BigDecimal(input);
-                valid = true;
-            } catch (Exception e) {
-                valid = false;
-                System.out.println("Invalid.");
+                myBigDecimal = new BigDecimal(userInput.nextLine());
+                isInvalid = false;
+            } catch (NumberFormatException e) {
+                System.out.println("fill in error later");
+                System.out.println(prompt);
             }
-        } while (!valid);
-        return bigdecimal;
+        }
+        return myBigDecimal;
+    }
+
+    @Override
+    public BigDecimal readBigDecimal(String prompt, BigDecimal min, BigDecimal max) {
+        BigDecimal myBigDecimal = readBigDecimal(prompt);
+        while ((myBigDecimal.compareTo(min) == -1) || (myBigDecimal.compareTo(max) == 1)) {
+            System.out.println("Please give me a number from " + min + " and " + max);
+            myBigDecimal = readBigDecimal(prompt);
+        }
+
+        return myBigDecimal;
     }
 }

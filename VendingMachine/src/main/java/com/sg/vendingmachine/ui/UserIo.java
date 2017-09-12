@@ -1,22 +1,19 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ 	 * To change this license header, choose License Headers in Project Properties.
+ 	 * To change this template file, choose Tools | Templates
+ 	 * and open the template in the editor.
  */
 package com.sg.vendingmachine.ui;
 
 import java.math.BigDecimal;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-
 /**
  *
  * @author dbb09
  */
-public interface UserIo {
+public interface UserIO {
 
-    void print(String message);
+    void print(String msg);
 
     double readDouble(String prompt);
 
@@ -36,9 +33,8 @@ public interface UserIo {
 
     String readString(String prompt);
 
-    boolean readYesNo(String prompt);
-
-    LocalDate readLocalDate(DateTimeFormatter formatter, String prompt);
-
     BigDecimal readBigDecimal(String prompt);
+
+    BigDecimal readBigDecimal(String prompt, BigDecimal min, BigDecimal max);
+
 }

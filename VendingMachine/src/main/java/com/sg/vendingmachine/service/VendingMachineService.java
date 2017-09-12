@@ -1,14 +1,14 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ 	 * To change this license header, choose License Headers in Project Properties.
+ 	 * To change this template file, choose Tools | Templates
+ 	 * and open the template in the editor.
  */
 package com.sg.vendingmachine.service;
 
+import com.sg.vendingmachine.dao.VMPersistenceException;
+import com.sg.vendingmachine.dto.Products;
+import java.math.BigDecimal;
 import java.util.List;
-
-import com.sg.vendingmachine.dao.InventoryFileException;
-import com.sg.vendingmachine.dto.Slot;
 
 /**
  *
@@ -16,11 +16,21 @@ import com.sg.vendingmachine.dto.Slot;
  */
 public interface VendingMachineService {
 
-    public void loadInventory() throws InventoryFileException;
+    void createProduct(Products product) throws 
+            VMPersistenceException,
+            VendingMachineDataValidationException,
+            VendingMachineDuplicateException;
 
-    public void saveInventory() throws InventoryFileException;
+    List<Products> getAllProducts() throws VMPersistenceException;
 
-    public List<Slot> getAllSlots();
+    BigDecimal processPurchase(BigDecimal cashInserted, Products product)
+            throws NotEnoughMoneyException, 
+            VMPersistenceException,
+            noProductStockedException;
+    
+    void checkInv(Products product) throws noProductStockedException;
 
-    public void stockSlot(Slot slot);
+    List<Products> getProductsInStock() throws VMPersistenceException;
+
+    void updateInv(String productName, Products product) throws VMPersistenceException;
 }

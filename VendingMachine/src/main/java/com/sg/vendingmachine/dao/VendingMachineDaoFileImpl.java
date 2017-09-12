@@ -1,27 +1,23 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ 	 * To change this license header, choose License Headers in Project Properties.
+ 	 * To change this template file, choose Tools | Templates
+ 	 * and open the template in the editor.
  */
 package com.sg.vendingmachine.dao;
 
-import java.math.BigDecimal;
-
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-
+import com.sg.vendingmachine.dto.Products;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Scanner;
-
-import com.sg.vendingmachine.dto.Change;
-import com.sg.vendingmachine.dto.Slot;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.PrintWriter;
+import java.io.FileWriter;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.math.BigDecimal;
 
 /**
  *
@@ -29,122 +25,98 @@ import com.sg.vendingmachine.dto.Slot;
  */
 public class VendingMachineDaoFileImpl implements VendingMachineDao {
 
-    private final String INVENTORY_FILE = "inventory.txt";
-    private final String DELIMITER = "::";
-
-    private Change change = new Change();
-
-    private Map<Integer, Slot> slots = new HashMap<>();
+    private Map<String, Products> products = new HashMap<>();
+    private static final String PROD_FILE = "products.txt";
+    private static final String DELIMITER = "::";
 
     @Override
-    public Change getChange() {
-        return this.change;
+    public Products addProduct(String productName, Products product) throws VMPersistenceException {
+        loadProductsLibrary();
+        Products newProduct = products.put(productName, product);
+        writeProductsLibrary();
+        return newProduct;
     }
 
     @Override
-    public void makeChange(BigDecimal money) {
-        double currentMoney = money.doubleValue();
-        int quarters = (int) (currentMoney / 25);
-        currentMoney %= 25;
-        int dimes = (int) (currentMoney / 10);
-        currentMoney %= 10;
-        int nickels = (int) (currentMoney / 5);
-        int pennies = (int) (currentMoney % 5);
-
-        change.setQuarters(quarters);
-        change.setDimes(dimes);
-        change.setNickels(nickels);
-        change.setPennies(pennies);
+    public List<Products> getAllProducts() throws VMPersistenceException {
+        loadProductsLibrary();
+        return new ArrayList<Products>(products.values());
     }
 
     @Override
-    public void zeroChange() {
-        change.setQuarters(0);
-        change.setDimes(0);
-        change.setNickels(0);
-        change.setPennies(0);
+    public Products getProduct(String productName) throws VMPersistenceException {
+        loadProductsLibrary();
+        return products.get(productName);
     }
 
     @Override
-    public Slot getSlot(int slotNumber) {
-        return slots.get(slotNumber);
+    public Products removeProduct(String productName) throws VMPersistenceException {
+        loadProductsLibrary();
+        Products removedProduct = products.remove(productName);
+        writeProductsLibrary();
+        return removedProduct;
     }
 
     @Override
-    public List<Slot> getAllSlots() {
-        return new ArrayList<>(slots.values());
+    public void editProduct(String oldProductName, Products product) throws VMPersistenceException {
+        removeProduct(oldProductName);
+        addProduct(product.getProductName(), product);
     }
 
-    @Override
-    public void fillSlot(Slot slot) {
-        slots.put(slot.getSlotNumber(), slot);
-    }
+    private void loadProductsLibrary() throws VMPersistenceException {
+        Scanner sc;
 
-    @Override
-    public void removeSlot(int slotNumber) {
-        slots.remove(slotNumber);
-    }
+        try {
+            sc = new Scanner(new BufferedReader(new FileReader(PROD_FILE)));
+        } catch (FileNotFoundException e) {
 
-    @Override
-    public void updateSlot(Slot slot) {
-        throw new UnsupportedOperationException();
-    }
+            throw new VMPersistenceException(
+                    "Failed to load data.", e);
+        }
 
-    @Override
-    public void loadInventoryFile() throws InventoryFileException {
         String currentLine;
         String[] currentTokens;
-        Scanner reader;
 
-        try {
-            reader = new Scanner(new BufferedReader(new FileReader(
-                    INVENTORY_FILE)));
-        } catch (FileNotFoundException e) {
-            throw new InventoryFileException("Could not load inventory file.");
-        }
+        while (sc.hasNextLine()) {
 
-        while (reader.hasNextLine()) {
-            currentLine = reader.nextLine();
+            currentLine = sc.nextLine();
+
             currentTokens = currentLine.split(DELIMITER);
 
-            // build slot
-            int slotNumber = Integer.parseInt(currentTokens[0]);
-            Slot currentSlot = new Slot(slotNumber);
+            Products currentProduct = new Products(currentTokens[0]);
 
-            currentSlot.setProduct(currentTokens[1]);
+            currentProduct.setProductPrice(new BigDecimal(currentTokens[1]));
 
-            BigDecimal price = new BigDecimal(currentTokens[2]);
-            currentSlot.setPrice(price);
+            currentProduct.setNumberOfProducts(Integer.parseInt(currentTokens[2]));
 
-            int quantity = Integer.parseInt(currentTokens[3]);
-            currentSlot.setQuantity(quantity);
-
-            // add slot to map
-            slots.put(currentSlot.getSlotNumber(), currentSlot);
+            products.put(currentProduct.getProductName(), currentProduct);
         }
-        reader.close();
+
+        sc.close();
+
     }
 
-    @Override
-    public void saveInventoryFile() throws InventoryFileException {
-        PrintWriter writer;
-        List<Slot> slotList;
+    private void writeProductsLibrary() throws VMPersistenceException {
+        PrintWriter out;
 
         try {
-            writer = new PrintWriter(new FileWriter(INVENTORY_FILE));
+            out = new PrintWriter(new FileWriter(PROD_FILE));
         } catch (IOException e) {
-            throw new InventoryFileException("Could not save data.");
+            throw new VMPersistenceException(
+                    "Could not save data.", e);
         }
 
-        // write a delimited line for each slot in the file
-        slotList = this.getAllSlots();
-        for (Slot currentSlot : slotList) {
-            writer.println(currentSlot.getSlotNumber() + DELIMITER
-                    + currentSlot.getProduct() + DELIMITER
-                    + currentSlot.getPrice() + DELIMITER
-                    + currentSlot.getQuantity());
-            writer.flush();
+        List<Products> productList = this.getAllProducts();
+
+        for (Products currentProduct : productList) {
+
+            out.println(currentProduct.getProductName() + DELIMITER
+                    + currentProduct.getProductPrice() + DELIMITER
+                    + currentProduct.getNumOfProductsStocked());
+
+            out.flush();
         }
-        writer.close();
+
+        out.close();
     }
 }

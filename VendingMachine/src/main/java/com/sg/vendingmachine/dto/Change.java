@@ -1,9 +1,12 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ 	 * To change this license header, choose License Headers in Project Properties.
+ 	 * To change this template file, choose Tools | Templates
+ 	 * and open the template in the editor.
  */
 package com.sg.vendingmachine.dto;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  *
@@ -16,35 +19,36 @@ public class Change {
     private int nickels;
     private int pennies;
 
-    public int getQuarters() {
-        return quarters;
+    public Change(BigDecimal changeDueInPennies) {
+        
+        Integer totalPennies = changeDueInPennies.intValue();
+        
+        this.quarters = Math.floorDiv(totalPennies, 25);
+        int penniesLeft = totalPennies - (this.quarters * 25);
+        
+        this.dimes = Math.floorDiv(penniesLeft, 10);
+        penniesLeft = penniesLeft - (this.dimes * 10);
+        
+        this.nickels = Math.floorDiv(penniesLeft, 5);
+        penniesLeft = penniesLeft - (this.nickels * 5);
+        
+        this.pennies = penniesLeft;
     }
 
-    public void setQuarters(int quarters) {
-        this.quarters = quarters;
+    public int getQuarters() {
+        return quarters;
     }
 
     public int getDimes() {
         return dimes;
     }
 
-    public void setDimes(int dimes) {
-        this.dimes = dimes;
-    }
-
     public int getNickels() {
         return nickels;
-    }
-
-    public void setNickels(int nickels) {
-        this.nickels = nickels;
     }
 
     public int getPennies() {
         return pennies;
     }
 
-    public void setPennies(int pennies) {
-        this.pennies = pennies;
-    }
 }
