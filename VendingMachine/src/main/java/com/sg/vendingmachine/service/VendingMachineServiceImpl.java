@@ -7,7 +7,7 @@ package com.sg.vendingmachine.service;
 
 import com.sg.vendingmachine.dao.VendingMachineDao;
 import com.sg.vendingmachine.dao.VMPersistenceException;
-import com.sg.vendingmachine.dto.Products;
+import com.sg.vendingmachine.dto.Product;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,75 +18,76 @@ import java.util.List;
  */
 public class VendingMachineServiceImpl implements VendingMachineService {
 
-    
+    private VendingMachineDao dao;
+    private BigDecimal userCash = new BigDecimal("0.00");
+
     public VendingMachineServiceImpl(VendingMachineDao dao) {
         this.dao = dao;
     }
 
-    private VendingMachineDao dao;
-    private BigDecimal userCash = new BigDecimal("0.00");
-
     
+
+
+// TODO: "Unless you are planning on having your application CRUD - you could skip create as part of your service layer."
+
     @Override
-    public void createProduct(Products product) throws 
+    public void createProduct(Product product) throws
             VMPersistenceException,
-            VendingMachineDataValidationException, 
+            VendingMachineDataValidationException,
             VendingMachineDuplicateException {
-        
+
         if (dao.getProduct(product.getProductName()) != null) {
             throw new VendingMachineDuplicateException("Duplicate product!");
-            
+
         }
 
         dao.addProduct(product.getProductName(), product);
     }
 
     @Override
-    public List<Products> getAllProducts() throws VMPersistenceException {
+    public List<Product> getAllProducts() throws VMPersistenceException {
         return dao.getAllProducts();
     }
 
     @Override
-    public void updateInv(String productName, Products product) throws VMPersistenceException {
+    public void updateInv(String productName, Product product) throws VMPersistenceException {
         dao.editProduct(productName, product);
     }
 
     @Override
-    public BigDecimal processPurchase(BigDecimal cashInserted, Products product) throws 
+    public BigDecimal processPurchase(BigDecimal cashInserted, Product product) throws
             NotEnoughMoneyException,
-            VMPersistenceException, 
-            noProductStockedException {
+            VMPersistenceException,
+            ProductNotStockedException {
         this.userCash = cashInserted;
 
         validateCash(product);
 
         this.userCash = this.userCash.subtract(product.getProductPrice());
-        
+
         return this.userCash;
     }
-    
-   // @Override
-   // public BigDecimal addCash(BigDecimal cashInserted) throws
-   //         WrongCashFormatException {
-   //     validateCash(cashInserted);
-   //
-   //     this.userCash = this.userCash.add(cashInserted);
-   // 
-   //     return this.userCash;
-   // }
 
-
+    // @Override
+    // public BigDecimal addCash(BigDecimal cashInserted) throws
+    //         WrongCashFormatException {
+    //     validateCash(cashInserted);
+    //
+    //     this.userCash = this.userCash.add(cashInserted);
+    // 
+    //     return this.userCash;
+    // }
     @Override
-    public void checkInv(Products product) throws noProductStockedException {
+    public void checkInv(Product product) throws ProductNotStockedException {
         validateProductInv(product);
     }
 
     @Override
-    public List<Products> getProductsInStock() throws VMPersistenceException {
-        List<Products> products = getAllProducts();
-        List<Products> productsInStock = new ArrayList<>();
+    public List<Product> getProductsInStock() throws VMPersistenceException {
+        List<Product> products = getAllProducts();
+        List<Product> productsInStock = new ArrayList<>();
 
-        for (Products product : products) {
+        for (Product product : products) {
             if (product.getNumOfProductsStocked() > 0) {
                 productsInStock.add(product);
             }
@@ -95,20 +96,18 @@ public class VendingMachineServiceImpl implements VendingMachineService {
         return productsInStock;
     }
 // range?  not specific # ^^
-    
-    
-    private void validateCash(Products product) throws NotEnoughMoneyException {
+
+    private void validateCash(Product product) throws NotEnoughMoneyException {
         if (product.getProductPrice().compareTo(userCash) == 1) {
             throw new NotEnoughMoneyException("Not enough cash inserted. Please"
                     + "put more money in the machine and try again.");
         }
     }
 
-    private void validateProductInv(Products product) throws noProductStockedException {
+    private void validateProductInv(Product product) throws ProductNotStockedException {
         if (product.getNumOfProductsStocked() == 0) {
-            throw new noProductStockedException("Out of Stock.");
+            throw new ProductNotStockedException("Out of Stock.");
         }
     }
-
 
 }

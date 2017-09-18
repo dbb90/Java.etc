@@ -5,7 +5,7 @@
  */
 package com.sg.vendingmachine.dao;
 
-import com.sg.vendingmachine.dto.Products;
+import com.sg.vendingmachine.dto.Product;
 import java.util.List;
 
 /**
@@ -14,14 +14,15 @@ import java.util.List;
  */
 public interface VendingMachineDao {
 
-    Products addProduct(String productName, Products product) throws VMPersistenceException;
+    Product addProduct(String productName, Product product) throws VMPersistenceException;
 
-    List<Products> getAllProducts() throws VMPersistenceException;
+    List<Product> getAllProducts() throws VMPersistenceException;
 
-    Products getProduct(String productName) throws VMPersistenceException;
+    Product getProduct(String productName) throws VMPersistenceException;
 
-    void editProduct(String productName, Products product) throws VMPersistenceException;
+    void editProduct(String productName, Product product) throws VMPersistenceException;
 
-    Products removeProduct(String productName) throws VMPersistenceException;
+    Product removeProduct(String productName) throws VMPersistenceException;
 
+    //add load/save dedicated methods.  Passthru on initial app, service layer, for initialize load
 }

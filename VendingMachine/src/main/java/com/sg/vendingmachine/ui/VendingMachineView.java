@@ -6,7 +6,7 @@
 package com.sg.vendingmachine.ui;
 
 import com.sg.vendingmachine.dto.Change;
-import com.sg.vendingmachine.dto.Products;
+import com.sg.vendingmachine.dto.Product;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -26,10 +26,10 @@ public class VendingMachineView {
         io.print("The following products are in stock: ");
     }
 
-    public int displayProducts(List<Products> listOfStockedProducts) {
+    public int displayProducts(List<Product> listOfStockedProducts) {
 
         for (int i = 0; i < listOfStockedProducts.size(); i++) {
-            Products product = listOfStockedProducts.get(i);
+            Product product = listOfStockedProducts.get(i);
             io.print((i+ 1) + ": " + product.getProductName() + " - $" + product.getProductPrice());
         }
 
@@ -39,8 +39,8 @@ public class VendingMachineView {
         return io.readInt("\nEnter selection: ", 0, (listOfStockedProducts.size()));
     }
     
-    public Products displayUserProductChoice(int userChoice, List<Products> products) {
-        Products product = products.get(userChoice);
+    public Product displayUserProductChoice(int userChoice, List<Product> products) {
+        Product product = products.get(userChoice);
         io.print("\nSELECTION: " + product.getProductName());
         io.print("\n");
         return product;
@@ -50,7 +50,7 @@ public class VendingMachineView {
         return io.readString("Insert bill/coins at this time!");
     }
 
-    public void displayRemainingProductInv(Products product) {
+    public void displayRemainingProductInv(Product product) {
         product.setNumberOfProducts((product.getNumOfProductsStocked() - 1));
         io.readString(product.getNumOfProductsStocked() + " " + product.getProductName() + "(s) remaining."
         + "\n\n Please press enter.\n");

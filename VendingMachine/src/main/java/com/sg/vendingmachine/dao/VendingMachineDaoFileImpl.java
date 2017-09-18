@@ -5,7 +5,7 @@
  */
 package com.sg.vendingmachine.dao;
 
-import com.sg.vendingmachine.dto.Products;
+import com.sg.vendingmachine.dto.Product;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -23,42 +23,48 @@ import java.math.BigDecimal;
  *
  * @author dbb09
  */
+
+
+
+
+// TODO: Break out separate load/save methods from each CRUD method
+
 public class VendingMachineDaoFileImpl implements VendingMachineDao {
 
-    private Map<String, Products> products = new HashMap<>();
+    private Map<String, Product> products = new HashMap<>();
     private static final String PROD_FILE = "products.txt";
     private static final String DELIMITER = "::";
 
     @Override
-    public Products addProduct(String productName, Products product) throws VMPersistenceException {
+    public Product addProduct(String productName, Product product) throws VMPersistenceException {
         loadProductsLibrary();
-        Products newProduct = products.put(productName, product);
+        Product newProduct = products.put(productName, product);
         writeProductsLibrary();
         return newProduct;
     }
 
     @Override
-    public List<Products> getAllProducts() throws VMPersistenceException {
+    public List<Product> getAllProducts() throws VMPersistenceException {
         loadProductsLibrary();
-        return new ArrayList<Products>(products.values());
+        return new ArrayList<Product>(products.values());
     }
 
     @Override
-    public Products getProduct(String productName) throws VMPersistenceException {
+    public Product getProduct(String productName) throws VMPersistenceException {
         loadProductsLibrary();
         return products.get(productName);
     }
 
     @Override
-    public Products removeProduct(String productName) throws VMPersistenceException {
+    public Product removeProduct(String productName) throws VMPersistenceException {
         loadProductsLibrary();
-        Products removedProduct = products.remove(productName);
+        Product removedProduct = products.remove(productName);
         writeProductsLibrary();
         return removedProduct;
     }
 
     @Override
-    public void editProduct(String oldProductName, Products product) throws VMPersistenceException {
+    public void editProduct(String oldProductName, Product product) throws VMPersistenceException {
         removeProduct(oldProductName);
         addProduct(product.getProductName(), product);
     }
@@ -83,7 +89,7 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao {
 
             currentTokens = currentLine.split(DELIMITER);
 
-            Products currentProduct = new Products(currentTokens[0]);
+            Product currentProduct = new Product(currentTokens[0]);
 
             currentProduct.setProductPrice(new BigDecimal(currentTokens[1]));
 
@@ -106,9 +112,9 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao {
                     "Could not save data.", e);
         }
 
-        List<Products> productList = this.getAllProducts();
+        List<Product> productList = this.getAllProducts();
 
-        for (Products currentProduct : productList) {
+        for (Product currentProduct : productList) {
 
             out.println(currentProduct.getProductName() + DELIMITER
                     + currentProduct.getProductPrice() + DELIMITER

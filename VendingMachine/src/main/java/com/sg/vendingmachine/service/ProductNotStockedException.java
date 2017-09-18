@@ -9,14 +9,14 @@ package com.sg.vendingmachine.service;
  *
  * @author dbb09
  */
-public class noProductStockedException extends Exception {
+public class ProductNotStockedException extends Exception {
 
-    public noProductStockedException(String message) {
+    public ProductNotStockedException(String message) {
         
         super(message);
     }
 
-    public noProductStockedException(String message,
+    public ProductNotStockedException(String message,
             Throwable cause) {
         
         super(message, cause);

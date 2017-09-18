@@ -30,9 +30,9 @@ import java.util.List;
  */
 public class DVDLibraryController {
 
-    DVDLibraryView view;
+    private DVDLibraryView view;
 
-    DVDLibraryDao dao;
+    private DVDLibraryDao dao;
 
     public DVDLibraryController(DVDLibraryView view, DVDLibraryDao dao) {
 

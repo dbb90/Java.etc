@@ -11,13 +11,13 @@ import java.math.BigDecimal;
  *
  * @author dbb09
  */
-public class Products {
+public class Product {
 
     private String productName;
     private BigDecimal productPrice;
     private Integer numberOfProducts;
 
-    public Products(String productName) {
+    public Product(String productName) {
         this.productName = productName;
     }
 

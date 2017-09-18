@@ -6,9 +6,9 @@
 package com.sg.vendingmachine.controller;
 
 import com.sg.vendingmachine.dao.VMPersistenceException;
-import com.sg.vendingmachine.dto.Products;
+import com.sg.vendingmachine.dto.Product;
 import com.sg.vendingmachine.service.NotEnoughMoneyException;
-import com.sg.vendingmachine.service.noProductStockedException;
+import com.sg.vendingmachine.service.ProductNotStockedException;
 import com.sg.vendingmachine.service.VendingMachineService;
 import com.sg.vendingmachine.ui.VendingMachineView;
 import java.math.BigDecimal;
@@ -42,8 +42,8 @@ public class VendingMachineController {
             try {
 
                 int userChoice = displayProductOptions();
-                if (!(quitChoice(userChoice))) {
-                    Products product = processUserChoice(userChoice);
+                if (!quitChoice(userChoice)) {
+                    Product product = processUserChoice(userChoice);
 
                     do {
 
@@ -73,7 +73,7 @@ public class VendingMachineController {
                 }
 
             } catch (VMPersistenceException
-                    | noProductStockedException e) {
+                    | ProductNotStockedException e) {
 
                 view.displayErrorMessage(e.getMessage());
 
@@ -95,18 +95,18 @@ public class VendingMachineController {
 //    }
     private int displayProductOptions() throws
             VMPersistenceException,
-            noProductStockedException {
+            ProductNotStockedException {
 
-        List<Products> products = service.getProductsInStock();
+        List<Product> products = service.getProductsInStock();
         view.displayChoicePrompt();
 
         return view.displayProducts(products);
     }
 
-    private void purchaseProduct(Products product) throws
+    private void purchaseProduct(Product product) throws
             VMPersistenceException,
             NotEnoughMoneyException,
-            noProductStockedException,
+            ProductNotStockedException,
             NumberFormatException {
 
         BigDecimal userBalance = new BigDecimal(view.getCashInput());
@@ -120,12 +120,12 @@ public class VendingMachineController {
         service.updateInv(product.getProductName(), product);
     }
 
-    private Products processUserChoice(int userChoice) throws
+    private Product processUserChoice(int userChoice) throws
             VMPersistenceException,
-            noProductStockedException {
+            ProductNotStockedException {
         userChoice--;
-        List<Products> products = service.getProductsInStock();
-        Products product = view.displayUserProductChoice(userChoice, products);
+        List<Product> products = service.getProductsInStock();
+        Product product = view.displayUserProductChoice(userChoice, products);
         service.checkInv(product);
 
         return product;
@@ -135,4 +135,3 @@ public class VendingMachineController {
 
         
     }
-}
