@@ -5,7 +5,6 @@
  */
 package com.sg.vendingmachine.ui;
 
-import com.sg.vendingmachine.dto.Change;
 import com.sg.vendingmachine.dto.Product;
 import java.math.BigDecimal;
 import java.util.List;
@@ -57,18 +56,15 @@ public class VendingMachineView {
     }
 
     public void displayChange(BigDecimal change) {
-        
+       
         if (change.compareTo(new BigDecimal(0.00)) == 0) {
             io.print("");
             io.print("\n No change owed!  Have a good day.");
         } else {
-            BigDecimal toPennies = change.multiply(new BigDecimal(100));
-            BigDecimal setScaleToPennies = toPennies.setScale(0);
-            Change changeBackToUser = new Change(setScaleToPennies);
-            io.print("Quarter(s): " + changeBackToUser.getQuarters());
-            io.print("Dime(s): " + changeBackToUser.getDimes());
-            io.print("Nickel(s): " + changeBackToUser.getNickels());
-            io.print("Penny(s): " + changeBackToUser.getPennies());
+            io.print("Quarter(s): " );
+            io.print("Dime(s): " + "");
+            io.print("Nickel(s): " + "");
+            io.print("Penny(s): " + "");
         }
     }
 

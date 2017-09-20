@@ -5,8 +5,10 @@
  */
 package com.sg.vendingmachine.service;
 
-import com.sg.vendingmachine.dao.VendingMachineDao;
 import com.sg.vendingmachine.dao.VMPersistenceException;
+import com.sg.vendingmachine.dao.VendingMachineAuditDao;
+import com.sg.vendingmachine.dao.VendingMachineDao;
+import com.sg.vendingmachine.dto.Change;
 import com.sg.vendingmachine.dto.Product;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -19,30 +21,28 @@ import java.util.List;
 public class VendingMachineServiceImpl implements VendingMachineService {
 
     private VendingMachineDao dao;
+    private VendingMachineAuditDao auditDao;
     private BigDecimal userCash = new BigDecimal("0.00");
 
-    public VendingMachineServiceImpl(VendingMachineDao dao) {
+    public VendingMachineServiceImpl(VendingMachineDao dao, VendingMachineAuditDao auditDao) {
         this.dao = dao;
+        this.auditDao = auditDao;
     }
-
-    
-
 
 // TODO: "Unless you are planning on having your application CRUD - you could skip create as part of your service layer."
-
-    @Override
-    public void createProduct(Product product) throws
-            VMPersistenceException,
-            VendingMachineDataValidationException,
-            VendingMachineDuplicateException {
-
-        if (dao.getProduct(product.getProductName()) != null) {
-            throw new VendingMachineDuplicateException("Duplicate product!");
-
-        }
-
-        dao.addProduct(product.getProductName(), product);
-    }
+//    @Override
+//    public void createProduct(Product product) throws
+//            VMPersistenceException,
+//            VendingMachineDataValidationException,
+//            VendingMachineDuplicateException {
+//
+//        if (dao.getProduct(product.getProductName()) != null) {
+//            throw new VendingMachineDuplicateException("Duplicate product!");
+//
+//        }
+//
+//        dao.addProduct(product.getProductName(), product);
+//    }
 
     @Override
     public List<Product> getAllProducts() throws VMPersistenceException {
@@ -60,13 +60,18 @@ public class VendingMachineServiceImpl implements VendingMachineService {
             VMPersistenceException,
             ProductNotStockedException {
         this.userCash = cashInserted;
-
         validateCash(product);
 
         this.userCash = this.userCash.subtract(product.getProductPrice());
 
-        return this.userCash;
+    
+    return this.userCash;
     }
+//        private BigDecimal processChange(BigDecimal bigDecimal) {
+//       
+//    }
+
+
 
     // @Override
     // public BigDecimal addCash(BigDecimal cashInserted) throws
@@ -97,7 +102,25 @@ public class VendingMachineServiceImpl implements VendingMachineService {
     }
 // range?  not specific # ^^
 
-    private void validateCash(Product product) throws NotEnoughMoneyException {
+    @Override
+    public void processChange(BigDecimal change) throws VMPersistenceException {
+        
+//Fix change routing here!!:
+        
+        
+            BigDecimal toPennies = change.multiply(new BigDecimal(100));
+            BigDecimal setScaleToPennies = toPennies.setScale(0);
+            Change changeBackToUser = new Change(setScaleToPennies);
+            
+            changeBackToUser.getQuarters();
+            changeBackToUser.getDimes();
+            changeBackToUser.getNickels();
+            changeBackToUser.getPennies();
+        
+    }
+
+
+private void validateCash(Product product) throws NotEnoughMoneyException {
         if (product.getProductPrice().compareTo(userCash) == 1) {
             throw new NotEnoughMoneyException("Not enough cash inserted. Please"
                     + "put more money in the machine and try again.");
@@ -107,7 +130,6 @@ public class VendingMachineServiceImpl implements VendingMachineService {
     private void validateProductInv(Product product) throws ProductNotStockedException {
         if (product.getNumOfProductsStocked() == 0) {
             throw new ProductNotStockedException("Out of Stock.");
-        }
-    }
+        }}}
+    
 
-}

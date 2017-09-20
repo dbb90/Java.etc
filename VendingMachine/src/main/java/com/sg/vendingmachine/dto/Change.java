@@ -6,7 +6,6 @@
 package com.sg.vendingmachine.dto;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 /**
  *
@@ -19,7 +18,9 @@ public class Change {
     private int nickels;
     private int pennies;
 
-    public Change(BigDecimal changeDueInPennies) {
+    public Change(BigDecimal changeDue) {
+        
+        BigDecimal changeDueInPennies = changeDue.multiply(new BigDecimal(100));
         
         Integer totalPennies = changeDueInPennies.intValue();
         

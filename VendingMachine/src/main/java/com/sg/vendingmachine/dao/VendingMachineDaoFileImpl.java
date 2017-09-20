@@ -31,7 +31,7 @@ import java.math.BigDecimal;
 
 public class VendingMachineDaoFileImpl implements VendingMachineDao {
 
-    private Map<String, Product> products = new HashMap<>();
+    private Map<String, Product> products = new HashMap<>(); 
     private static final String PROD_FILE = "products.txt";
     private static final String DELIMITER = "::";
 

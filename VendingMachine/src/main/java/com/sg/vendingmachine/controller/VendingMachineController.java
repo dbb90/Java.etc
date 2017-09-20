@@ -114,7 +114,7 @@ public class VendingMachineController {
         BigDecimal change = service.processPurchase(userBalance, product);
 
         view.displaySuccessBanner();
-        view.displayChange(change);
+//        view.displayChange(change);
         view.displayRemainingProductInv(product);
 
         service.updateInv(product.getProductName(), product);

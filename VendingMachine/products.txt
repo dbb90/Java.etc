@@ -1,5 +1,0 @@
-Snickers::3.00::8
-Coke::2.00::14
-Dr Pepper::2.00::21
-Elephant::1.99::0
-Mt Dew::2.00::6
