@@ -5,8 +5,8 @@
  */
 package com.sg.vendingmachine.ui;
 
+import com.sg.vendingmachine.dto.Change;
 import com.sg.vendingmachine.dto.Product;
-import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -55,18 +55,15 @@ public class VendingMachineView {
         + "\n\n Please press enter.\n");
     }
 
-    public void displayChange(BigDecimal change) {
-       
-        if (change.compareTo(new BigDecimal(0.00)) == 0) {
-            io.print("");
-            io.print("\n No change owed!  Have a good day.");
-        } else {
-            io.print("Quarter(s): " );
-            io.print("Dime(s): " + "");
-            io.print("Nickel(s): " + "");
-            io.print("Penny(s): " + "");
-        }
-    }
+
+    public void displayChange(Change change) {
+        
+    {
+            io.print("Quarter(s): " + change.getQuarters());
+            io.print("Dime(s): " + change.getDimes());
+            io.print("Nickel(s): " + change.getNickels());
+            io.print("Penny(s): " + change.getPennies());
+        }}
 
     public void displaySuccessBanner() {
         io.print("Enjoy your purchase!\n\n");

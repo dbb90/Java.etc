@@ -6,8 +6,8 @@
 package com.sg.vendingmachine.service;
 
 import com.sg.vendingmachine.dao.VMPersistenceException;
-import com.sg.vendingmachine.dto.Product;
 import com.sg.vendingmachine.dto.Change;
+import com.sg.vendingmachine.dto.Product;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -17,17 +17,17 @@ import java.util.List;
  */
 public interface VendingMachineService {
 
-//    void createProduct(Product product) throws 
-//            VMPersistenceException,
-//            VendingMachineDataValidationException,
-//            VendingMachineDuplicateException;
+    void createProduct(Product product) throws 
+            VMPersistenceException,
+            VendingMachineDataValidationException,
+            VendingMachineDuplicateException;
 
     List<Product> getAllProducts() throws VMPersistenceException;
 
-    BigDecimal processPurchase(BigDecimal cashInserted, Product product)
-            throws NotEnoughMoneyException, 
-            VMPersistenceException,
-            ProductNotStockedException;
+ BigDecimal processPurchase(BigDecimal cashInserted, Product product)
+           throws NotEnoughMoneyException,
+           VMPersistenceException,
+           ProductNotStockedException;
     
     //process change is being moved to the service layer from the view
     void processChange(BigDecimal change) throws VMPersistenceException;
@@ -37,4 +37,7 @@ public interface VendingMachineService {
     List<Product> getProductsInStock() throws VMPersistenceException;
 
     void updateInv(String productName, Product product) throws VMPersistenceException;
+
+   Change changeifier(Product productWanted, BigDecimal userCash) throws VMPersistenceException;
+   
 }

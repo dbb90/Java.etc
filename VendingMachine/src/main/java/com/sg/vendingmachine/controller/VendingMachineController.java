@@ -6,6 +6,7 @@
 package com.sg.vendingmachine.controller;
 
 import com.sg.vendingmachine.dao.VMPersistenceException;
+import com.sg.vendingmachine.dto.Change;
 import com.sg.vendingmachine.dto.Product;
 import com.sg.vendingmachine.service.NotEnoughMoneyException;
 import com.sg.vendingmachine.service.ProductNotStockedException;
@@ -103,21 +104,20 @@ public class VendingMachineController {
         return view.displayProducts(products);
     }
 
-    private void purchaseProduct(Product product) throws
-            VMPersistenceException,
-            NotEnoughMoneyException,
-            ProductNotStockedException,
-            NumberFormatException {
+     private void purchaseProduct(Product product) throws
+           VMPersistenceException,
+           NotEnoughMoneyException,
+           ProductNotStockedException,
+           NumberFormatException {
 
-        BigDecimal userBalance = new BigDecimal(view.getCashInput());
-
-        BigDecimal change = service.processPurchase(userBalance, product);
-
-        view.displaySuccessBanner();
-//        view.displayChange(change);
-        view.displayRemainingProductInv(product);
-
-        service.updateInv(product.getProductName(), product);
+       BigDecimal userBalance = new BigDecimal(view.getCashInput());
+       userBalance = service.processPurchase(userBalance, product);
+       Change changeified = service.changeifier(product, userBalance);
+       
+       view.displaySuccessBanner();
+       view.displayChange(changeified);
+       view.displayRemainingProductInv(product);
+       service.updateInv(product.getProductName(), product);
     }
 
     private Product processUserChoice(int userChoice) throws

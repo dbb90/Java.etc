@@ -11,6 +11,7 @@ import com.sg.vendingmachine.dao.VendingMachineDao;
 import com.sg.vendingmachine.dto.Change;
 import com.sg.vendingmachine.dto.Product;
 import java.math.BigDecimal;
+import static java.math.RoundingMode.HALF_UP;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,20 +30,19 @@ public class VendingMachineServiceImpl implements VendingMachineService {
         this.auditDao = auditDao;
     }
 
-// TODO: "Unless you are planning on having your application CRUD - you could skip create as part of your service layer."
-//    @Override
-//    public void createProduct(Product product) throws
-//            VMPersistenceException,
-//            VendingMachineDataValidationException,
-//            VendingMachineDuplicateException {
-//
-//        if (dao.getProduct(product.getProductName()) != null) {
-//            throw new VendingMachineDuplicateException("Duplicate product!");
-//
-//        }
-//
-//        dao.addProduct(product.getProductName(), product);
-//    }
+ // TODO: "Unless you are planning on having your application CRUD - you could skip create as part of your service layer."
+    @Override
+    public void createProduct(Product product) throws
+            VMPersistenceException,
+            VendingMachineDataValidationException,
+            VendingMachineDuplicateException {
+
+        if (dao.getProduct(product.getProductName()) != null) {
+            throw new VendingMachineDuplicateException("Duplicate product!");
+
+        }
+
+        dao.addProduct(product.getProductName(), product);}
 
     @Override
     public List<Product> getAllProducts() throws VMPersistenceException {
@@ -54,19 +54,99 @@ public class VendingMachineServiceImpl implements VendingMachineService {
         dao.editProduct(productName, product);
     }
 
-    @Override
-    public BigDecimal processPurchase(BigDecimal cashInserted, Product product) throws
-            NotEnoughMoneyException,
-            VMPersistenceException,
-            ProductNotStockedException {
-        this.userCash = cashInserted;
-        validateCash(product);
+   @Override
+   public BigDecimal processPurchase(BigDecimal cashInserted, Product product) throws
 
-        this.userCash = this.userCash.subtract(product.getProductPrice());
+           NotEnoughMoneyException,
+           VMPersistenceException,
+           ProductNotStockedException {
 
-    
-    return this.userCash;
-    }
+       this.userCash = cashInserted;
+       validateCash(product);
+       this.userCash = this.userCash.subtract(product.getProductPrice());
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       return this.userCash;
+
+   }
 //        private BigDecimal processChange(BigDecimal bigDecimal) {
 //       
 //    }
@@ -105,20 +185,34 @@ public class VendingMachineServiceImpl implements VendingMachineService {
     @Override
     public void processChange(BigDecimal change) throws VMPersistenceException {
         
+    }
+    
+        
 //Fix change routing here!!:
-        
-        
-            BigDecimal toPennies = change.multiply(new BigDecimal(100));
-            BigDecimal setScaleToPennies = toPennies.setScale(0);
-            Change changeBackToUser = new Change(setScaleToPennies);
-            
-            changeBackToUser.getQuarters();
-            changeBackToUser.getDimes();
-            changeBackToUser.getNickels();
-            changeBackToUser.getPennies();
+       
+@Override
+public Change changeifier(Product productWanted, BigDecimal cashInserted) throws VMPersistenceException{
+   
+BigDecimal changeInDollars = this.calculateChange(cashInserted, productWanted.getProductPrice());
+
+       changeInDollars = changeInDollars.setScale(2 , HALF_UP);
+       BigDecimal factor = new BigDecimal(100);
+       factor = factor.setScale(2 , HALF_UP);
+       BigDecimal pennies = cashInserted.multiply(factor).setScale(2, HALF_UP);
+        int changeInPennies = pennies.intValue();
+
+       Change change = new Change(changeInPennies);
+
+       return change;
+         
+      
         
     }
+private BigDecimal calculateChange(BigDecimal userMoney, BigDecimal itemCost) {
 
+       return userMoney.subtract(itemCost);
+
+   }
 
 private void validateCash(Product product) throws NotEnoughMoneyException {
         if (product.getProductPrice().compareTo(userCash) == 1) {
@@ -132,4 +226,3 @@ private void validateCash(Product product) throws NotEnoughMoneyException {
             throw new ProductNotStockedException("Out of Stock.");
         }}}
     
-

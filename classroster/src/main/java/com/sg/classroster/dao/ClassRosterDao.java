@@ -13,7 +13,6 @@ import java.util.List;
  * @author dbb09
  */
 public interface ClassRosterDao {
-      
 	    /**
 	     * Adds the given Student to the roster and associates it with the given 
 	     * student id. If there is already a student associated with the given 
@@ -24,8 +23,10 @@ public interface ClassRosterDao {
 	     * @param student student to be added to the roster
 	     * @return the Student object previously associated with the given  
 	     * student id if it exists, null otherwise
+	     * @throws com.sg.classroster.dao.ClassRosterPersistenceException
 	     */
-	    Student addStudent(String studentId, Student student);
+	    Student addStudent(String studentId, Student student)
+	     throws ClassRosterPersistenceException;
 	    
 	    /**
 	     * Returns a String array containing the student ids of all 
@@ -33,8 +34,10 @@ public interface ClassRosterDao {
 	     * 
 	     * @return String array containing the ids of all the students 
 	     * in the roster
+	     * @throws com.sg.classroster.dao.ClassRosterPersistenceException
 	     */
-	    List<Student> getAllStudents();
+	    List<Student> getAllStudents()
+	     throws ClassRosterPersistenceException;
 	    
 	    /**
 	     * Returns the student object associated with the given student id.
@@ -43,8 +46,10 @@ public interface ClassRosterDao {
 	     * @param studentId ID of the student to retrieve
 	     * @return the Student object associated with the given student id,  
 	     * null if no such student exists
+	     * @throws com.sg.classroster.dao.ClassRosterPersistenceException
 	     */
-	    Student getStudent(String studentId);
+	    Student getStudent(String studentId)
+	     throws ClassRosterPersistenceException;
 	    
 	    /**
 	     * Removes from the roster the student associated with the given id. 
@@ -54,6 +59,9 @@ public interface ClassRosterDao {
 	     * @param studentId id of student to be removed
 	     * @return Student object that was removed or null if no student 
 	     * was associated with the given student id
+	     * @throws com.sg.classroster.dao.ClassRosterPersistenceException
 	     */
-	    Student removeStudent(String studentId);
-}
+	    Student removeStudent(String studentId)
+	     throws ClassRosterPersistenceException;
+	}
+	

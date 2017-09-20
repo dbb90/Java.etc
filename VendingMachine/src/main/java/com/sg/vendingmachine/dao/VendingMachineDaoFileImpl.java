@@ -6,18 +6,18 @@
 package com.sg.vendingmachine.dao;
 
 import com.sg.vendingmachine.dto.Product;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Scanner;
 import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.PrintWriter;
-import java.io.FileWriter;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 
 /**
  *
@@ -84,17 +84,11 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao {
         String[] currentTokens;
 
         while (sc.hasNextLine()) {
-
             currentLine = sc.nextLine();
-
             currentTokens = currentLine.split(DELIMITER);
-
             Product currentProduct = new Product(currentTokens[0]);
-
             currentProduct.setProductPrice(new BigDecimal(currentTokens[1]));
-
             currentProduct.setNumberOfProducts(Integer.parseInt(currentTokens[2]));
-
             products.put(currentProduct.getProductName(), currentProduct);
         }
 

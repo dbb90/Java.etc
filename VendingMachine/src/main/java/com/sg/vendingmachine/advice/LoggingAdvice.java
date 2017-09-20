@@ -22,15 +22,12 @@ public class LoggingAdvice {
     public void createAuditEntry(JoinPoint jp, Exception exception) {
 
         Object[] args = jp.getArgs();
-
         String auditEntry = jp.getSignature().getName() + ": ";
         for (Object currentArg : args) {
-            
             auditEntry += currentArg;
         }
         auditEntry += " |Exception thrown: " + exception.getClass().getSimpleName();
         try {
-            
             auditDao.writeAuditEntry(auditEntry);
         } catch (VMPersistenceException e) {
             System.err.println("ERROR: Could not create audit entry in LoggingAdvice.");
