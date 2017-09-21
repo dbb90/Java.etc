@@ -15,34 +15,25 @@ import org.junit.Test;
  * @author dbb09
  */
 public class VendingMachineDaoTest {
-
     private VendingMachineDao nuDao = new VendingMachineDaoFileImpl();
-
     public VendingMachineDaoTest() {
 
     }
 
     @BeforeClass
     public static void setUpClass() {
-
     }
 
     @AfterClass
     public static void tearDownClass() {
-
     }
 
     @Before
     public void setUp() throws Exception {
-
         List<Product> products = nuDao.getAllProducts();
-
         for (Product currentProduct : products) {
-
             nuDao.removeProduct(currentProduct.getProductName());
-
         }
-
     }
 
     @After
@@ -156,11 +147,9 @@ public class VendingMachineDaoTest {
 
         assertEquals(prodTwo.getProductName(), prodOne.getProductName());
 
-    
         List<Product> testProduct = nuDao.getAllProducts();
 
 //        assertEquals(Integer.valueOf(999), testProduct.get(0).getNumberOfProducts());
-        
         assertEquals(Integer.valueOf(1000), testProduct.get(0).getNumberOfProducts());
     }
 

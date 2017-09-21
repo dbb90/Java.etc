@@ -52,7 +52,7 @@ public class VendingMachineServiceImpl implements VendingMachineService {
 
     @Override
     public BigDecimal processPurchase(BigDecimal cashInserted, Product product) throws
-            NotEnoughMoneyException,
+            InsufficientFundsException,
             VMPersistenceException,
             ProductNotStockedException {
 
@@ -106,9 +106,9 @@ public class VendingMachineServiceImpl implements VendingMachineService {
 
     }
 
-    private void validateCash(Product product) throws NotEnoughMoneyException {
+    private void validateCash(Product product) throws InsufficientFundsException {
         if (product.getProductPrice().compareTo(userCash) == 1) {
-            throw new NotEnoughMoneyException("Not enough cash inserted. Please"
+            throw new InsufficientFundsException("Not enough cash inserted. Please"
                     + "put more money in the machine and try again.");
         }
     }

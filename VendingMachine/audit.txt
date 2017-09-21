@@ -1,0 +1,1 @@
+2017-09-21T14:00:20.686 : processPurchase: 1com.sg.vendingmachine.dto.Product@57d5872c |Exception thrown: InsufficientFundsException

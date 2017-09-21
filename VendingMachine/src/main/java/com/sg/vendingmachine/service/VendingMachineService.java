@@ -20,7 +20,7 @@ public interface VendingMachineService {
     List<Product> getAllProducts() throws VMPersistenceException;
 
  BigDecimal processPurchase(BigDecimal cashInserted, Product product)
-           throws NotEnoughMoneyException,
+           throws InsufficientFundsException,
            VMPersistenceException,
            ProductNotStockedException;
     

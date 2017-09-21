@@ -33,51 +33,47 @@
     
 
     <bean id="service" class="com.sg.vendingmachine.service.VendingMachineServiceImpl">
-
         <constructor-arg ref="dao"/>
         <constructor-arg ref="auditDao"/>
-        
     </bean>
 
    
 
     <bean id="controller" class="com.sg.vendingmachine.controller.VendingMachineController">
-
         <constructor-arg ref="service"/>
         <constructor-arg ref="view"/>
-
     </bean>
-
-   
 
     <bean id="loggingAdvice" class="com.sg.vendingmachine.advice.LoggingAdvice">
-
         <constructor-arg ref="auditDao"/>
-
     </bean>
 
-   
-
-   
-
+  
     <aop:config>
-
         <aop:aspect ref="loggingAdvice">
             <aop:after-throwing
                 method="createAuditEntry"
                 pointcut="execution(* com.sg.vendingmachine.service.VendingMachineService.processPurchase(..))"
                 throwing="exception"
-
             />
 
             <aop:after-throwing 
-
                 method="createAuditEntry"
-
-                pointcut="execution(* com.sg.vendingmachine.service.VendingMachineService.checkNumberOfItems(..))"
-
+                pointcut="execution(* com.sg.vendingmachine.service.VendingMachineService.checkInv(..))"
                 throwing="exception"
-
+            />
+            
+            <aop:after-throwing 
+                method="createAuditEntry"
+                pointcut="execution(* com.sg.vendingmachine.service.VendingMachineService.updateInv(..))"
+                throwing="exception"
+                
+            />
+             <aop:after-throwing 
+                method="createAuditEntry"
+                pointcut="execution(* com.sg.vendingmachine.service.VendingMachineService.processUserChoice(..))"
+                throwing="exception"
+                
             />
 
         </aop:aspect>

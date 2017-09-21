@@ -9,7 +9,7 @@ import com.sg.vendingmachine.dao.VMPersistenceException;
 import com.sg.vendingmachine.dto.Change;
 import com.sg.vendingmachine.dto.Product;
 import com.sg.vendingmachine.service.ArrayOOBException;
-import com.sg.vendingmachine.service.NotEnoughMoneyException;
+import com.sg.vendingmachine.service.InsufficientFundsException;
 import com.sg.vendingmachine.service.ProductNotStockedException;
 import com.sg.vendingmachine.service.VendingMachineService;
 import com.sg.vendingmachine.ui.VendingMachineView;
@@ -57,7 +57,7 @@ public class VendingMachineController {
                 }
 
             } catch (VMPersistenceException
-                    | ProductNotStockedException | NotEnoughMoneyException | ArrayOOBException e) {
+                    | ProductNotStockedException | InsufficientFundsException | ArrayOOBException e) {
 
                 view.displayErrorMessage(e.getMessage());
 
@@ -82,7 +82,7 @@ public class VendingMachineController {
 
      private void purchaseProduct(Product product) throws
            VMPersistenceException,
-           NotEnoughMoneyException,
+           InsufficientFundsException,
            ProductNotStockedException,
            NumberFormatException {
 

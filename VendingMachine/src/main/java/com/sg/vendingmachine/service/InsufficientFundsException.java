@@ -9,15 +9,15 @@ package com.sg.vendingmachine.service;
  *
  * @author dbb09
  */
-public class NotEnoughMoneyException extends Exception {
+public class InsufficientFundsException extends Exception {
 
-    public NotEnoughMoneyException(String message) {
+    public InsufficientFundsException(String message) {
 
         super(message);
 
     }
 
-    public NotEnoughMoneyException(String message,
+    public InsufficientFundsException(String message,
             Throwable cause) {
 
         super(message, cause);
