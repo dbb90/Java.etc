@@ -1,7 +1,4 @@
-
 package com.sg.vendingmachine.dao;
-
- 
 
 import com.sg.vendingmachine.dto.Product;
 import java.math.BigDecimal;
@@ -13,17 +10,14 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
- 
-
 /**
  *
  * @author dbb09
  */
-
 public class VendingMachineDaoTest {
 
     private VendingMachineDao nuDao = new VendingMachineDaoFileImpl();
-    
+
     public VendingMachineDaoTest() {
 
     }
@@ -42,13 +36,13 @@ public class VendingMachineDaoTest {
     public void setUp() throws Exception {
 
         List<Product> products = nuDao.getAllProducts();
-        
+
         for (Product currentProduct : products) {
-            
+
             nuDao.removeProduct(currentProduct.getProductName());
-            
+
         }
-        
+
     }
 
     @After
@@ -61,7 +55,6 @@ public class VendingMachineDaoTest {
      *
      * @throws java.lang.Exception
      */
-    
     @Test
     public void testAddProduct() throws Exception {
 
@@ -70,9 +63,8 @@ public class VendingMachineDaoTest {
         product.setNumberOfProducts(100);
 
         nuDao.addProduct(product.getProductName(), product);
-        List<Product>testProduct = nuDao.getAllProducts();
+        List<Product> testProduct = nuDao.getAllProducts();
 
-        
         assertEquals(1, testProduct.size());
         assertEquals("Dr Pepper", testProduct.get(0).getProductName());
 
@@ -113,8 +105,6 @@ public class VendingMachineDaoTest {
      *
      * Test of removeProduct
      */
-    
-    
     @Test
     public void testRemove() throws Exception {
 
@@ -129,7 +119,7 @@ public class VendingMachineDaoTest {
         prodTwo.setNumberOfProducts(100);
 
         nuDao.addProduct(prodTwo.getProductName(), prodTwo);
-        
+
         nuDao.removeProduct("Dr Pepper");
 
         assertEquals(1, nuDao.getAllProducts().size());
@@ -138,9 +128,9 @@ public class VendingMachineDaoTest {
 
         nuDao.removeProduct("Dr Thunder");
 
-        assertEquals(0, nuDao.getAllProducts().size());
-
         assertNull(nuDao.getProduct("Dr Thunder"));
+
+        assertEquals(0, nuDao.getAllProducts().size());
 
     }
 
@@ -149,7 +139,6 @@ public class VendingMachineDaoTest {
      * Test of editProduct
      *
      */
-    
     @Test
     public void testEditProduct() throws Exception {
 
@@ -167,6 +156,12 @@ public class VendingMachineDaoTest {
 
         assertEquals(prodTwo.getProductName(), prodOne.getProductName());
 
+    
+        List<Product> testProduct = nuDao.getAllProducts();
+
+//        assertEquals(Integer.valueOf(999), testProduct.get(0).getNumberOfProducts());
+        
+        assertEquals(Integer.valueOf(1000), testProduct.get(0).getNumberOfProducts());
     }
 
 }

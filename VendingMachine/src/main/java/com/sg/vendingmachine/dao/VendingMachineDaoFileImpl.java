@@ -112,7 +112,7 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao {
 
             out.println(currentProduct.getProductName() + DELIMITER
                     + currentProduct.getProductPrice() + DELIMITER
-                    + currentProduct.getNumOfProductsStocked());
+                    + currentProduct.getNumberOfProducts());
 
             out.flush();
         }

@@ -35,14 +35,13 @@ public class VendingMachineView {
         io.print("\nSelect a number to the left of the product, or "
                 + "enter 0 to quit.");
 
-        return io.readInt("\nEnter selection: ", 0, (listOfStockedProducts.size()));
+        return io.readInt("is a valid input.", 0, (listOfStockedProducts.size()));
     }
     
-    public Product displayUserProductChoice(int userChoice, List<Product> products) {
-        Product product = products.get(userChoice);
+    public void displayUserProductChoice(Product product) {
+ 
         io.print("\nSELECTION: " + product.getProductName());
         io.print("\n");
-        return product;
     }
 
     public String getCashInput() {
@@ -50,8 +49,8 @@ public class VendingMachineView {
     }
 
     public void displayRemainingProductInv(Product product) {
-        product.setNumberOfProducts((product.getNumOfProductsStocked() - 1));
-        io.readString(product.getNumOfProductsStocked() + " " + product.getProductName() + "(s) remaining."
+        product.setNumberOfProducts((product.getNumberOfProducts() - 1));
+        io.readString(product.getNumberOfProducts() + " " + product.getProductName() + "(s) remaining."
         + "\n\n Please press enter.\n");
     }
 

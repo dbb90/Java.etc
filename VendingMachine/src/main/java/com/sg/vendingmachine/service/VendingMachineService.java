@@ -17,11 +17,6 @@ import java.util.List;
  */
 public interface VendingMachineService {
 
-    void createProduct(Product product) throws 
-            VMPersistenceException,
-            VendingMachineDataValidationException,
-            VendingMachineDuplicateException;
-
     List<Product> getAllProducts() throws VMPersistenceException;
 
  BigDecimal processPurchase(BigDecimal cashInserted, Product product)
@@ -29,15 +24,13 @@ public interface VendingMachineService {
            VMPersistenceException,
            ProductNotStockedException;
     
-    //process change is being moved to the service layer from the view
-    void processChange(BigDecimal change) throws VMPersistenceException;
-    
-    void checkInv(Product product) throws ProductNotStockedException;
+    void checkInv(Product product) throws ProductNotStockedException, ArrayOOBException;
 
     List<Product> getProductsInStock() throws VMPersistenceException;
 
     void updateInv(String productName, Product product) throws VMPersistenceException;
 
    Change changeifier(Product productWanted, BigDecimal userCash) throws VMPersistenceException;
-   
+
+    public Product processUserChoice(int userChoice) throws VMPersistenceException, ProductNotStockedException, ArrayOOBException;
 }

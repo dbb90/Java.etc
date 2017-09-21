@@ -20,16 +20,11 @@ public class VendingMachineAuditDaoFileImpl implements VendingMachineAuditDao {
 
     @Override
     public void writeAuditEntry(String entry) throws VMPersistenceException {
-
         PrintWriter out;
-        
         try {
             out = new PrintWriter(new FileWriter(AUDIT_FILE, true));
-
         } catch (IOException e) {
-
             throw new VMPersistenceException("Could not write the information.", e);
-
         }
 
         LocalDateTime timestamp = LocalDateTime.now();

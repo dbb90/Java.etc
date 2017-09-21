@@ -33,7 +33,7 @@ public class Product {
         this.productPrice = productPrice;
     }
 
-    public Integer getNumOfProductsStocked() {
+    public Integer getNumberOfProducts() {
         return numberOfProducts;
     }
 

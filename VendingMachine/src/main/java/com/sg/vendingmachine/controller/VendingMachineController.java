@@ -8,6 +8,7 @@ package com.sg.vendingmachine.controller;
 import com.sg.vendingmachine.dao.VMPersistenceException;
 import com.sg.vendingmachine.dto.Change;
 import com.sg.vendingmachine.dto.Product;
+import com.sg.vendingmachine.service.ArrayOOBException;
 import com.sg.vendingmachine.service.NotEnoughMoneyException;
 import com.sg.vendingmachine.service.ProductNotStockedException;
 import com.sg.vendingmachine.service.VendingMachineService;
@@ -44,27 +45,9 @@ public class VendingMachineController {
 
                 int userChoice = displayProductOptions();
                 if (!quitChoice(userChoice)) {
-                    Product product = processUserChoice(userChoice);
-
-                    do {
-
-                        try {
-
-                            purchaseProduct(product);
-                            errorTrue = false;
-                        } catch (NotEnoughMoneyException e) {
-
-                            view.displayErrorMessage(e.getMessage());
-                            errorTrue = true;
-
-                        } catch (NumberFormatException e) {
-
-                            view.displayErrorMessage("ERROR: Unknown currency format!");
-                            errorTrue = true;
-
-                        }
-
-                    } while (errorTrue);
+                    Product product = service.processUserChoice(userChoice);
+                    
+                    purchaseProduct(product);
 
                 } else {
 
@@ -74,7 +57,7 @@ public class VendingMachineController {
                 }
 
             } catch (VMPersistenceException
-                    | ProductNotStockedException e) {
+                    | ProductNotStockedException | NotEnoughMoneyException | ArrayOOBException e) {
 
                 view.displayErrorMessage(e.getMessage());
 
@@ -86,14 +69,7 @@ public class VendingMachineController {
     private boolean quitChoice(int userChoice) throws VMPersistenceException {
         return userChoice == 0;
     }
-
-
-//    private void addFirst() throws
-//            WrongCashFormatException, 
-//            NumberFormatException {
-//        BigDecimal userBalance = new BigDecimal(view.getCashInput());
-//       service.addFunds(userBalance);
-//    }
+    
     private int displayProductOptions() throws
             VMPersistenceException,
             ProductNotStockedException {
@@ -110,6 +86,8 @@ public class VendingMachineController {
            ProductNotStockedException,
            NumberFormatException {
 
+       
+       view.displayUserProductChoice(product);
        BigDecimal userBalance = new BigDecimal(view.getCashInput());
        userBalance = service.processPurchase(userBalance, product);
        Change changeified = service.changeifier(product, userBalance);
@@ -117,21 +95,14 @@ public class VendingMachineController {
        view.displaySuccessBanner();
        view.displayChange(changeified);
        view.displayRemainingProductInv(product);
+       
        service.updateInv(product.getProductName(), product);
     }
 
-    private Product processUserChoice(int userChoice) throws
-            VMPersistenceException,
-            ProductNotStockedException {
-        userChoice--;
-        List<Product> products = service.getProductsInStock();
-        Product product = view.displayUserProductChoice(userChoice, products);
-        service.checkInv(product);
 
-        return product;
 
     }
 
 
         
-    }
+    
