@@ -89,9 +89,9 @@ public class FloorMOrderDaoFileImpl implements FloorMOrderDao {
     public void readOData() throws FloorMPersistenceException {
 //instantiates scanner
         Scanner sc;
-// defines object coontainer as the folder containing orders
+// defines object container as the folder containing orders
         File container = new File(".\\Data\\Orders");
-// creates an array and populates it will the files in .\\data\\orders
+// creates a File-type array and populates each box with a file from .\\data\\orders
         File[] files = container.listFiles();
 // for each file obj of type File in the array "files"...
         for (File file : files) {
@@ -104,7 +104,7 @@ public class FloorMOrderDaoFileImpl implements FloorMOrderDao {
                 // throws that exception as a persistence exception (String type)
                 throw new FloorMPersistenceException("");
             }
-            //initializes our String and String Array variables for use in the next segment
+            //initializes our String and String Arrays for use in the next segment
             String lineToParse;
             String[] countingBeads;
             String[] fileCountingBeads;
@@ -116,7 +116,7 @@ public class FloorMOrderDaoFileImpl implements FloorMOrderDao {
             //since what comes before the underscore (the word Orders) is going to be in
             //box 0, we know box 1 will be everything after that and the underscore
             String dateAndTxt = fileCountingBeads[1];
-            //cuts us out the first 8 characters of string, which will be our 8 digit date 
+            //cuts us out the first 8 characters of the string, which will be our 8 digit date 
             String date = dateAndTxt.substring(0, 8);
 
             //what follows is a while loop that will run until our scanner does not have another line 
@@ -125,10 +125,8 @@ public class FloorMOrderDaoFileImpl implements FloorMOrderDao {
                 //the line to parse in each loop of this while loop will be 
                 //the next line in the given orders document
                 lineToParse = sc.nextLine();
-                //splits the line we passed in into a String of format {"#", "clientName", "taxRate",...}
+                //splits the line we passed in into a StringArray of format {"#", "clientName", "taxRate",...}
                 countingBeads = lineToParse.split(",");
-                //instantiates our counter i
-                int i = 0;
 
                 //instantiates orderNum and sets it equal to 
                 //the integer it parses from the first field in our array,

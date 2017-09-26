@@ -105,7 +105,7 @@ public class FloorMServiceLayerImpl implements FloorMServiceLayer {
         });
         
         taxRates.stream().filter((state) -> 
-                (state.getClientName().equalsIgnoreCase(order.getState()))).forEachOrdered((state) -> {
+                (state.getTaxStateName().equalsIgnoreCase(order.getState()))).forEachOrdered((state) -> {
             order.setTaxRate(state.getTax());
         });
         

@@ -19,7 +19,7 @@ public class TaxRate {
         this.tax = tax;
     }
     
-    public String getClientName() {
+    public String getTaxStateName() {
         return name;
     }
     

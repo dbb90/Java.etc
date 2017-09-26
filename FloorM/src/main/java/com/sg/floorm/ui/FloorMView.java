@@ -74,17 +74,17 @@ public class FloorMView {
 
     }
 
-    public Order getNewOrderVars(List<TaxRate> taxRates, List<Product> products) throws InvalidTaxRateException, InvalidProductException {
+    public Order getNewOrderVars(List<TaxRate> taxStates, List<Product> products) throws InvalidTaxRateException, InvalidProductException {
 
         String orderDate = this.getDate();
         String client = this.getClient();
-        String taxRate = this.getTaxRate(taxRates);
+        String taxState = this.getTaxState(taxStates);
         String productType = this.getProductType(products);
         BigDecimal area = this.getArea();
         Order orderNew = new Order();
         orderNew.setOrderDate(orderDate);
         orderNew.setClient(client);
-        orderNew.setTaxRate(taxRate);
+        orderNew.setTaxState(taxState);
         orderNew.setProductType(productType);
         orderNew.setArea(area);
 
@@ -177,33 +177,33 @@ public class FloorMView {
         return clientName;
     }
 
-    public String getTaxRate(List<TaxRate> taxRates) throws InvalidTaxRateException {
+    public String getTaxState(List<TaxRate> taxStates) throws InvalidTaxRateException {
 
-        String taxRate = "";
+        String taxState = "";
 
         //Read in taxRate String and validate that the taxRate exists
-        boolean validTaxRate = false;
+        boolean validTaxState = false;
 
-        while (!validTaxRate) {
+        while (!validTaxState) {
 
-            taxRate = io.readString("Input the state code (i.e. IN, KY): ");
+            taxState = io.readString("Input the state code (i.e. IN, KY): ");
 
-            for (TaxRate currentTaxRate : taxRates) {
+            for (TaxRate currentTaxState : taxStates) {
 
-                if (taxRate.equalsIgnoreCase(currentTaxRate.getClientName())) {
-                    validTaxRate = true;
+                if (taxState.equalsIgnoreCase(currentTaxState.getTaxStateName())) {
+                    validTaxState = true;
                     break;
                 }
 
             }
 
-            if (validTaxRate) {
+            if (validTaxState) {
                 break;
             }
 
             io.printLine("State not found. Please select one of the following: \n");
-            taxRates.forEach((currentTaxRate) -> {
-                io.print(currentTaxRate.getClientName() + ", ");
+            taxStates.forEach((currentTaxState) -> {
+                io.print(currentTaxState.getTaxStateName() + ", ");
             });
 
             String keepGoing = io.readString("Try a new entry? [Y/N]: ");
@@ -213,7 +213,7 @@ public class FloorMView {
             }
         }
 
-        return taxRate;
+        return taxState;
 
     }
 
@@ -275,12 +275,12 @@ public class FloorMView {
             order.setClient(clientName);
         }
 
-        String taxRate = this.getEditTaxRate(order, taxRates);
+        String taxState = this.getEditState(order, taxRates);
 
-        if (taxRate == null) {
+        if (taxState == null) {
 
         } else {
-            order.setTaxRate(taxRate);
+            order.setTaxState(taxState);
         }
 
         String productType = this.getEditProductType(order, products);
@@ -321,35 +321,35 @@ public class FloorMView {
 
     }
 
-    private String getEditTaxRate(Order order, List<TaxRate> taxRates) throws InvalidTaxRateException {
+    private String getEditState(Order order, List<TaxRate> taxStates) throws InvalidTaxRateException {
 
-        String taxRate = "";
+        String taxState = "";
 
-        boolean validTaxRate = false;
+        boolean validTaxState = false;
 
-        while (!validTaxRate) {
+        while (!validTaxState) {
 
-            taxRate = io.readString("Please input state code (i.e. KY, IN) -- Currently: " + order.getState());
-            if (taxRate.trim().length() == 0) {
+            taxState = io.readString("Please input state code (i.e. KY, IN) -- Currently: " + order.getState());
+            if (taxState.trim().length() == 0) {
                 return null;
 
             }
 
-            for (TaxRate currentTaxRate : taxRates) {
+            for (TaxRate currentTaxState : taxStates) {
 
-                if (taxRate.equalsIgnoreCase(currentTaxRate.getClientName())) {
-                    validTaxRate = true;
+                if (taxState.equalsIgnoreCase(currentTaxState.getTaxStateName())) {
+                    validTaxState = true;
                     break;
                 }
             }
 
-            if (validTaxRate) {
+            if (validTaxState) {
                 break;
             }
 
             io.printLine("State not found. Please select one of the following: \n");
-            taxRates.forEach((currentState) -> {
-                io.print(currentState.getClientName() + ", ");
+            taxStates.forEach((currentState) -> {
+                io.print(currentState.getTaxStateName() + ", ");
             });
 
             String keepGoing = io.readString("Try a new entry? [Y/N]: ");
@@ -359,7 +359,7 @@ public class FloorMView {
             }
         }
 
-        return taxRate;
+        return taxState;
 
     }
 

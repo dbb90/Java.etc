@@ -149,7 +149,7 @@ public class Order {
         hash = 71 * hash + Objects.hashCode(this.orderDate);
         hash = 71 * hash + this.orderNum;
         hash = 71 * hash + Objects.hashCode(this.client);
-        hash = 71 * hash + Objects.hashCode(this.state);
+        hash = 71 * hash + Objects.hashCode(this.taxState);
         hash = 71 * hash + Objects.hashCode(this.taxRate);
         hash = 71 * hash + Objects.hashCode(this.productType);
         hash = 71 * hash + Objects.hashCode(this.area);
@@ -183,7 +183,7 @@ public class Order {
         if (!Objects.equals(this.client, other.client)) {
             return false;
         }
-        if (!Objects.equals(this.state, other.state)) {
+        if (!Objects.equals(this.taxState, other.taxState)) {
             return false;
         }
         if (!Objects.equals(this.productType, other.productType)) {
