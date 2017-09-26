@@ -6,7 +6,6 @@
 package com.sg.floorm.ui;
 
 import java.math.BigDecimal;
-import static java.math.RoundingMode.HALF_UP;
 import java.util.Scanner;
 
  
@@ -216,47 +215,37 @@ public class UserIOConsoleImpl implements UserIO {
 
  
 
-   @Override
-
-   public BigDecimal readBigDecimal(String prompt) {
-
-       printLine(prompt);
-       BigDecimal num = new BigDecimal("0");
-       boolean isInvalid = true;
-       while (isInvalid) {
-
-           try {
-               String input = sc.nextLine();
-               if (input.equals("")) {
-                   return null;
-               }
-               num = new BigDecimal(input);
-               num.setScale(2, HALF_UP);
-               isInvalid = false;
-           } catch (NumberFormatException e) {
-               printLine("You must enter a NUMBER!");
-               printLine(prompt);
-           }
-       }
-       return num;
-   }
+  
 
  
+    @Override
+    public BigDecimal readBigDecimal(String prompt) {
+        System.out.println(prompt);
+        BigDecimal myBigDecimal = new BigDecimal(0);
+        boolean isInvalid = true;
 
-   @Override
-   public BigDecimal readBigDecimal(String prompt, BigDecimal min) {
-       BigDecimal returnValue = readBigDecimal(prompt);
-       if (returnValue == null) {
-           return null;
-       }
+        while (isInvalid) {
+            try {
+                myBigDecimal = new BigDecimal(sc.nextLine());
+                isInvalid = false;
+            } catch (NumberFormatException e) {
+                System.out.println("invalid entry!");
+                System.out.println(prompt);
+            }
+        }
+        return myBigDecimal;
+    }
 
-       while ((returnValue.compareTo(min)) < 0) {
-           printLine("Enter a positive number!");
-           returnValue = new BigDecimal(sc.nextLine());
-       }
-       return returnValue;
+    @Override
+    public BigDecimal readBigDecimal(String prompt, BigDecimal min) {
+        BigDecimal myBigDecimal = readBigDecimal(prompt);
+        while ((myBigDecimal.compareTo(min) == 0)) {
+            System.out.println("Please give me a number above" + min);
+            myBigDecimal = readBigDecimal(prompt);
+        }
 
-   }
+        return myBigDecimal;
+    }
 
  
 
