@@ -11,13 +11,13 @@ import java.util.Objects;
 public class Product {
 
     private String productType;
-    private BigDecimal materialSqFootCost;
-    private BigDecimal laborSqFootCost;
+    private BigDecimal materialSqFtCost;
+    private BigDecimal laborSqFtCost;
     
-    public Product(String productType, BigDecimal materialSqFootCost, BigDecimal laborSqFootCost) {
+    public Product(String productType, BigDecimal materialSqFtCost, BigDecimal laborSqFtCost) {
         this.productType = productType;
-        this.materialSqFootCost = materialSqFootCost;
-        this.laborSqFootCost = laborSqFootCost;
+        this.materialSqFtCost = materialSqFtCost;
+        this.laborSqFtCost = laborSqFtCost;
     }
 
     public String getProductType() {
@@ -28,20 +28,20 @@ public class Product {
         this.productType = productType;
     }
 
-    public BigDecimal getMaterialSqFootCost() {
-        return materialSqFootCost;
+    public BigDecimal getMaterialSqFtCost() {
+        return materialSqFtCost;
     }
 
-    public void setMaterialSqFootCost(BigDecimal materialSqFootCost) {
-        this.materialSqFootCost = materialSqFootCost;
+    public void setMaterialSqFtCost(BigDecimal materialSqFtCost) {
+        this.materialSqFtCost = materialSqFtCost;
     }
 
-    public BigDecimal getLaborSqFootCost() {
-        return laborSqFootCost;
+    public BigDecimal getLaborSqFtCost() {
+        return laborSqFtCost;
     }
 
-    public void setLaborSqFootCost(BigDecimal laborSqFootCost) {
-        this.laborSqFootCost = laborSqFootCost;
+    public void setLaborSqFtCost(BigDecimal laborSqFtCost) {
+        this.laborSqFtCost = laborSqFtCost;
     }
 
     @Override
@@ -50,8 +50,8 @@ public class Product {
 
         int hash = 4;
         hash = 12 * hash + Objects.hashCode(this.productType);
-        hash = 12 * hash + Objects.hashCode(this.materialSqFootCost);
-        hash = 12 * hash + Objects.hashCode(this.laborSqFootCost);
+        hash = 12 * hash + Objects.hashCode(this.materialSqFtCost);
+        hash = 12 * hash + Objects.hashCode(this.laborSqFtCost);
         return hash;
     }
 
@@ -72,10 +72,10 @@ public class Product {
         if (!Objects.equals(this.productType, other.productType)) {
             return false;
         }
-        if (!Objects.equals(this.materialSqFootCost, other.materialSqFootCost)) {
+        if (!Objects.equals(this.materialSqFtCost, other.materialSqFtCost)) {
             return false;
         }
-        if (!Objects.equals(this.laborSqFootCost, other.laborSqFootCost)) {
+        if (!Objects.equals(this.laborSqFtCost, other.laborSqFtCost)) {
             return false;
         }
         return true;

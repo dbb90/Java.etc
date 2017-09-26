@@ -72,7 +72,6 @@ public class FloorMProductDaoFileImpl implements FloorMProductDao {
         String[] currentTokens;
         while (scan.hasNextLine()) {
             currentLine = scan.nextLine();
-            currentLine = currentLine.replaceAll("[^A-Za-z0-9., ]", "");
             currentTokens = currentLine.split(",");
             int i = 0;
             for (String currentString : currentTokens) {

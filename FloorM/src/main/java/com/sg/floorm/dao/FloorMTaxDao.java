@@ -10,9 +10,9 @@ import java.util.List;
 
 public interface FloorMTaxDao {
 
-    TaxRate addTaxRate(TaxRate state);
-    TaxRate removeTaxRate(TaxRate state);
-    TaxRate editState(TaxRate oldState, TaxRate newState);
+    TaxRate addTaxRate(TaxRate taxRate);
+    TaxRate removeTaxRate(TaxRate taxRate);
+    TaxRate editTaxRate(TaxRate taxRateOld, TaxRate taxRateNew);
     TaxRate getTaxRate(String name);
     
     List<TaxRate> getAllTaxRates();

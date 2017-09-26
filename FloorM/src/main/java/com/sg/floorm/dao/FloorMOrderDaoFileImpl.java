@@ -22,6 +22,8 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
+
+
  
 
 public class FloorMOrderDaoFileImpl implements FloorMOrderDao {
@@ -80,8 +82,9 @@ public class FloorMOrderDaoFileImpl implements FloorMOrderDao {
  
 
        allOrders.stream().filter((order) -> 
-               (order.getOrderDate().equals(date))).forEachOrdered((order) -> {
-           orderListByDate.add(order);
+               (order.getOrderDate().equals(date)))
+               .forEachOrdered((order) -> 
+               {orderListByDate.add(order);
        });
        return orderListByDate;
 
@@ -117,7 +120,6 @@ public class FloorMOrderDaoFileImpl implements FloorMOrderDao {
            while (sc.hasNextLine()) {
                //
                currentLine = sc.nextLine();
-//               currentLine = currentLine.replaceAll("[^A-Za-z0-9., ]", "");
                currentTokens = currentLine.split(",");
                int i = 0;
                for (String currentString : currentTokens) {
@@ -176,7 +178,9 @@ public class FloorMOrderDaoFileImpl implements FloorMOrderDao {
        List<String> dateList = new ArrayList<>();
        List<Order> orderList = new ArrayList(orders.values());
        orderList.stream().filter((currentOrder) -> 
-               (!(dateList.contains(currentOrder.getOrderDate())))).forEachOrdered((currentOrder) -> {
+               (!(dateList.contains
+                (currentOrder.getOrderDate()))))
+               .forEachOrdered((currentOrder) -> {
            dateList.add(currentOrder.getOrderDate());
        });
        return dateList;
@@ -202,12 +206,14 @@ public class FloorMOrderDaoFileImpl implements FloorMOrderDao {
        PrintWriter out;
        
        for (String currentDate : dateList) {
-           List<Order> tempList = new ArrayList<>();
+           List<Order> currentList = new ArrayList<>();
            allOrders.stream().filter((currentOrder) -> 
-                   (currentOrder.getOrderDate().equals(currentDate))).forEachOrdered((currentOrder) -> {
-               tempList.add(currentOrder);
+                   (currentOrder.getOrderDate()
+                           .equals(currentDate)))
+                           .forEachOrdered((currentOrder) -> 
+                           {currentList.add(currentOrder);
            });
-           ordersByDate.put(currentDate, tempList);
+           ordersByDate.put(currentDate, currentList);
        }
        
        Set<String> keySet = ordersByDate.keySet();

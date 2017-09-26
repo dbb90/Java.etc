@@ -85,10 +85,10 @@ public class FloorMServiceLayerImpl implements FloorMServiceLayer {
                 (product.getProductType().equalsIgnoreCase(order.getProductType()))).map((product) -> 
                 
                 {
-            BigDecimal materialSqFootCost = product.getMaterialSqFootCost();
+            BigDecimal materialSqFootCost = product.getMaterialSqFtCost();
             materialSqFootCost = materialSqFootCost.setScale(2, HALF_UP);
             order.setCostSqFt(materialSqFootCost);
-            BigDecimal laborSqFootCost = product.getLaborSqFootCost();
+            BigDecimal laborSqFootCost = product.getLaborSqFtCost();
             return laborSqFootCost;
         }).map((laborSqFootCost) -> 
                 laborSqFootCost.setScale(2, HALF_UP)).map((laborSqFootCost) -> 

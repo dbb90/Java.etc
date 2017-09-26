@@ -13,7 +13,7 @@ public interface FloorMOrderDao {
 
     Order addOrder(Order order);
     Order deleteOrder(Order order);
-    Order editOrder(Order oldOrder, Order newOrder);
+    Order editOrder(Order oldOrder, Order orderNew);
     Order getOrderByNumber(int orderNum);
     List<Order> getOrdersByDate(String date);
     List<Order> getAllOrders();

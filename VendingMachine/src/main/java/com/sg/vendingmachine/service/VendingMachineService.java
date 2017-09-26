@@ -23,14 +23,9 @@ public interface VendingMachineService {
            throws InsufficientFundsException,
            VMPersistenceException,
            ProductNotStockedException;
-    
     void checkInv(Product product) throws ProductNotStockedException, ArrayOOBException;
-
     List<Product> getProductsInStock() throws VMPersistenceException;
-
     void updateInv(String productName, Product product) throws VMPersistenceException;
-
    Change changeifier(Product productWanted, BigDecimal userCash) throws VMPersistenceException;
-
     public Product processUserChoice(int userChoice) throws VMPersistenceException, ProductNotStockedException, ArrayOOBException;
 }

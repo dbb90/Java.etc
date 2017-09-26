@@ -29,7 +29,7 @@ public class FloorMTaxDaoFileImpl implements FloorMTaxDao {
         return taxRate;
     }
     @Override
-    public TaxRate editState(TaxRate oldTaxRate, TaxRate newTaxRate) {
+    public TaxRate editTaxRate(TaxRate oldTaxRate, TaxRate newTaxRate) {
         taxes.remove(oldTaxRate);
         taxes.add(newTaxRate);
         return newTaxRate;
@@ -66,15 +66,14 @@ public class FloorMTaxDaoFileImpl implements FloorMTaxDao {
         String[] currentTokens;
         while (sc.hasNextLine()) {
             currentLine = sc.nextLine();
-            currentLine = currentLine.replaceAll("[^A-Za-z0-9., ]", "");
             currentTokens = currentLine.split(",");
             int i = 0;
             for (String currentString : currentTokens) {
                 currentTokens[i] = currentString.trim();
                 i++;
             }
-            BigDecimal stateTax = new BigDecimal(currentTokens[1]);
-            TaxRate newTaxRate = new TaxRate(currentTokens[0], stateTax);
+            BigDecimal taxRate = new BigDecimal(currentTokens[1]);
+            TaxRate newTaxRate = new TaxRate(currentTokens[0], taxRate);
             taxes.add(newTaxRate);
         }
     }

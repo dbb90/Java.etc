@@ -81,48 +81,42 @@ public class FloorMView {
         String taxRate = this.getTaxRate(taxRates);
         String productType = this.getProductType(products);
         BigDecimal area = this.getArea();
+        Order orderNew = new Order();
+        orderNew.setOrderDate(orderDate);
+        orderNew.setClient(client);
+        orderNew.setTaxRate(taxRate);
+        orderNew.setProductType(productType);
+        orderNew.setArea(area);
 
-        //Instantiate Order object to transfer data back to controller
-        Order newOrder = new Order();
-        newOrder.setOrderDate(orderDate);
-        newOrder.setClient(client);
-        newOrder.setTaxRate(taxRate);
-        newOrder.setProductType(productType);
-        newOrder.setArea(area);
-        return newOrder;
+        return orderNew;
 
     }
 
     public String getDate() {
-
-        
 
         String orderDate = "";
         boolean valiDate = false;
         String currentDateOption = "";
         currentDateOption = io.readString("would you like to use today's date? [Y/N]");
         if ("y".equalsIgnoreCase(currentDateOption)) {
-                    LocalDate orderDateDate = LocalDate.now();
-                    String date = orderDateDate.format(BASIC_ISO_DATE);
-                    orderDate = date;}
-        else {
+            LocalDate orderDateDate = LocalDate.now();
+            String date = orderDateDate.format(BASIC_ISO_DATE);
+            orderDate = date;
+        } else {
             while (!valiDate) {
-                
+
                 orderDate = io.readString("Please input date as yyyyMMdd such as (20171225) :");
-                
-                
+
                 if (!(orderDate == null) && !(orderDate.equals("")) && (orderDate.matches("\\b\\d{8}\\b"))) {
                     valiDate = this.Validation(orderDate, DATEFORMAT);
                     if (!valiDate) {
                         io.printLine("Please enter a valid date!");
                     }
-                    
-                }
-                
-                else {
+
+                } else {
                     io.printLine("please use format yyyyMMdd");
                 }
-                
+
             }
         }
         return orderDate;
@@ -177,7 +171,7 @@ public class FloorMView {
                 io.printLine("Input a name!");
             } else {
                 validClientName = true;
-                
+
             }
         }
         return clientName;
@@ -208,8 +202,8 @@ public class FloorMView {
             }
 
             io.printLine("State not found. Please select one of the following: \n");
-            taxRates.forEach((currentState) -> {
-                io.print(currentState.getClientName() + ", ");
+            taxRates.forEach((currentTaxRate) -> {
+                io.print(currentTaxRate.getClientName() + ", ");
             });
 
             String keepGoing = io.readString("Try a new entry? [Y/N]: ");
@@ -407,7 +401,7 @@ public class FloorMView {
                 break;
             }
 
-           io.printLine("Product type not found.");
+            io.printLine("Product type not found.");
 
             io.printLine("These are the products on offer:\n");
             products.forEach((currentProduct) -> {
@@ -417,7 +411,8 @@ public class FloorMView {
             String keepGoing = io.readString("Continue? [Y/N]: ");
             if (keepGoing.equals("N")) {
                 throw new InvalidProductException("");
-        }}
+            }
+        }
         return productType;
     }
 
