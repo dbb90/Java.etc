@@ -13,7 +13,7 @@ public class Order {
     private String orderDate;
     private int orderNum;
     private String client;
-    private String state;
+    private String taxState;
     private BigDecimal taxRate;
     private String productType;
     private BigDecimal area;
@@ -57,11 +57,11 @@ public class Order {
     }
 
     public String getState() {
-        return state;
+        return taxState;
     }
 
-    public void setTaxRate(String state) {
-        this.state = state;
+    public void setTaxState(String state) {
+        this.taxState = state;
     }
 
     public BigDecimal getTaxRate() {
