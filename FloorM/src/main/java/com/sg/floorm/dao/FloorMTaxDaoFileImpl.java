@@ -39,7 +39,7 @@ public class FloorMTaxDaoFileImpl implements FloorMTaxDao {
         Iterator<TaxRate> iterated = taxes.iterator();
         while (iterated.hasNext()) {
             TaxRate currentTaxRate = iterated.next();
-            if (currentTaxRate.getClientName().equals(name)) {
+            if (currentTaxRate.getTaxStateName().equals(name)) {
                 return currentTaxRate;
             }
         }
