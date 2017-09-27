@@ -28,7 +28,7 @@ public class FloorMView {
         this.io = io;
     }
 
-    public int printMenuAndGetSelection() {
+    public int printMenuAndGetSelection(int min, int max) {
         io.printLine("\n////Throw It On The Ground Flooring Co.////");
         io.printLine("\n********MENU********");
         io.printLine("[1] Display Orders");
@@ -37,16 +37,19 @@ public class FloorMView {
         io.printLine("[4] Delete Order");
         io.printLine("[5] Save");
         io.printLine("[6] Quit");
-        return io.readInt("Selection: ", 1, 6);
+        return io.readInt("Selection: ");
     }
 
     public void displayOrdersByDate(List<Order> orders, String date) {
 
         if (!(orders.isEmpty())) {
             io.printLine("**** " + date + " ****\n");
-            orders.forEach(this::displayOrder);
+            //a lambda that performs displayOrder for each order on the date specified, unless
+            //orders is empty
+            orders.forEach((order) -> this.displayOrder(order));
 
         } else {
+            //this happens when orders is empty on date given
             io.printLine("No orders on that date!");
         }
 
@@ -107,6 +110,9 @@ public class FloorMView {
 
                 orderDate = io.readString("Please input date as yyyyMMdd such as (20171225) :");
 
+                // matches here contains regex b to ensure the beginning and ending of the string are null,
+                // and those null values surround 8 digits 0-9
+                
                 if (!(orderDate == null) && !(orderDate.equals("")) && (orderDate.matches("\\b\\d{8}\\b"))) {
                     valiDate = this.Validation(orderDate, DATEFORMAT);
                     if (!valiDate) {
@@ -474,4 +480,13 @@ public class FloorMView {
         io.printLine("Quitting..");
     }
 
+    public void displayErrorMssg(String something_went_wrong__Changes_not_saved) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public String requestSave(String confirmation) {
+        return io.readString(confirmation);
+    }
 }
+
+

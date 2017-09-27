@@ -15,12 +15,11 @@ import com.sg.floorm.service.InvalidTaxRateException;
 import com.sg.floorm.ui.FloorMView;
 import java.util.List;
 
-
-
 public class FloorMController {
 
     private FloorMView view;
     private FloorMServiceLayer service;
+    private int saveRequired;
 
     public FloorMController(FloorMView view, FloorMServiceLayer service) {
         this.view = view;
@@ -29,46 +28,41 @@ public class FloorMController {
 
     public void run() throws InvalidProductException, InvalidTaxRateException {
         boolean keepGoing = true;
+        saveRequired = 0;
         try {
             readFile();
             while (keepGoing) {
-                int menuSelection = view.printMenuAndGetSelection();
+                int menuSelection = view.printMenuAndGetSelection(1, 6);
                 switch (menuSelection) {
 
                     case 1:
+                        //displays orders by date
                         displayOrdersByDate();
                         break;
 
                     case 2:
-                         try {
-                            addOrder();
-
-                        } catch (InvalidProductException | InvalidTaxRateException e) {
-                            break;
-                        }
+                        //adds an order
+                        addOrder();
                         break;
 
                     case 3:
-                        try {
-                            editOrder();
-
-                        } catch (InvalidProductException | InvalidTaxRateException e) {
-                            break;
-                        }
+                        //edits an order
+                        editOrder();
                         break;
 
                     case 4:
-
+                        //deletes an order
                         deleteOrder();
                         break;
 
                     case 5:
-
+                        //saves changes
                         writeFile();
                         view.saveSuccess();
                         break;
 
                     case 6:
+                        //checks if save on quit is necessary, then quits
                         saveCheck();
                         keepGoing = false;
                         break;
@@ -90,8 +84,8 @@ public class FloorMController {
     private void displayOrdersByDate() {
 
         String dateToView = view.getDateToView();
-        List<Order> orderList = service.getOrdersByDate(dateToView);
-        view.displayOrdersByDate(orderList, dateToView);
+        List<Order> orders = service.getOrdersByDate(dateToView);
+        view.displayOrdersByDate(orders, dateToView);
     }
 
     private void addOrder() throws InvalidTaxRateException, InvalidProductException {
@@ -102,16 +96,14 @@ public class FloorMController {
         Order orderToAdd = view.getNewOrderVars(taxRates, products);
         orderToAdd = service.calcOrderNum(orderToAdd);
         orderToAdd = service.calcCosts(orderToAdd);
-        
+
         String choice = view.confirmChanges(orderToAdd, "Really add this order? Y/N: ");
 
         if (choice.equalsIgnoreCase("n")) {
-            return;
-
-        } else {
-
             service.addOrder(orderToAdd);
             view.displayOrder(orderToAdd);
+        } else {
+            saveRequired = 1;
         }
 
     }
@@ -121,7 +113,14 @@ public class FloorMController {
     }
 
     private void writeFile() throws FloorMPersistenceException {
-        service.writeAllData();
+        // save orders as currently held in memory
+        try {
+            service.writeAllData();
+            saveRequired = 0;
+        } catch (FloorMPersistenceException e) {
+            view.displayErrorMssg("Something went wrong.  Changes not saved!");
+
+        }
     }
 
     private void unknownEntry() {
@@ -135,9 +134,10 @@ public class FloorMController {
         Order orderToDelete = service.getOrder(orderNum);
 
         if (!(orderToDelete == null)) {
-            String toDelete = view.confirmChanges(orderToDelete, "Are you sure you want to delete this order? Y or N : ");
+            String toDelete = view.confirmChanges(orderToDelete, "Are you sure you want to delete this order?[Y/N]: ");
             if (toDelete.equalsIgnoreCase("Y")) {
                 service.deleteOrder(orderToDelete, date, orderNum);
+                saveRequired = 1;
 
             } else {
                 view.displayDeleteCancellation();
@@ -153,6 +153,7 @@ public class FloorMController {
     private void editOrder() throws InvalidTaxRateException, InvalidProductException {
 
         view.getDateToView();
+
         int orderNum = view.getOrderNumber();
         Order orderToEdit = service.getOrder(orderNum);
         List<TaxRate> taxRates = service.getAllTaxRates();
@@ -162,34 +163,23 @@ public class FloorMController {
         editedOrder = service.calcCosts(editedOrder);
         String choice = view.confirmChanges(editedOrder, "Keep changes? [Y/N] : ");
 
-        if (choice.equals("N")) {
+        if (choice.toUpperCase().equals("N")) {
         } else {
+            saveRequired = 1;
             service.addOrder(editedOrder);
             view.displayEditSuccess();
+
         }
     }
 
     private void saveCheck() throws FloorMPersistenceException {
 
-        String confirmation = view.confirmMssg("Would you like to save your work? [Y/N]");
-
-        if (confirmation.equals("N")) {
-            confirmation = view.confirmMssg("If you do not save, you will lose all work from this session."
-                    + "\nWould you like to save your work? [Y/N]");
-
-            if (confirmation.equals("N")) {
-                view.confirmMssg("Changes reverted. Press enter to continue");
-
-            } else {
-                this.writeFile();
+        if (saveRequired != 0) {
+            String confirmation = view.requestSave("You have unsaved changes, do you want to save them?");
+            if (confirmation.equalsIgnoreCase("y")) {
+                writeFile();
                 view.saveSuccess();
-
             }
-
-        } else {
-            this.writeFile();
-            view.saveSuccess();
-
         }
     }
 }

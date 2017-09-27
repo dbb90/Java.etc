@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class FloorMOrderDaoFileImpl implements FloorMOrderDao {
 
@@ -35,7 +36,6 @@ public class FloorMOrderDaoFileImpl implements FloorMOrderDao {
     }
 
     @Override
-
     public Order deleteOrder(Order order) {
 
         int orderNum = order.getOrderNum();
@@ -44,7 +44,6 @@ public class FloorMOrderDaoFileImpl implements FloorMOrderDao {
     }
 
     @Override
-
     public Order editOrder(Order orderOld, Order orderNew) {
         int orderNum = orderOld.getOrderNum();
         return orders.put(orderNum, orderNew);
@@ -63,20 +62,19 @@ public class FloorMOrderDaoFileImpl implements FloorMOrderDao {
         List<Order> allOrders = new ArrayList<>(orders.values());
         List<Order> orderListByDate = new ArrayList<>();
 
-        allOrders.stream().filter((order)
-                -> (order.getOrderDate().equals(date)))
-                .forEachOrdered((order)
-                        -> {
+        allOrders.stream()
+                .filter((order) -> (order.getOrderDate().equals(date)))
+                .forEachOrdered((order) -> {
                     orderListByDate.add(order);
                 });
+
         return orderListByDate;
 
     }
 
     @Override
     public List<Order> getAllOrders() {
-        List<Order> orderListToReturn = new ArrayList(orders.values());
-        return orderListToReturn;
+        return orders.values().stream().collect(Collectors.toList());
     }
 
     @Override
@@ -108,11 +106,11 @@ public class FloorMOrderDaoFileImpl implements FloorMOrderDao {
             String lineToParse;
             String[] countingBeads;
             String[] fileCountingBeads;
-            
+
             //sets our fileCountingBeads StringArray values by splitting the filename 
             //into pieces at each underscore
             fileCountingBeads = file.getName().split("_");
-            
+
             //since what comes before the underscore (the word Orders) is going to be in
             //box 0, we know box 1 will be everything after that and the underscore
             String dateAndTxt = fileCountingBeads[1];
@@ -177,7 +175,7 @@ public class FloorMOrderDaoFileImpl implements FloorMOrderDao {
                 // this will loop until every line of every file has been parsed and put into 
                 //the map "orders"
             }
-                //closes out our Scanner
+            //closes out our Scanner
             sc.close();
 
         }
@@ -186,8 +184,8 @@ public class FloorMOrderDaoFileImpl implements FloorMOrderDao {
     private List<String> getAllDates() {
         List<String> dateList = new ArrayList<>();
         List<Order> orderList = new ArrayList(orders.values());
-        orderList.stream().filter((currentOrder)
-                -> (!(dateList.contains(currentOrder.getOrderDate()))))
+        orderList.stream()
+                .filter((currentOrder) -> (!(dateList.contains(currentOrder.getOrderDate()))))
                 .forEachOrdered((currentOrder) -> {
                     dateList.add(currentOrder.getOrderDate());
                 });
@@ -215,11 +213,10 @@ public class FloorMOrderDaoFileImpl implements FloorMOrderDao {
 
         for (String currentDate : dateList) {
             List<Order> currentList = new ArrayList<>();
-            allOrders.stream().filter((currentOrder)
-                    -> (currentOrder.getOrderDate()
-                            .equals(currentDate)))
-                    .forEachOrdered((currentOrder)
-                            -> {
+            allOrders.stream()
+                    .filter((currentOrder) -> (currentOrder.getOrderDate()
+                    .equals(currentDate)))
+                    .forEachOrdered((currentOrder) -> {
                         currentList.add(currentOrder);
                     });
             ordersByDate.put(currentDate, currentList);

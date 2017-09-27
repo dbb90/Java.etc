@@ -14,16 +14,13 @@ import com.sg.floorm.dto.Product;
 import com.sg.floorm.dto.TaxRate;
 import java.math.BigDecimal;
 import static java.math.RoundingMode.HALF_UP;
-import java.util.Iterator;
 import java.util.List;
-
 
 public class FloorMServiceLayerImpl implements FloorMServiceLayer {
 
     private final FloorMOrderDao oDao;
     private final FloorMProductDao pDao;
     private final FloorMTaxDao tDao;
-
 
     public FloorMServiceLayerImpl(FloorMOrderDao orderDao,
             FloorMProductDao productDao, FloorMTaxDao taxDao) {
@@ -61,13 +58,12 @@ public class FloorMServiceLayerImpl implements FloorMServiceLayer {
     public void writeAllData() throws FloorMPersistenceException {
         oDao.writeOData();
     }
-    
+
     @Override
     public Order calcOrderNum(Order orderToAdd) {
         List<Order> orderList = oDao.getAllOrders();
         int orderNumMax = 0;
-        for (Iterator<Order> it = orderList.iterator(); it.hasNext();) {
-            Order currentOrder = it.next();
+        for (Order currentOrder : orderList) {
             if (currentOrder.getOrderNum() > orderNumMax) {
                 orderNumMax = currentOrder.getOrderNum();
             }
@@ -76,64 +72,72 @@ public class FloorMServiceLayerImpl implements FloorMServiceLayer {
         orderToAdd.setOrderNum(orderNumQueued);
         return orderToAdd;
     }
-    
+
     @Override
     public Order calcCosts(Order order) {
-        List<Product> productList = pDao.getAllProducts();
-        List<TaxRate> taxRates = tDao.getAllTaxRates();
-        productList.stream().filter((product) -> 
-                (product.getProductType().equalsIgnoreCase(order.getProductType()))).map((product) -> 
-                
-                {
-            BigDecimal materialSqFootCost = product.getMaterialSqFtCost();
-            materialSqFootCost = materialSqFootCost.setScale(2, HALF_UP);
-            order.setCostSqFt(materialSqFootCost);
-            BigDecimal laborSqFootCost = product.getLaborSqFtCost();
-            return laborSqFootCost;
-        }).map((laborSqFootCost) -> 
-                laborSqFootCost.setScale(2, HALF_UP)).map((laborSqFootCost) -> 
-                {
-            order.setLaborCostSqFt(laborSqFootCost);
-            return laborSqFootCost;
-        }).map((_item) -> order.getCostSqFt().multiply(order.getArea())).map((materialCost) -> 
-                materialCost.setScale(2, HALF_UP)).map((materialCost) -> {
-            order.setMatCost(materialCost);
-            return materialCost;
-        }).map((_item) -> order.getLaborCostSqFt().multiply(order.getArea())).map((laborCost) -> 
-                laborCost.setScale(2, HALF_UP)).forEachOrdered((laborCost) -> {
-            order.setLabCost(laborCost);
-        });
-        
-        taxRates.stream().filter((state) -> 
-                (state.getTaxStateName().equalsIgnoreCase(order.getState()))).forEachOrdered((state) -> {
-            order.setTaxRate(state.getTax());
-        });
-        
+        List<Product> products = pDao.getAllProducts();
+
+        List<TaxRate> states = tDao.getAllTaxRates();
+
+        products.stream()
+                .filter((product) -> (product.getProductType()
+                .toUpperCase()
+                .equals(order.getProductType())))
+                .map((product) -> {
+                    BigDecimal materialSqFtCost = product.getMaterialSqFtCost();
+
+                    materialSqFtCost = materialSqFtCost.setScale(2, HALF_UP);
+                    order.setCostSqFt(materialSqFtCost);
+
+                    BigDecimal laborSqFtCost = product.getLaborSqFtCost();
+                    return laborSqFtCost;
+                })
+                .map((laborSqFtCost) -> laborSqFtCost.setScale(2, HALF_UP)).map((laborSqFtCost) -> {
+            order.setLaborCostSqFt(laborSqFtCost);
+            return laborSqFtCost;
+        })
+                .map((matCost) -> order.getCostSqFt()
+                .multiply(order.getArea()))
+                .map((matCost) -> matCost.setScale(2, HALF_UP))
+                .map((matCost) -> {
+                    order.setMatCost(matCost);
+                    return matCost;
+                })
+                .map((labCost) -> order.getLaborCostSqFt()
+                .multiply(order.getArea()))
+                .map((labCost) -> labCost.setScale(2, HALF_UP))
+                .forEachOrdered((labCost) -> {
+                    order.setLabCost(labCost);
+                });
+
+        states.stream()
+                .filter((state) -> (state.getTaxStateName().equalsIgnoreCase(order.getState())))
+                .forEachOrdered((state) -> {
+                    order.setTaxRate(state.getTax());
+                });
+
         BigDecimal tempTotal = order.getLabCost().add(order.getMatCost());
         tempTotal = tempTotal.setScale(2, HALF_UP);
         BigDecimal taxRate = order.getTaxRate().divide(new BigDecimal("100"));
-        
-        BigDecimal totalTax = tempTotal.multiply(taxRate);
-        totalTax = totalTax.setScale(2, HALF_UP);
-        order.settTax(totalTax);
-        
-        BigDecimal totalCost = order.gettTax().add(tempTotal);
-        totalCost = totalCost.setScale(2, HALF_UP);
-        order.settCost(totalCost);
-        
+        BigDecimal tTax = tempTotal.multiply(taxRate);
+        tTax = tTax.setScale(2, HALF_UP);
+        order.settTax(tTax);
+        BigDecimal tCost = order.gettTax().add(tempTotal);
+        tCost = tCost.setScale(2, HALF_UP);
+        order.settCost(tCost);
         return order;
     }
+
     @Override
     public Order deleteOrder(Order order, String date, int orderNum) {
         List<Order> ordersByDate = this.getOrdersByDate(date);
-        Order orderToRemove = new Order();
-        for (Iterator<Order> it = ordersByDate.iterator(); it.hasNext();) {
-            Order currentOrder = it.next();
+        Order orderToDelete = new Order();
+        for (Order currentOrder : ordersByDate) {
             if (currentOrder.getOrderNum() == orderNum) {
-                orderToRemove = oDao.deleteOrder(order);
+                orderToDelete = oDao.deleteOrder(order);
             }
         }
-        return orderToRemove;
+        return orderToDelete;
     }
 
     @Override
@@ -149,8 +153,6 @@ public class FloorMServiceLayerImpl implements FloorMServiceLayer {
         return products;
 
     }
-
-
 
     @Override
     public List<Order> getAllOrders() {

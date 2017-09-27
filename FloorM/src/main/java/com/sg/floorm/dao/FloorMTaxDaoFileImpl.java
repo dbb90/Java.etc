@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class FloorMTaxDaoFileImpl implements FloorMTaxDao {
     List<TaxRate> taxes = new ArrayList<>();
@@ -47,11 +48,7 @@ public class FloorMTaxDaoFileImpl implements FloorMTaxDao {
     }
     @Override
     public List<TaxRate> getAllTaxRates() {
-        List<TaxRate> listToReturn = new ArrayList<>();
-        for (TaxRate tax : taxes) {
-            listToReturn.add(tax);
-        }
-        return listToReturn;
+        return taxes.stream().collect(Collectors.toList());
     }
     @Override
     public void readTData() throws FloorMPersistenceException {

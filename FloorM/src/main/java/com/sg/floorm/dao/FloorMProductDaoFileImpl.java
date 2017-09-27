@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class FloorMProductDaoFileImpl implements FloorMProductDao {
 
@@ -30,9 +31,9 @@ public class FloorMProductDaoFileImpl implements FloorMProductDao {
         Iterator<Product> iterated = products.iterator();
         while (iterated.hasNext()) {
             Product currentProduct = iterated.next();
-            if (!currentProduct.getProductType().equals(productType)) {
-            } else {
+            if (currentProduct.getProductType().equals(productType)) {
                 return currentProduct;
+            } else {
             }
         }
         return null;
@@ -53,11 +54,7 @@ public class FloorMProductDaoFileImpl implements FloorMProductDao {
 
     @Override
     public List<Product> getAllProducts() {
-        List<Product> products = new ArrayList<>();
-        for (Product product : this.products) {
-            products.add(product);
-        }
-        return products;
+               return products.stream().collect(Collectors.toList());
     }
 
     public void readPData() throws FloorMPersistenceException {
