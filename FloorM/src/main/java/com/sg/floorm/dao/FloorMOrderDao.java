@@ -6,14 +6,17 @@
 package com.sg.floorm.dao;
 
 import com.sg.floorm.dto.Order;
+import com.sg.floorm.service.InvalidProductException;
+import com.sg.floorm.service.InvalidTaxRateException;
 import java.util.List;
 import java.util.Set;
 
 public interface FloorMOrderDao {
 
     Order addOrder(Order order);
+    Order revertTempOrder(Order orderOrigin, Order orderToEdit) throws InvalidProductException, InvalidTaxRateException;
     Order deleteOrder(Order order);
-    Order editOrder(Order oldOrder, Order orderNew);
+    Order editOrder(Order oldOrder, Order orderNew) throws InvalidProductException, InvalidTaxRateException;
     Order getOrderByNumber(int orderNum);
     List<Order> getOrdersByDate(String date);
     List<Order> getAllOrders();

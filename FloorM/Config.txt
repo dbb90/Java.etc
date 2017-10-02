@@ -1,0 +1,6 @@
+::Config file
+::Train does not allow any changes to save
+::Production is fully functional with regards to saving
+::
+::The next line contains configuration
+production

@@ -1,4 +1,4 @@
-/*
+    /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -28,7 +28,20 @@ public class FloorMView {
         this.io = io;
     }
 
-    public int printMenuAndGetSelection(int min, int max) {
+    public int printTMenuAndGetSelection(int min, int max) {
+        io.printLine("\n////Throw It On The Ground Flooring Co.////");
+        io.printLine("\n********MENU********");
+        io.printLine("\n********Training Mode********");
+        io.printLine("[1] Display Orders");
+        io.printLine("[2] Add Order");
+        io.printLine("[3] Edit Order");
+        io.printLine("[4] Delete Order");
+        io.printLine("[5] Save");
+        io.printLine("[6] Quit");
+        return io.readInt("Selection: ");
+    }
+    
+        public int printPMenuAndGetSelection(int min, int max) {
         io.printLine("\n////Throw It On The Ground Flooring Co.////");
         io.printLine("\n********MENU********");
         io.printLine("[1] Display Orders");
@@ -97,6 +110,9 @@ public class FloorMView {
 
     public String getDate() {
 
+
+    
+    
         String orderDate = "";
         boolean valiDate = false;
         String currentDateOption = "";
@@ -104,6 +120,15 @@ public class FloorMView {
         if ("y".equalsIgnoreCase(currentDateOption)) {
             LocalDate orderDateDate = LocalDate.now();
             String date = orderDateDate.format(BASIC_ISO_DATE);
+            
+            
+//          Attempting to fix the date parse from LocalDate.now(); so that I can flip the rest of the dates to match spec
+
+
+//          DateTimeFormatter formatters = DateTimeFormatter.ofPattern("ddMMyyyy");
+//          String text = date.format(formatters);
+//          LocalDate orderDateDate = LocalDate.parse(text, formatters);
+            
             orderDate = date;
         } else {
             while (!valiDate) {
@@ -114,7 +139,7 @@ public class FloorMView {
                 // and those null values surround 8 digits 0-9
                 
                 if (!(orderDate == null) && !(orderDate.equals("")) && (orderDate.matches("\\b\\d{8}\\b"))) {
-                    valiDate = this.Validation(orderDate, DATEFORMAT);
+                    valiDate = this.validateDate(orderDate, DATEFORMAT);
                     if (!valiDate) {
                         io.printLine("Please enter a valid date!");
                     }
@@ -138,7 +163,7 @@ public class FloorMView {
         while (!validDate) {
             orderDate = io.readString("Please input date as yyyyMMdd such as (20170928) :");
             if (!(orderDate == null) && (orderDate.matches("\\b\\d{8}\\b"))) {
-                validDate = this.Validation(orderDate, DATEFORMAT);
+                validDate = this.validateDate(orderDate, DATEFORMAT);
                 if (!validDate) {
                     io.printLine("You must enter a valid date!");
                 }
@@ -151,7 +176,7 @@ public class FloorMView {
 
     }
 
-    public boolean Validation(String dateToValidate, String dateFormat) {
+    public boolean validateDate(String dateToValidate, String dateFormat) {
 
         //checks the entry with SimpleDateFormat, and if it parses correctly,
         //allows the date to continue through
@@ -269,158 +294,133 @@ public class FloorMView {
 
     }
 
-    public Order getEditInfo(Order order, List<TaxRate> taxRates, List<Product> products)
-            throws InvalidTaxRateException, InvalidProductException {
-
-        io.printLine("****Edit Order****");
-
+       public Order getEditInfo (Order order , List<TaxRate> taxStatesList , List<Product> productList) 
+        throws InvalidTaxRateException , InvalidProductException {
+        io.printLine("----EDIT----");
         String clientName = this.getEditClientName(order);
-        if (clientName == null) {
-
-        } else {
+        if (clientName != null) {
             order.setClient(clientName);
-        }
-
-        String taxState = this.getEditState(order, taxRates);
-
-        if (taxState == null) {
-
         } else {
-            order.setTaxState(taxState);
+
         }
-
-        String productType = this.getEditProductType(order, products);
-
-        if (productType == null) {
-
+        String state = this.getEditState(order, taxStatesList);
+        if (state != null) {
+            order.setTaxState(state);
         } else {
+            
+        }
+        String productType = this.getEditProductType(order , productList);
+        if (productType != null) {
             order.setProductType(productType);
-        }
-
-        BigDecimal area = this.getEditArea(order);
-
-        if (area == null) {
-
         } else {
+            
+        }
+        BigDecimal area = this.getEditArea(order);
+        if (area != null) {
             order.setArea(area);
+        } else {
+            
         }
         return order;
-
     }
+    
 
-    private String getEditClientName(Order order) {
+private String getEditClientName(Order order) {
+       String clientName = "";
+       boolean validClient = false;
+       while (!validClient) {
+           clientName = io.readString("Please input the client's name: (" + order.getClient() + ")");
+           if (!(clientName == null)) {
+               if (clientName.trim().length() == 0) {
+                   return null;
+               }
+               validClient = true;
+           }
+       }
+       return clientName;
+   }
+   
+   private String getEditState(Order order , List<TaxRate> taxStatesList) throws InvalidTaxRateException {
+       String taxState = "";
+       boolean validTaxState = false;
+       while (!validTaxState) 
 
-        String clientName = "";
-        boolean validName = false;
+           taxState = io.readString("Please input the state in which the customer is located: (" + order.getState()+ ")");
+           if (taxState.trim().length() == 0) {
+               return null;
+           }
+           
+           for (TaxRate currentTaxState : taxStatesList) {
+               if (taxState.equalsIgnoreCase(currentTaxState.getTaxStateName())) {
+                   validTaxState = true;
+                   break;
+               }
+           }
+           if (validTaxState) {
+            
+           }
+           io.printLine("State not found.");
+           io.printLine("These are the state options : \n");
+           for (TaxRate currentTaxState : taxStatesList ) {
+               io.print(currentTaxState.getTaxStateName()+ ", ");
+           }
+           io.printLine("We don't operate there.");
+           io.printLine("Prerss N to return to the menu.");
+           String keepGoing = io.readString("Try Again? [Y/N]: ");
+           if (keepGoing.equalsIgnoreCase("N")) {
+               io.printLine("Sorry!");
+               throw new InvalidTaxRateException("");
+           }
+       
+       return taxState;
+   }
 
-        while (!validName) {
-            clientName = io.readString("Please input the client's surname -- Currently: " + order.getClient());
-            if (!(clientName == null)) {
-                if (clientName.trim().length() == 0) {
-                    return null;
-                }
-                validName = true;
-            }
-        }
-
-        return clientName;
-
-    }
-
-    private String getEditState(Order order, List<TaxRate> taxStates) throws InvalidTaxRateException {
-
-        String taxState = "";
-
-        boolean validTaxState = false;
-
-        while (!validTaxState) {
-
-            taxState = io.readString("Please input state code (i.e. KY, IN) -- Currently: " + order.getState());
-            if (taxState.trim().length() == 0) {
-                return null;
-
-            }
-
-            for (TaxRate currentTaxState : taxStates) {
-
-                if (taxState.equalsIgnoreCase(currentTaxState.getTaxStateName())) {
-                    validTaxState = true;
-                    break;
-                }
-            }
-
-            if (validTaxState) {
-                break;
-            }
-
-            io.printLine("State not found. Please select one of the following: \n");
-            taxStates.forEach((currentState) -> {
-                io.print(currentState.getTaxStateName() + ", ");
-            });
-
-            String keepGoing = io.readString("Try a new entry? [Y/N]: ");
-
-            if (keepGoing.equals("N")) {
-                throw new InvalidTaxRateException("");
-            }
-        }
-
-        return taxState;
-
-    }
-
-    private BigDecimal getEditArea(Order order) {
-
-        BigDecimal min = new BigDecimal("0");
-
-        BigDecimal area = io.readBigDecimal("Please enter the area of the floor in feet: (" + order.getArea().toString() + ")", min);
-
-        if (area == null) {
-            return null;
-        }
-        area = area.setScale(2, HALF_UP);
-        return area;
-
-    }
-
-    private String getEditProductType(Order order, List<Product> products) throws InvalidProductException {
-
-        boolean validProduct = false;
-
-        String productType = "";
-
-        while (!validProduct) {
-
-            productType = io.readString("Please input product type -- Currently: " + order.getProductType());
-            if (productType.trim().length() == 0) {
-                return null;
-            }
-
-            for (Product currentProduct : products) {
-                if (currentProduct.getProductType().equalsIgnoreCase(productType)) {
-                    validProduct = true;
-                    break;
-                }
-
-            }
-            if (validProduct) {
-                break;
-            }
-
-            io.printLine("Product type not found.");
-
-            io.printLine("These are the products on offer:\n");
-            products.forEach((currentProduct) -> {
-                io.print(currentProduct.getProductType() + ", ");
-            });
-
-            String keepGoing = io.readString("Continue? [Y/N]: ");
-            if (keepGoing.equals("N")) {
-                throw new InvalidProductException("");
-            }
-        }
-        return productType;
-    }
+   
+   private BigDecimal getEditArea(Order order) {
+       
+       //create BigDecimal value of zero to set minimum input
+       BigDecimal min = new BigDecimal("0");
+       BigDecimal area = io.readBigDecimal("Please enter the area of the floor to be covered: (" + order.getArea().toString() + ")", min);
+       if (area == null) {
+           return null;
+       }
+       area = area.setScale(2, HALF_UP);
+       return area;
+   }
+   
+   private String getEditProductType(Order order , List<Product> productList) throws InvalidProductException {
+       boolean validProduct = false;
+       String productType = "";
+       //Read in productType String and validate that the product is in our files
+       while (!validProduct) {
+           productType = io.readString("Please input the type of product to be ordered: (" + order.getProductType() + ")");
+           if (productType.trim().length() == 0) {
+               return null;
+           }
+           for (Product currentProduct : productList) {
+               if (currentProduct.getProductType().equalsIgnoreCase(productType)) {
+                   validProduct = true;
+                   break;
+               }
+           }
+           if (validProduct) {
+               break;
+           }
+           io.printLine("The product you have entered was not found. Please check the spelling of the product type you have entered.");
+           io.printLine("These are the products that we carry :\n");
+           for (Product currentProduct : productList) {
+               io.print(currentProduct.getProductType() + ", ");
+           }
+           io.printLine("\n\nIf the product you are looking for is not in this list, then we do not carry that type of flooring. Press N to return"
+                   + "to the main menu. Press Y to try again!");
+           String keepGoing = io.readString("Would you like to continue? Y or N : ");
+           if (keepGoing.equalsIgnoreCase("N")) {
+               
+               io.printLine("Sorry for the inconvenience!!");throw new InvalidProductException("Sorry for the inconvenience!");
+           }
+       }
+       return productType;
+   }
 
     public int getOrderNumber() {
         return io.readInt("Input an order #: ");
@@ -488,5 +488,4 @@ public class FloorMView {
         return io.readString(confirmation);
     }
 }
-
 

@@ -5,6 +5,7 @@
  */
 package com.sg.floorm.service;
 
+import com.sg.floorm.dao.FloorMConfigDao;
 import com.sg.floorm.dao.FloorMOrderDao;
 import com.sg.floorm.dao.FloorMPersistenceException;
 import com.sg.floorm.dao.FloorMProductDao;
@@ -21,18 +22,20 @@ public class FloorMServiceLayerImpl implements FloorMServiceLayer {
     private final FloorMOrderDao oDao;
     private final FloorMProductDao pDao;
     private final FloorMTaxDao tDao;
+    private final FloorMConfigDao cDao;
 
     public FloorMServiceLayerImpl(FloorMOrderDao orderDao,
-            FloorMProductDao productDao, FloorMTaxDao taxDao) {
+            FloorMProductDao productDao, FloorMTaxDao taxDao, FloorMConfigDao configDao) {
 
         this.oDao = orderDao;
         this.pDao = productDao;
         this.tDao = taxDao;
+        this.cDao = configDao;
     }
 
     @Override
 
-    public Order addOrder(Order order) {
+    public Order addOrder(Order order) throws InvalidProductException, InvalidTaxRateException {
         return oDao.addOrder(order);
     }
 
@@ -45,7 +48,8 @@ public class FloorMServiceLayerImpl implements FloorMServiceLayer {
     public Order getOrder(int orderNum) {
         return oDao.getOrderByNumber(orderNum);
     }
-
+    
+  
     @Override
     public void readAllData() throws FloorMPersistenceException {
 
@@ -74,59 +78,58 @@ public class FloorMServiceLayerImpl implements FloorMServiceLayer {
     }
 
     @Override
-    public Order calcCosts(Order order) {
-        List<Product> products = pDao.getAllProducts();
+    public Order calcCosts(Order order) throws InvalidTaxRateException {
 
-        List<TaxRate> states = tDao.getAllTaxRates();
+       List<Product> productList = pDao.getAllProducts();
+       List<TaxRate> taxStatelist = tDao.getAllTaxRates();
 
-        products.stream()
-                .filter((product) -> (product.getProductType()
-                .toUpperCase()
-                .equals(order.getProductType())))
-                .map((product) -> {
-                    BigDecimal materialSqFtCost = product.getMaterialSqFtCost();
+       for (Product product : productList) {
 
-                    materialSqFtCost = materialSqFtCost.setScale(2, HALF_UP);
-                    order.setCostSqFt(materialSqFtCost);
+           if (product.getProductType().equalsIgnoreCase(order.getProductType())){
+               BigDecimal materialSqFootCost = product.getMaterialSqFtCost();
+               materialSqFootCost = materialSqFootCost.setScale(2 , HALF_UP);
+               order.setCostSqFt(materialSqFootCost);
+               BigDecimal laborSqFootCost = product.getLaborSqFtCost();
 
-                    BigDecimal laborSqFtCost = product.getLaborSqFtCost();
-                    return laborSqFtCost;
-                })
-                .map((laborSqFtCost) -> laborSqFtCost.setScale(2, HALF_UP)).map((laborSqFtCost) -> {
-            order.setLaborCostSqFt(laborSqFtCost);
-            return laborSqFtCost;
-        })
-                .map((matCost) -> order.getCostSqFt()
-                .multiply(order.getArea()))
-                .map((matCost) -> matCost.setScale(2, HALF_UP))
-                .map((matCost) -> {
-                    order.setMatCost(matCost);
-                    return matCost;
-                })
-                .map((labCost) -> order.getLaborCostSqFt()
-                .multiply(order.getArea()))
-                .map((labCost) -> labCost.setScale(2, HALF_UP))
-                .forEachOrdered((labCost) -> {
-                    order.setLabCost(labCost);
-                });
+               laborSqFootCost = laborSqFootCost.setScale(2, HALF_UP);
 
-        states.stream()
-                .filter((state) -> (state.getTaxStateName().equalsIgnoreCase(order.getState())))
-                .forEachOrdered((state) -> {
-                    order.setTaxRate(state.getTax());
-                });
+               order.setLaborCostSqFt(laborSqFootCost);
+               BigDecimal matCost = order.getCostSqFt().multiply(order.getArea());
 
-        BigDecimal tempTotal = order.getLabCost().add(order.getMatCost());
-        tempTotal = tempTotal.setScale(2, HALF_UP);
-        BigDecimal taxRate = order.getTaxRate().divide(new BigDecimal("100"));
-        BigDecimal tTax = tempTotal.multiply(taxRate);
-        tTax = tTax.setScale(2, HALF_UP);
-        order.settTax(tTax);
-        BigDecimal tCost = order.gettTax().add(tempTotal);
-        tCost = tCost.setScale(2, HALF_UP);
-        order.settCost(tCost);
-        return order;
-    }
+               matCost = matCost.setScale(2 , HALF_UP);
+
+               order.setMatCost(matCost);
+
+               
+
+               BigDecimal labCost = order.getLaborCostSqFt().multiply(order.getArea());
+               labCost = labCost.setScale(2 , HALF_UP);
+
+               order.setLabCost(labCost);
+
+           }
+       }
+
+       for (TaxRate taxState : taxStatelist) {
+           if (taxState.getTaxStateName().equalsIgnoreCase(order.getState())){
+               order.setTaxRate(taxState.getTax());
+
+           }
+
+       }
+
+       BigDecimal tempTotal = order.getLabCost().add(order.getMatCost());
+       tempTotal = tempTotal.setScale(2 , HALF_UP);
+       BigDecimal taxRate = order.getTaxRate().divide(new BigDecimal("100"));
+       BigDecimal tTax = tempTotal.multiply(taxRate);
+       tTax = tTax.setScale(2 , HALF_UP);
+       order.settTax(tTax);
+
+       BigDecimal tCost = order.gettTax().add(tempTotal);
+       tCost = tCost.setScale(2 , HALF_UP);
+       order.settCost(tCost);
+       return order;
+   }
 
     @Override
     public Order deleteOrder(Order order, String date, int orderNum) {
@@ -142,7 +145,7 @@ public class FloorMServiceLayerImpl implements FloorMServiceLayer {
 
     @Override
 
-    public List<TaxRate> getAllTaxRates() {
+    public List<TaxRate> getAllTaxRates() throws InvalidTaxRateException {
         List<TaxRate> states = tDao.getAllTaxRates();
         return states;
     }
@@ -159,4 +162,24 @@ public class FloorMServiceLayerImpl implements FloorMServiceLayer {
         return oDao.getAllOrders();
     }
 
+    @Override
+    public Order revertTempOrder(Order orderOrigin, Order orderToEdit) throws InvalidProductException, InvalidTaxRateException {
+       return oDao.revertTempOrder(orderOrigin, orderToEdit);
+    }
+
+    @Override
+   public void readConfig() throws FloorMPersistenceException {
+       cDao.readConfig();
+   }
+
+ 
+
+   @Override
+   public String getConfig() {
+       return cDao.getConfig();
+   }
+    
+    
+    
+    
 }

@@ -6,6 +6,8 @@
 package com.sg.floorm.dao;
 
 import com.sg.floorm.dto.Order;
+import com.sg.floorm.service.InvalidProductException;
+import com.sg.floorm.service.InvalidTaxRateException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -36,6 +38,14 @@ public class FloorMOrderDaoFileImpl implements FloorMOrderDao {
     }
 
     @Override
+ public Order revertTempOrder(Order orderOrigin, Order orderToEdit) throws InvalidProductException, InvalidTaxRateException {
+
+        int orderNum = orderToEdit.getOrderNum();
+        return orders.put(orderNum, orderOrigin);
+    }
+
+ 
+    @Override
     public Order deleteOrder(Order order) {
 
         int orderNum = order.getOrderNum();
@@ -44,7 +54,7 @@ public class FloorMOrderDaoFileImpl implements FloorMOrderDao {
     }
 
     @Override
-    public Order editOrder(Order orderOld, Order orderNew) {
+    public Order editOrder(Order orderOld, Order orderNew) throws InvalidProductException, InvalidTaxRateException {
         int orderNum = orderOld.getOrderNum();
         return orders.put(orderNum, orderNew);
 
@@ -55,7 +65,8 @@ public class FloorMOrderDaoFileImpl implements FloorMOrderDao {
     public Order getOrderByNumber(int orderNum) {
         return orders.get(orderNum);
     }
-
+    
+      
     @Override
 
     public List<Order> getOrdersByDate(String date) {

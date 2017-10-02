@@ -26,13 +26,36 @@ public class FloorMController {
         this.service = service;
     }
 
-    public void run() throws InvalidProductException, InvalidTaxRateException {
+      public void getConfig() {
+ 
+       try {
+           readConfig();
+ 
+           String config = service.getConfig();
+           if (config.equalsIgnoreCase("training")) {
+               runT();
+           } else {
+               runP();
+           }
+       } catch (FloorMPersistenceException e) {
+           view.displayErrorMessage(e);
+       }
+   }
+    
+    
+    private void readConfig() throws FloorMPersistenceException {
+       service.readConfig();
+   }
+
+    
+    
+    public void runP() {
         boolean keepGoing = true;
         saveRequired = 0;
         try {
             readFile();
             while (keepGoing) {
-                int menuSelection = view.printMenuAndGetSelection(1, 6);
+                int menuSelection = view.printPMenuAndGetSelection(1, 6);
                 switch (menuSelection) {
 
                     case 1:
@@ -40,15 +63,18 @@ public class FloorMController {
                         displayOrdersByDate();
                         break;
 
-                    case 2:
+                    case 2: {
                         //adds an order
                         addOrder();
-                        break;
 
-                    case 3:
+                    }
+                    break;
+
+                    case 3: {
                         //edits an order
                         editOrder();
-                        break;
+                    }
+                    break;
 
                     case 4:
                         //deletes an order
@@ -81,6 +107,61 @@ public class FloorMController {
         }
     }
 
+        public void runT() {
+        boolean keepGoing = true;
+        saveRequired = 0;
+        try {
+            readFile();
+            while (keepGoing) {
+                int menuSelection = view.printTMenuAndGetSelection(1, 6);
+                switch (menuSelection) {
+
+                    case 1:
+                        //displays orders by date
+                        displayOrdersByDate();
+                        break;
+
+                    case 2: {
+                        //adds an order
+                        addOrder();
+
+                    }
+                    break;
+
+                    case 3: {
+                        //edits an order
+                        editOrder();
+                    }
+                    break;
+
+                    case 4:
+                        //deletes an order
+                        deleteOrder();
+                        break;
+
+                    case 5:
+                        //saves changes (deprecated)
+                        break;
+
+                    case 6:
+                        //checks if save on quit is necessary, then quits (deprecated)
+                        keepGoing = false;
+                        break;
+
+                    default:
+                        unknownEntry();
+                        break;
+
+                }
+            }
+
+            view.displayExitMessage();
+
+        } catch (FloorMPersistenceException e) {
+            view.displayErrorMessage(e);
+        }
+    }
+    
     private void displayOrdersByDate() {
 
         String dateToView = view.getDateToView();
@@ -88,9 +169,18 @@ public class FloorMController {
         view.displayOrdersByDate(orders, dateToView);
     }
 
-    private void addOrder() throws InvalidTaxRateException, InvalidProductException {
-
+    private void addOrder() {
         view.displayAddOrderBanner();
+        try {
+            addOrderAttempt();
+        } catch (InvalidTaxRateException | InvalidProductException e) {
+            view.displayErrorMessage(e);
+        }
+
+    }
+
+    private void addOrderAttempt() throws InvalidProductException, InvalidTaxRateException {
+
         List<TaxRate> taxRates = service.getAllTaxRates();
         List<Product> products = service.getAllProducts();
         Order orderToAdd = view.getNewOrderVars(taxRates, products);
@@ -98,12 +188,12 @@ public class FloorMController {
         orderToAdd = service.calcCosts(orderToAdd);
 
         String choice = view.confirmChanges(orderToAdd, "Really add this order? Y/N: ");
-
-        if (choice.equalsIgnoreCase("n")) {
+        if (!choice.equalsIgnoreCase("n")) {
             service.addOrder(orderToAdd);
             view.displayOrder(orderToAdd);
-        } else {
             saveRequired = 1;
+        } else {
+            
         }
 
     }
@@ -150,12 +240,32 @@ public class FloorMController {
 
     }
 
-    private void editOrder() throws InvalidTaxRateException, InvalidProductException {
+    private void editOrder() {
+        try {
+            editOrderAttempt();
+        } catch (InvalidTaxRateException | InvalidProductException e) {
+            view.displayErrorMessage(e);
+        }
+    }
 
-        view.getDateToView();
+    private void editOrderAttempt() throws InvalidTaxRateException, InvalidProductException {
+        String date = view.getDateToView();
+        Order order = new Order();
 
         int orderNum = view.getOrderNumber();
-        Order orderToEdit = service.getOrder(orderNum);
+        List<Order> ordersByDate = service.getOrdersByDate(date);
+        Order orderOrigin = null;
+        for (Order currentOrder : ordersByDate) {
+            if (currentOrder.getOrderNum() == orderNum) {
+                orderOrigin = currentOrder;
+                
+                break;
+            }
+        }
+
+        Order orderToEdit = order;
+
+        order.setOrderNum(orderNum);
         List<TaxRate> taxRates = service.getAllTaxRates();
         List<Product> products = service.getAllProducts();
 
@@ -163,12 +273,14 @@ public class FloorMController {
         editedOrder = service.calcCosts(editedOrder);
         String choice = view.confirmChanges(editedOrder, "Keep changes? [Y/N] : ");
 
-        if (choice.toUpperCase().equals("N")) {
-        } else {
+        if (!choice.equalsIgnoreCase("N")) {
             saveRequired = 1;
+//            service.deleteOrder(order, date, orderNum);
             service.addOrder(editedOrder);
             view.displayEditSuccess();
 
+        } else {
+            
         }
     }
 
