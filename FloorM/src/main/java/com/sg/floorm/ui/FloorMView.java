@@ -391,9 +391,9 @@ private String getEditClientName(Order order) {
    private String getEditProductType(Order order , List<Product> productList) throws InvalidProductException {
        boolean validProduct = false;
        String productType = "";
-       //Read in productType String and validate that the product is in our files
+
        while (!validProduct) {
-           productType = io.readString("Please input the type of product to be ordered: (" + order.getProductType() + ")");
+           productType = io.readString("Please input the type of product: (" + order.getProductType() + ")");
            if (productType.trim().length() == 0) {
                return null;
            }
@@ -406,17 +406,16 @@ private String getEditClientName(Order order) {
            if (validProduct) {
                break;
            }
-           io.printLine("The product you have entered was not found. Please check the spelling of the product type you have entered.");
-           io.printLine("These are the products that we carry :\n");
+           io.printLine("Product not found.  Please try again");
+           io.printLine("These are the products we carry:\n");
            for (Product currentProduct : productList) {
                io.print(currentProduct.getProductType() + ", ");
            }
-           io.printLine("\n\nIf the product you are looking for is not in this list, then we do not carry that type of flooring. Press N to return"
-                   + "to the main menu. Press Y to try again!");
-           String keepGoing = io.readString("Would you like to continue? Y or N : ");
+           io.printLine("Product not found.!");
+           String keepGoing = io.readString("continue? [Y/n]: ");
            if (keepGoing.equalsIgnoreCase("N")) {
                
-               io.printLine("Sorry for the inconvenience!!");throw new InvalidProductException("Sorry for the inconvenience!");
+               io.printLine("Sorry!");throw new InvalidProductException("");
            }
        }
        return productType;
