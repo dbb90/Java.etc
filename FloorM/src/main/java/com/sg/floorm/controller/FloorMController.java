@@ -26,29 +26,26 @@ public class FloorMController {
         this.service = service;
     }
 
-      public void getConfig() {
- 
-       try {
-           readConfig();
- 
-           String config = service.getConfig();
-           if (config.equalsIgnoreCase("training")) {
-               runT();
-           } else {
-               runP();
-           }
-       } catch (FloorMPersistenceException e) {
-           view.displayErrorMessage(e);
-       }
-   }
-    
-    
-    private void readConfig() throws FloorMPersistenceException {
-       service.readConfig();
-   }
+    public void getConfig() {
 
-    
-    
+        try {
+            readConfig();
+
+            String config = service.getConfig();
+            if (config.equalsIgnoreCase("training")) {
+                runT();
+            } else {
+                runP();
+            }
+        } catch (FloorMPersistenceException e) {
+            view.displayErrorMessage(e);
+        }
+    }
+
+    private void readConfig() throws FloorMPersistenceException {
+        service.readConfig();
+    }
+
     public void runP() {
         boolean keepGoing = true;
         saveRequired = 0;
@@ -107,7 +104,7 @@ public class FloorMController {
         }
     }
 
-        public void runT() {
+    public void runT() {
         boolean keepGoing = true;
         saveRequired = 0;
         try {
@@ -161,7 +158,7 @@ public class FloorMController {
             view.displayErrorMessage(e);
         }
     }
-    
+
     private void displayOrdersByDate() {
 
         String dateToView = view.getDateToView();
@@ -193,7 +190,7 @@ public class FloorMController {
             view.displayOrder(orderToAdd);
             saveRequired = 1;
         } else {
-            
+
         }
 
     }
@@ -257,7 +254,7 @@ public class FloorMController {
         for (Order currentOrder : ordersByDate) {
             if (currentOrder.getOrderNum() == orderNum) {
                 order = currentOrder;
-                
+
                 break;
             }
         }
@@ -279,16 +276,16 @@ public class FloorMController {
         uneditedOrder = service.calcCosts(uneditedOrder);
         String choice = view.confirmChanges(editedOrder, "Keep changes? [Y/N] : ");
 
-        if (!choice.equalsIgnoreCase("N")) {
+        if (choice.equalsIgnoreCase("N")) {
+            service.deleteOrder(editedOrder, date, orderNum);
+            service.calcOrderNum(uneditedOrder);
+            service.addOrder(uneditedOrder);
+        } else {
             saveRequired = 1;
 //            service.deleteOrder(order, date, orderNum);
             service.addOrder(editedOrder);
             view.displayEditSuccess();
 
-        } else {
-            service.deleteOrder(editedOrder, date, orderNum);
-            service.calcOrderNum(uneditedOrder);
-            service.addOrder(uneditedOrder);
         }
     }
 

@@ -3,4 +3,4 @@
 ::Production is fully functional with regards to saving
 ::
 ::The next line contains configuration
-production
+training

@@ -36,7 +36,7 @@ public class FloorMView {
         io.printLine("[2] Add Order");
         io.printLine("[3] Edit Order");
         io.printLine("[4] Delete Order");
-        io.printLine("[5] Save");
+        io.printLine("[5] Save [DOES NOT SAVE IN TRAINING MODE]");
         io.printLine("[6] Quit");
         return io.readInt("Selection: ");
     }
@@ -303,33 +303,31 @@ public class FloorMView {
        io.printLine("****Edit Order****");
 
        String clientName = this.getEditClientName(order);
-       if (clientName == null) {
- 
-       } else {
+       if (clientName != null) {
            order.setClient(clientName);
+       } else {
+           
        }
  
        String taxState = this.getEditState(order, taxRates);
-       if (taxState == null) {
- 
-       } else {
-           order.setTaxState(taxState);
-       }
+       if (taxState != null)  {
+            order.setTaxState(taxState);
+        }
  
        String productType = this.getEditProductType(order, products);
  
-       if (productType == null) {
- 
-       } else {
+       if (productType != null) {
            order.setProductType(productType);
+       } else {
+           
        }
  
        BigDecimal area = this.getEditArea(order);
  
-       if (area == null) {
- 
-       } else {
+       if (area != null) {
            order.setArea(area);
+       } else {
+           
        }
        return order;
 
@@ -352,8 +350,6 @@ public class FloorMView {
            }
        }
 
- 
-
        return clientName;
    }
 
@@ -364,9 +360,7 @@ public class FloorMView {
  
 
        String taxState = "";
-
        boolean validTaxState = false;
-
        while (!validTaxState) {
 
  
@@ -374,8 +368,6 @@ public class FloorMView {
            taxState = io.readString("Please input state code (i.e. KY, IN) -- Currently: " + order.getState());
            if (taxState.trim().length() == 0) {
                return null;
-
- 
            }
 
  
@@ -385,7 +377,6 @@ public class FloorMView {
 
                if (taxState.equalsIgnoreCase(currentTaxState.getTaxStateName())) {
                    validTaxState = true;
-
                    break;
                }
            }
