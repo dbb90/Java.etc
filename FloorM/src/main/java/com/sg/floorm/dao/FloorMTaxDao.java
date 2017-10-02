@@ -6,7 +6,6 @@
 package com.sg.floorm.dao;
 
 import com.sg.floorm.dto.TaxRate;
-import com.sg.floorm.service.InvalidTaxRateException;
 import java.util.List;
 
 public interface FloorMTaxDao {
@@ -14,9 +13,9 @@ public interface FloorMTaxDao {
     TaxRate addTaxRate(TaxRate taxRate);
     TaxRate removeTaxRate(TaxRate taxRate);
     TaxRate editTaxRate(TaxRate taxRateOld, TaxRate taxRateNew);
-    TaxRate getTaxRate(String name) throws InvalidTaxRateException;
+    TaxRate getTaxRate(String name);
     
-    List<TaxRate> getAllTaxRates() throws InvalidTaxRateException;
+    List<TaxRate> getAllTaxRates();
    
     void readTData() throws FloorMPersistenceException;
 

@@ -35,7 +35,7 @@ public class FloorMServiceLayerImpl implements FloorMServiceLayer {
 
     @Override
 
-    public Order addOrder(Order order) throws InvalidProductException, InvalidTaxRateException {
+    public Order addOrder(Order order) {
         return oDao.addOrder(order);
     }
 
@@ -78,7 +78,7 @@ public class FloorMServiceLayerImpl implements FloorMServiceLayer {
     }
 
     @Override
-    public Order calcCosts(Order order) throws InvalidTaxRateException {
+    public Order calcCosts(Order order) throws InvalidTaxRateException, InvalidProductException {
 
        List<Product> productList = pDao.getAllProducts();
        List<TaxRate> taxStatelist = tDao.getAllTaxRates();
@@ -145,7 +145,7 @@ public class FloorMServiceLayerImpl implements FloorMServiceLayer {
 
     @Override
 
-    public List<TaxRate> getAllTaxRates() throws InvalidTaxRateException {
+    public List<TaxRate> getAllTaxRates() {
         List<TaxRate> states = tDao.getAllTaxRates();
         return states;
     }
@@ -162,10 +162,6 @@ public class FloorMServiceLayerImpl implements FloorMServiceLayer {
         return oDao.getAllOrders();
     }
 
-    @Override
-    public Order revertTempOrder(Order orderOrigin, Order orderToEdit) throws InvalidProductException, InvalidTaxRateException {
-       return oDao.revertTempOrder(orderOrigin, orderToEdit);
-    }
 
     @Override
    public void readConfig() throws FloorMPersistenceException {

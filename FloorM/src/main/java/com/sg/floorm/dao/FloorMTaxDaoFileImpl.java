@@ -6,7 +6,6 @@
 package com.sg.floorm.dao;
 
 import com.sg.floorm.dto.TaxRate;
-import com.sg.floorm.service.InvalidTaxRateException;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -48,7 +47,7 @@ public class FloorMTaxDaoFileImpl implements FloorMTaxDao {
         return null;
     }
     @Override
-    public List<TaxRate> getAllTaxRates() throws InvalidTaxRateException {
+    public List<TaxRate> getAllTaxRates() {
         return taxes.stream().collect(Collectors.toList());
     }
     @Override

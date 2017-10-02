@@ -14,7 +14,6 @@ import java.util.Set;
 public interface FloorMOrderDao {
 
     Order addOrder(Order order);
-    Order revertTempOrder(Order orderOrigin, Order orderToEdit) throws InvalidProductException, InvalidTaxRateException;
     Order deleteOrder(Order order);
     Order editOrder(Order oldOrder, Order orderNew) throws InvalidProductException, InvalidTaxRateException;
     Order getOrderByNumber(int orderNum);

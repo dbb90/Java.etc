@@ -37,13 +37,6 @@ public class FloorMOrderDaoFileImpl implements FloorMOrderDao {
         return orders.put(orderNum, order);
     }
 
-    @Override
- public Order revertTempOrder(Order orderOrigin, Order orderToEdit) throws InvalidProductException, InvalidTaxRateException {
-
-        int orderNum = orderToEdit.getOrderNum();
-        return orders.put(orderNum, orderOrigin);
-    }
-
  
     @Override
     public Order deleteOrder(Order order) {

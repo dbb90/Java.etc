@@ -14,7 +14,7 @@ import java.util.List;
 
 public interface FloorMServiceLayer {
 
-    Order addOrder(Order order) throws InvalidTaxRateException, InvalidProductException;
+    Order addOrder(Order order);
     Order getOrder(int orderNum);
     Order calcOrderNum(Order orderToAdd);
     List<Order> getOrdersByDate(String date);
@@ -22,11 +22,10 @@ public interface FloorMServiceLayer {
     void writeAllData() throws FloorMPersistenceException;
     Order calcCosts(Order order) throws InvalidTaxRateException, InvalidProductException;
     Order deleteOrder(Order order, String date, int orderNum);
-    List<TaxRate> getAllTaxRates() throws InvalidTaxRateException;
+    List<TaxRate> getAllTaxRates();
     List<Product> getAllProducts();
     List<Order> getAllOrders();
     void readConfig() throws FloorMPersistenceException;
     String getConfig();
 
-    Order revertTempOrder(Order orderOrigin, Order orderToEdit) throws InvalidProductException, InvalidTaxRateException;
 }
