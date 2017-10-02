@@ -254,23 +254,29 @@ public class FloorMController {
 
         int orderNum = view.getOrderNumber();
         List<Order> ordersByDate = service.getOrdersByDate(date);
-        Order orderOrigin = null;
         for (Order currentOrder : ordersByDate) {
             if (currentOrder.getOrderNum() == orderNum) {
-                orderOrigin = currentOrder;
+                order = currentOrder;
                 
                 break;
             }
         }
-
+        Order uneditedOrder = new Order();
+        uneditedOrder.setClient(order.getClient());
+        uneditedOrder.setTaxState(order.getState());
+        uneditedOrder.setArea(order.getArea());
+        uneditedOrder.setProductType(order.getProductType());
+        uneditedOrder.setOrderDate(order.getOrderDate());
         Order orderToEdit = order;
 
-        order.setOrderNum(orderNum);
+//        order.setOrderNum(orderNum);
+//        service.calcOrderNum(orderToEdit);
         List<TaxRate> taxRates = service.getAllTaxRates();
         List<Product> products = service.getAllProducts();
 
         Order editedOrder = view.getEditInfo(orderToEdit, taxRates, products);
         editedOrder = service.calcCosts(editedOrder);
+        uneditedOrder = service.calcCosts(uneditedOrder);
         String choice = view.confirmChanges(editedOrder, "Keep changes? [Y/N] : ");
 
         if (!choice.equalsIgnoreCase("N")) {
@@ -280,7 +286,9 @@ public class FloorMController {
             view.displayEditSuccess();
 
         } else {
-            
+            service.deleteOrder(editedOrder, date, orderNum);
+            service.calcOrderNum(uneditedOrder);
+            service.addOrder(uneditedOrder);
         }
     }
 

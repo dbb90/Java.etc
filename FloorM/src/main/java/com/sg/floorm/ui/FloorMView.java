@@ -294,133 +294,174 @@ public class FloorMView {
 
     }
 
-       public Order getEditInfo (Order order , List<TaxRate> taxStatesList , List<Product> productList) 
-        throws InvalidTaxRateException , InvalidProductException {
-        io.printLine("----EDIT----");
-        String clientName = this.getEditClientName(order);
-        if (clientName != null) {
-            order.setClient(clientName);
-        } else {
+      public Order getEditInfo(Order order, List<TaxRate> taxRates, List<Product> products)
 
-        }
-        String state = this.getEditState(order, taxStatesList);
-        if (state != null) {
-            order.setTaxState(state);
-        } else {
-            
-        }
-        String productType = this.getEditProductType(order , productList);
-        if (productType != null) {
-            order.setProductType(productType);
-        } else {
-            
-        }
-        BigDecimal area = this.getEditArea(order);
-        if (area != null) {
-            order.setArea(area);
-        } else {
-            
-        }
-        return order;
-    }
-    
+           throws InvalidTaxRateException, InvalidProductException {
 
-private String getEditClientName(Order order) {
+ 
+
+       io.printLine("****Edit Order****");
+
+       String clientName = this.getEditClientName(order);
+       if (clientName == null) {
+ 
+       } else {
+           order.setClient(clientName);
+       }
+ 
+       String taxState = this.getEditState(order, taxRates);
+       if (taxState == null) {
+ 
+       } else {
+           order.setTaxState(taxState);
+       }
+ 
+       String productType = this.getEditProductType(order, products);
+ 
+       if (productType == null) {
+ 
+       } else {
+           order.setProductType(productType);
+       }
+ 
+       BigDecimal area = this.getEditArea(order);
+ 
+       if (area == null) {
+ 
+       } else {
+           order.setArea(area);
+       }
+       return order;
+
+ 
+
+   }
+ 
+   private String getEditClientName(Order order) {
+ 
        String clientName = "";
-       boolean validClient = false;
-       while (!validClient) {
-           clientName = io.readString("Please input the client's name: (" + order.getClient() + ")");
+       boolean validName = false;
+ 
+       while (!validName) {
+           clientName = io.readString("Please input the client's surname -- Currently: " + order.getClient());
            if (!(clientName == null)) {
                if (clientName.trim().length() == 0) {
                    return null;
                }
-               validClient = true;
+               validName = true;
            }
        }
+
+ 
+
        return clientName;
    }
-   
-   private String getEditState(Order order , List<TaxRate> taxStatesList) throws InvalidTaxRateException {
-       String taxState = "";
-       boolean validTaxState = false;
-       while (!validTaxState) 
 
-           taxState = io.readString("Please input the state in which the customer is located: (" + order.getState()+ ")");
+ 
+
+   private String getEditState(Order order, List<TaxRate> taxStates) throws InvalidTaxRateException {
+
+ 
+
+       String taxState = "";
+
+       boolean validTaxState = false;
+
+       while (!validTaxState) {
+
+ 
+
+           taxState = io.readString("Please input state code (i.e. KY, IN) -- Currently: " + order.getState());
            if (taxState.trim().length() == 0) {
                return null;
+
+ 
            }
-           
-           for (TaxRate currentTaxState : taxStatesList) {
+
+ 
+
+           for (TaxRate currentTaxState : taxStates) {
+ 
+
                if (taxState.equalsIgnoreCase(currentTaxState.getTaxStateName())) {
                    validTaxState = true;
+
                    break;
                }
            }
+ 
            if (validTaxState) {
-            
+               break;
            }
-           io.printLine("State not found.");
-           io.printLine("These are the state options : \n");
-           for (TaxRate currentTaxState : taxStatesList ) {
-               io.print(currentTaxState.getTaxStateName()+ ", ");
-           }
-           io.printLine("We don't operate there.");
-           io.printLine("Prerss N to return to the menu.");
-           String keepGoing = io.readString("Try Again? [Y/N]: ");
-           if (keepGoing.equalsIgnoreCase("N")) {
-               io.printLine("Sorry!");
+ 
+           io.printLine("State not found. Please select one of the following: \n");
+           taxStates.forEach((currentState) -> {
+               io.print(currentState.getTaxStateName() + ", ");
+           });
+ 
+           String keepGoing = io.readString("Try a new entry? [Y/N]: ");
+ 
+           if (keepGoing.equals("N")) {
                throw new InvalidTaxRateException("");
            }
-       
+       }
+ 
        return taxState;
+ 
    }
-
-   
+ 
    private BigDecimal getEditArea(Order order) {
-       
-       //create BigDecimal value of zero to set minimum input
+ 
        BigDecimal min = new BigDecimal("0");
-       BigDecimal area = io.readBigDecimal("Please enter the area of the floor to be covered: (" + order.getArea().toString() + ")", min);
+ 
+       BigDecimal area = io.readBigDecimal("Please enter the area of the floor in feet: (" + order.getArea().toString() + ")", min);
+ 
        if (area == null) {
            return null;
        }
        area = area.setScale(2, HALF_UP);
        return area;
+ 
    }
-   
-   private String getEditProductType(Order order , List<Product> productList) throws InvalidProductException {
+ 
+   private String getEditProductType(Order order, List<Product> products) throws InvalidProductException {
+ 
        boolean validProduct = false;
+ 
        String productType = "";
-
+ 
        while (!validProduct) {
-           productType = io.readString("Please input the type of product: (" + order.getProductType() + ")");
+ 
+           productType = io.readString("Please input product type -- Currently: " + order.getProductType());
            if (productType.trim().length() == 0) {
                return null;
            }
-           for (Product currentProduct : productList) {
+ 
+           for (Product currentProduct : products) {
                if (currentProduct.getProductType().equalsIgnoreCase(productType)) {
                    validProduct = true;
                    break;
                }
+ 
            }
            if (validProduct) {
                break;
            }
-           io.printLine("Product not found.  Please try again");
-           io.printLine("These are the products we carry:\n");
-           for (Product currentProduct : productList) {
+ 
+           io.printLine("Product type not found.");
+ 
+           io.printLine("These are the products on offer:\n");
+           products.forEach((currentProduct) -> {
                io.print(currentProduct.getProductType() + ", ");
-           }
-           io.printLine("Product not found.!");
-           String keepGoing = io.readString("continue? [Y/n]: ");
-           if (keepGoing.equalsIgnoreCase("N")) {
-               
-               io.printLine("Sorry!");throw new InvalidProductException("");
+           });
+ 
+           String keepGoing = io.readString("Continue? [Y/N]: ");
+           if (keepGoing.equals("N")) {
+               throw new InvalidProductException("");
            }
        }
        return productType;
    }
-
     public int getOrderNumber() {
         return io.readInt("Input an order #: ");
     }
