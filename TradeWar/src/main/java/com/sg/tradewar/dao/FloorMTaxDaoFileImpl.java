@@ -1,0 +1,77 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.sg.tradewar.dao;
+
+import com.sg.tradewar.dto.TaxRate;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+
+public class FloorMTaxDaoFileImpl implements FloorMTaxDao {
+    List<TaxRate> taxes = new ArrayList<>();
+    @Override
+    public TaxRate addTaxRate(TaxRate taxRate) {
+        taxes.add(taxRate);
+        return taxRate;
+    }
+
+    @Override
+    public TaxRate removeTaxRate(TaxRate taxRate) {
+        taxes.remove(taxRate);
+        return taxRate;
+    }
+    @Override
+    public TaxRate editTaxRate(TaxRate oldTaxRate, TaxRate newTaxRate) {
+        taxes.remove(oldTaxRate);
+        taxes.add(newTaxRate);
+        return newTaxRate;
+    }
+    @Override
+    public TaxRate getTaxRate(String name) {
+        Iterator<TaxRate> iterated = taxes.iterator();
+        while (iterated.hasNext()) {
+            TaxRate currentTaxRate = iterated.next();
+            if (currentTaxRate.getTaxStateName().equals(name)) {
+                return currentTaxRate;
+            }
+        }
+        return null;
+    }
+    @Override
+    public List<TaxRate> getAllTaxRates() {
+        return taxes.stream().collect(Collectors.toList());
+    }
+    @Override
+    public void readTData() throws TradeWarPersistenceException {
+        Scanner sc;
+        try {
+            sc = new Scanner(new BufferedReader(new FileReader("Data\\Taxes.txt")));
+        } catch (FileNotFoundException e) {
+            throw new TradeWarPersistenceException("ERROR: Could not load data from tax file!");
+        }
+        taxes.clear();
+        String currentLine;
+        String[] currentTokens;
+        while (sc.hasNextLine()) {
+            currentLine = sc.nextLine();
+            currentTokens = currentLine.split(",");
+            int i = 0;
+            for (String currentString : currentTokens) {
+                currentTokens[i] = currentString.trim();
+                i++;
+            }
+            BigDecimal taxRate = new BigDecimal(currentTokens[1]);
+            TaxRate newTaxRate = new TaxRate(currentTokens[0], taxRate);
+            taxes.add(newTaxRate);
+        }
+    }
+}

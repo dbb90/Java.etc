@@ -5,200 +5,71 @@
   <!-- Bootstrap CSS -->
   <link href="css/bootstrap.css" rel="stylesheet">
 </head>
-
-<body>
-  <div class="container">
-    <h1>Vending Machine</h1>
-
-    <hr/>
-    <ul class="list-group" id="errorMssgs"></ul>
-
-    <div class="col-md-8">
-      <h2>Available Items</h2>
-
-      <form class="form-horizontal" role="form" id="item-form">
-        <div class="form-group" id="itemTableDiv">
-          <div class="row-md-6">
+<!-- <style>
+    .col-md-4 {padding: 1cm;}
+    #item {
+        padding: 1.5cm;
+        border: 1px solid black;}
+</style> -->
 <!--
-            <div>
-
-              <div id="product1" class="col-md-3 text-center" style="margin: 45px 15px">
-                  Product 1
-              </div>
-              <div id="product2" class="col-md-3 text-center" style="margin: 45px 15px">
-                  Product 2
-              </div>
-              <div id="product3" class="col-md-3 text-center" style="margin: 45px 15px">
-                  Product 3
-              </div>
-
-
-            </div>
-          </div>
-          <div class="row-md-6">
-            <div>
-              <div id="product4" class="col-md-3 text-center" style="margin: 45px 15px">
-                  Product 4
-              </div>
-              <div id="product5" class="col-md-3 text-center" style="margin: 45px 15px">
-                  Product 5
-              </div>
-              <div id="product6" class="col-md-3 text-center" style="margin: 45px 15px">
-                  Product 6
-              </div>
-
-
-            </div>
-          </div>
-          <div class="row-md-6">
-            <div>
-              <div id="product7" class="col-md-3 text-center" style="margin: 45px 15px">
-                  Product 7
-              </div>
-              <div id="product8" class="col-md-3 text-center" style="margin: 45px 15px">
-                  Product 8
-              </div>
-              <div id="product9" class="col-md-3 text-center" style="margin: 45px 15px">
-                  Product 9
-              </div>
-
-
-            </div>
-          </div>
-        -->
-        </div>
-      </form>
+<style>
+.moneyButtons{
+   background-color: white;
+    height:26px;
+    width:112px;
+    text-align: center;
+}
+</style>
+-->
+<body>
+      <div class="container-fluid">
+          <h1 style="text-align: center">
+            Vending Machine</h1>
+          <ul class="list-group" id="errors">
+          </ul>
+          <hr/>
+    <div class="column col-md-8" id="itemsDiv" style="text-align: center">
+<!--itemsDiv loaded from js-->
     </div>
-
-    <div class="col-md-4">
-      <div class="container" id="view">
-        <form class="form-horizontal" role="form" id="money-form">
-          <div class="row">
-            <div class="form-control-static">
-              <div class="col-md-6">
-                <h2 align='center'>Total $ In</h2>
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="form-control-static">
-              <div class="col-md-6">
-                <div align='center' id='money-total'>0.00</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div align='center' class="col-md-3">
-              <div class="form-control-static">
-
-                <button type="button" id="add-dollar-button" class="btn btn-default">
-                                           Add Dollar
-                                       </button>
-              </div>
-            </div>
-            <div class="form-control-static">
-              <div align='center' class="col-md-3">
-                <button type="button" id="add-quarter-button" class="btn btn-default">
-                                           Add Quarter
-                                       </button>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div align='center' class="col-md-3">
-              <div class="form-control-static">
-                <button type="button" id="add-dime-button" class="btn btn-default">
-                                           Add Dime
-                                       </button>
-              </div>
-            </div>
-            <div align='center' class="col-md-3">
-              <div class="form-control-static">
-
-                <button type="button" id="add-nickel-button" class="btn btn-default">
-                                           Add Nickel
-                                       </button>
-              </div>
-            </div>
-          </div>
-
-        </form>
-        <hr>
-
-        <div class="row">
-          <form class="form-horizontal" role="form" id="messages-form">
-            <div class="row">
-              <div class="form-control-static">
-                <div class="col-md-6">
-                  <h2 align='center'>Messages</h2>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="form-control-static col-md-6">
-
-                <input type="text" id='messages'>
-
-              </div>
-            </div>
-            <div class="row">
-
-              <div class="form-control-static">
-                <div class="col-md-6">
-                  <label for="item">Item</label>
-                  <input type="text" id="item">
-                </div>
-              </div>
-            </div>
-            <div class='row'>
-              <div class="form-control-static">
-                <div class="col-md-6">
-                  <button type="button" id="make-purchase-button" class="btn btn-default">
-                                              Make Purchase
-                                          </button>
-                </div>
-              </div>
-            </div>
-
-          </form>
+    <div class="col-md-4 column" id="buttonsDiv">
+        <div id="totalIn" class="col-md-12 row">
+            <h2>Total $ In</h2>
+            <input type="number" value="0.00" id="moneyIn" readonly><br/>
+            <div class="btn-group">
+   <button type="button" id="addDollar" width="120px" class="btn btn-default">Add Dollar</button>
+   <button type="button"id="addQuarter" class="btn btn-default">Add Quarter</button>
+ <br/>
+   <button type="button"id="addDime" width="120px" class="btn btn-default" style="padding-right: 15px;padding-left: 15px">Add dime</button>
+   <button id="addNickel" class="btn btn-default" style="padding-right: 18px;padding-left: 16px">Add Nickel</button>
+</div>
+            <hr/>
         </div>
-
-
-        <hr>
-        <div class="row">
-          <form class="form-horizontal" role="form" id="messages-form">
-            <div class="row">
-
-              <div class="form-control-static">
-                <div class="col-md-6">
-                  <h2 align='center'>Change</h2>
-                </div>
-              </div>
+        <div id="messages" class="col-md-12 row">
+            <div>
+                <h2>Messages</h2>
+                <input type="text" id="messageOut" readonly  style="padding-left: 37px"><br/>
             </div>
-            <div class="row">
-              <div class='col-md-6'>
-                <div class="form-control-static">
-
-                  <input type="text" id='change'>
-
-                </div>
-              </div>
+            <div>
+                <label for="itemOut">Item:</label>
+                <input type="number" id="itemOut" min="0">
             </div>
-
-            <div class='row'>
-              <div class="form-control-static">
-                <div class="col-md-6">
-                  <button type="button" id="change-return-button" class="btn btn-default">
-                                              Change Return
-                                          </button>
-                </div>
-              </div>
+            <div>
+                <button id="makePurchase" class="btn btn-default">Make Purchase</button>
+                <hr/>
             </div>
-          </form>
+          </div>
+            <div id="change" class="col-md-12 row">
+                <div>
+                    <h2>Change</h2>
+                    <input type="text" id="changeOut" name="changeOut">
+                </div>
+                <div>
+                    <button type="button" class="btn btn-default" id="returnChange">Change Return</button>
+                </div>
+                <hr/>
+            </div>
+            <hr/>
         </div>
-      </div>
     </div>
   </div>
 

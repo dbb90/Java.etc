@@ -1,0 +1,13 @@
+Mon Oct-02-2017  09:58:06: addOrder: Order: 10
+Mon Oct-02-2017  10:07:37: addOrder: Order: 10
+Mon Oct-02-2017  11:32:21: addOrder: Order: 11
+Mon Oct-02-2017  11:33:50: addOrder: Order: 12
+Mon Oct-02-2017  11:40:35: addOrder: Order: 11
+Mon Oct-02-2017  11:41:46: addOrder: Order: 11
+Mon Oct-02-2017  11:42:46: addOrder: Order: 0
+Mon Oct-02-2017  11:44:06: deleteOrder: Order: 102017100210
+Mon Oct-02-2017  11:44:06: addOrder: Order: 10
+Mon Oct-02-2017  11:44:29: addOrder: Order: 10
+Mon Oct-02-2017  13:45:00: addOrder: Order: 10
+Mon Oct-02-2017  13:46:04: addOrder: Order: 10
+Mon Oct-02-2017  14:02:49: addOrder: Order: 11

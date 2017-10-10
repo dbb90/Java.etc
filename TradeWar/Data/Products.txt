@@ -1,0 +1,59 @@
+Negative Isolinear Control Cell , 5.32 , 4.84
+Forward Ion Pulse Capacitor , 0.00 , 0.00
+Dynamic Resonance Buffer , 1.72 , 1.56
+Quantum Replication System , 4.84 , 5.32
+Universal Gravitronic Dissipation Node , 4.97 , 4.52
+Negative Polarization Grid , 1.33 , 1.33
+Holographic Transition Multiplexer , 3.40 , 4.11
+Reserve Axial Dissipation Inverter , 4.40 , 4.84
+Quantum Dissipation Matrix , 5.32 , 4.84
+Auxiliary Transition Buffer , 3.22 , 2.93
+Tachyon Frequency Matrix , 4.84 , 4.40
+Modular Inertial Replication Scanner , 2.20 , 2.00
+Duotronic Interference Actuator , 0.00 , 0.00
+Active Dissipation Actuator , 3.63 , 3.99
+Bioneural Polarization Coil , 5.47 , 4.97
+Negative Transference Index , 3.63 , 3.63
+Starboard Molecular Transference Grid , 2.66 , 2.42
+Starboard Duotronic Transition Multiplexer , 5.85 , 5.32
+Duotronic Phase Coil , 3.16 , 2.87
+Modular Transition Modulator , 0.00 , 0.00
+Inertial Transference Modulator , 5.85 , 5.32
+Inertial Control Modulator , 5.40 , 5.40
+Duotronic Field Transducer , 3.99 , 3.63
+Negative Flux Conduit , 4.68 , 4.25
+Bioneural Degeneration Sensor , 4.84 , 4.84
+Modular Polarization Cell , 4.40 , 4.00
+Secondary Polarization Capacitor , 5.69 , 5.17
+Secondary Transition Regulator , 2.18 , 1.98
+Magnetic Confinement Injector , 4.84 , 4.84
+Primary Flux Matrix , 3.51 , 3.19
+Subspace Phase Circuit , 3.17 , 2.88
+Universal Degeneration Emitter , 1.33 , 1.61
+Active Transition Buffer , 4.69 , 5.68
+Negative Control Compensator , 1.12 , 1.02
+Flammable Leptcite,45.65,5.88
+Phlosoium,82.10,6.00
+Dynamic Resonance Buffer,40.00,4.30
+Morphon,129.34,322.00
+Negative Hydrite,27.45,2.04
+Quantum Replication System,14.00,3.35
+Lithite,5.76,2.76
+Vanadogen,59.00,1.33
+Solidified Monogen,61.00,4.00
+Primary Flux Matrix,2.00,2.99
+Non-refractive Nonite,41.00,4.14
+Nonus,14.11,7.29
+Modular Transition Modulator,46.00,4.26
+Exotic Halosium,81.00,7.00
+Metallomite,32.00,4.00
+Non-flammable Lunaril,79.96,8.00
+Destresium,66.00,5.00
+Argesium,89.00,4.37
+Low-density Dynesium,72.03,5.00
+Albedonite,70.00,7.00
+Positive Phorus,5.64,5.00
+Modular Inertial Replication Scanner,33.00,3.10
+Bioneural Degeneration Sensor,44.00,0.00
+Opaque Osmesium,74.82,7.15
+Positive Hermin,62.53,3.50

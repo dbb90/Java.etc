@@ -1,49 +1,230 @@
-$(document).ready(function() {
+$("Document").ready(function() {
 
-      loadItems();
+  loadItems();
+});
 
-      $.ajax({
-        // properties in our parameter object, which is an object literal w/ key/value pairs
-        type: "GET",
-        url: "http://localhost:8080/items",
+function loadItems() {
 
-        //success is the callback function we want to run when the Ajax call has
-        //been completed successfully
-        success: function(itemsArray) {
-
-          //get a reference to the 'allContacts' div
-          var itemsDiv = $("#allItems");
-
-          //essentially the same as an enhanced for loop (forEach)
-          //go thru each contact in result and append its info to the contactsDiv
-          //we take the next contact out of contactArray and pass it into
-          // the function for processing, and so on until there are no
-          // more contacts to process.
-          $.each(itemArray, function(index, item) {
-            var itemInfo = "<p>";
-            var id = item.id;
-            var name = item.name;
-            var price = item.price;
-            var quantity = item.quantity;
-            //building an HTML paragraph element (var contactInfo)
-            itemInfo += "ID:" item.id "<br />";
-            itemInfo += "Name:" item.name "<br />";
-            itemInfo += "Price:" + item.price + "<br />";
-            contactInfo += "Quantity:" + item.quantity + "<br />";
-
-            //We append the HTML paragraph element to the allContacts div.
-            itemsDiv.append(iteminfo);
-
-          });
-
-
-
-        },
-        error: function() {
-          alert("FAILURE!");
+  $.ajax({
+    type: 'GET',
+    url: 'http://localhost:8080/items',
+    success: function(itemsArray) {
+      $("#itemsDiv").empty();
+      $.each(itemsArray, function(index, item) {
+        if (item.quantity == 0) {
+          var stock = "OUT OF STOCK!"
+        } else {
+          var stock = "Stock: " + item.quantity
         }
-
-
+        var output = "<div onclick='displayItem(" + item.id +
+          ")' class='col-md-3' style='border: 1px solid black; padding-top: 12px; padding-right: 2px; padding-bottom: 12px; padding-left: 12px; margin: 12px 12px'>" +
+          item.id +
+          "<br/><br/>" +
+          item.name +
+          "<br/><br/>" +
+          "$" +
+          item.price.toFixed(2) +
+          "<br/><br/>" +
+          stock +
+          "</div>";
+        $("#itemsDiv").append(output);
 
 
       });
+
+    },
+    error: function() {
+      console.error();
+    }
+  });
+}
+
+$("#addDime").click(function() {
+  var userBalance = parseFloat($("#moneyIn").val());
+  userBalance = (userBalance + 0.10);
+  $("#moneyIn").val(userBalance.toFixed(2));
+});
+
+$("#addNickel").click(function() {
+  var userBalance = parseFloat($("#moneyIn").val());
+  userBalance = (userBalance + 0.05);
+  $("#moneyIn").val(userBalance.toFixed(2));
+});
+
+$("#addQuarter").click(function() {
+  var userBalance = parseFloat($("#moneyIn").val());
+  userBalance = (userBalance + 0.25);
+  $("#moneyIn").val(userBalance.toFixed(2));
+});
+
+$("#addDollar").click(function() {
+  var userBalance = parseFloat($("#moneyIn").val());
+  var userBalance = (userBalance + 1);
+  $("#moneyIn").val(userBalance.toFixed(2));
+});
+
+
+$("#makePurchase").click(function() {
+
+
+
+  var item = $("#itemOut").val();
+  var userBalance = parseFloat($("#moneyIn").val());
+  userBalance = userBalance.toFixed(2);
+
+  $("#messageOut").text("");
+  $("#changeOut").val("");
+
+  $.ajax({
+    type: 'GET',
+    url: 'http://localhost:8080/money/' + userBalance + "/item/" + item,
+    success: function(data, status) {
+      $("#messageOut").val("Thank You!!!");
+      $("#itemOut").empty();
+      $("#moneyIn").val(0.00);
+      $("itemsDiv").empty();
+
+      loadItems();
+
+      $("#changeOut").val("");
+      var quarters = parseInt(data.quarters);
+      var dimes = parseInt(data.dimes);
+      var nickels = parseInt(data.nickels);
+      var pennies = parseInt(data.pennies);
+
+
+      if (!(quarters === 0)) {
+        if (quarters === 1) {
+          var quartersyntax = " Quarter "
+        } else {
+          var quartersyntax = " Quarters "
+        }
+
+        var output = $("#changeOut").val();
+        output = output + quarters + " " + quartersyntax + " ";
+        $("#changeOut").val(output);
+
+      }
+
+
+      if (!(dimes === 0)) {
+        if (dimes === 1) {
+          var syntax = " Dime "
+        } else {
+          var syntax = " Dimes "
+        }
+
+        var output = $("#changeOut").val();
+        output = output + dimes + " " + syntax + " ";
+        $("#changeOut").val(output);
+      }
+
+      if (!(nickels === 0)) {
+        if (nickels === 1) {
+          var syntax = " Nickel "
+        } else {
+          var syntax = " Nickels "
+        }
+
+        var output = $("#changeOut").val();
+        output = output + nickels + " " + syntax + " ";
+        $("#changeOut").val(output);
+      }
+
+      if (!(pennies === 0)) {
+        if (pennies === 1) {
+          var syntax = " A Lonely Penny "
+        } else {
+          var syntax = " Pennies "
+        }
+
+        var output = $("#changeOut").val();
+        output = output + pennies + " " + syntax + " ";
+        $("#changeOut").val(output);
+      }
+
+
+
+
+    },
+    error: function(error) {
+      console.error("failure!");
+    }
+  });
+});
+
+$("#returnChange").click(function() {
+  $("#changeOut").val("");
+  var total = parseFloat($("#moneyIn").val());
+
+  total = parseInt(total * 100);
+
+  var quarters = Math.floor(total / 25);
+
+  total = total % 25;
+
+  var dimes = Math.floor(total / 10);
+
+  total = total % 10;
+
+  var nickels = Math.floor(total / 5);
+
+  var pennies = total % 5;
+
+
+
+  if (!(quarters === 0)) {
+    if (quarters === 1) {
+      var quartersyntax = " Quarter "
+    } else {
+      var quartersyntax = " Quarters "
+    }
+
+    var output = $("#changeOut").val();
+    output = output + quarters + " " + quartersyntax + " ";
+    $("#changeOut").val(output);
+  }
+
+  if (!(dimes === 0)) {
+    if (dimes === 1) {
+      var syntax = " Dime "
+    } else {
+      var syntax = " Dimes "
+    }
+
+    var output = $("#changeOut").val();
+    output = output + dimes + " " + syntax + " ";
+    $("#changeOut").val(output);
+  }
+
+  if (!(nickels === 0)) {
+    if (nickels === 1) {
+      var syntax = " Nickel "
+    } else {
+      var syntax = " Nickels "
+    }
+
+    var output = $("#changeOut").val();
+    output = output + nickels + " " + syntax + " ";
+    $("#changeOut").val(output);
+  }
+
+  if (!(pennies === 0)) {
+    if (pennies === 1) {
+      var syntax = " A Lonely Penny "
+    } else {
+      var syntax = " Pennies "
+    }
+
+    var output = $("#changeOut").val();
+    output = output + pennies + " " + syntax + " ";
+    $("#changeOut").val(output);
+  }
+
+  $("#moneyIn").val(0.00);
+
+});
+
+function displayItem(id) {
+  $("#itemOut").val(id);
+}

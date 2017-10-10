@@ -1,0 +1,6 @@
+1::Charmander::Fire::Description::Flavor::1.00::1.00::1
+2::Charmeleon::Fire::Description::Flavor::1.00::1.00::1
+3::Charizard::Fire::Description::Flavor::1.00::1.00::1
+4::Bulbasaur::Fire::Description::Flavor::1.00::1.00::1
+5::Ivysaur::Fire::Description::Flavor::1.00::1.00::1
+6::Venasaur::Fire::Description::Flavor::1.00::1.00::1
