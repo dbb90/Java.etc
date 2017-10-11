@@ -21,9 +21,11 @@
             <ul class="list-group" id="errors">
             </ul>
             <hr/>
-            <div class="col-md-8 column" style="text-align: center">
+           
+            <div class="col-md-8 column" id="itemsDiv" style="text-align: center">
+                <!--itemsDiv loaded from js - DEPRECATED-->
                 <c:forEach var="itemsArray" items="${items}">
-                    <div onclick="selectItem(${itemsArray.id})" class="col-md-3 col-md-offset-1" style='border: 1px solid black; padding-top: 12px; padding-right: 2px; padding-bottom: 12px; padding-left: 12px; margin: 12px 12px; cursor: pointer'>
+                    <div onclick="displayItem(${itemsArray.id})" class="col-md-3 col-md-offset-1" style='border: 1px solid black; padding-top: 12px; padding-right: 2px; padding-bottom: 12px; padding-left: 12px; margin: 12px 12px; cursor: pointer'>
                         ${itemsArray.id}
                         <br/><br/>
                         ${itemsArray.name}
@@ -74,8 +76,9 @@
                 <hr/>
             </div>
         </div>
+        <!--scripts at bottom to load page faster-->
         <script src="${pageContext.request.contextPath}/js/jquery-3.1.1.min.js"></script>
-        <script src="${pageContext.request.contextPath}/js/home.js"></script>
+        <script src="${pageContext.request.contextPath}/js/index.js"></script>
         <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
     </body>
 </html>

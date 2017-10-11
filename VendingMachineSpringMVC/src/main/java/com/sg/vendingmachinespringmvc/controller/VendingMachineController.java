@@ -28,4 +28,18 @@ public class VendingMachineController {
 
         return "index";
     }
+    
+    @RequestMapping(value = "/purchaseItem", method = RequestMethod.POST)
+    public String purchaseItem(Model model) {
+     
+      //  int itemid = 
+      //  dao.getItemById(itemid)
+      
+      //model.addAttribute("item", item);
+      
+         return null;
+       
+    }
+    
+    
 }

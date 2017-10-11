@@ -23,4 +23,6 @@ public interface VendingMachineDao {
    public List<Item> getAllItems();
 
    public Item getItemById(int itemId);
+   
+//   public int getChange(Change change);
 }

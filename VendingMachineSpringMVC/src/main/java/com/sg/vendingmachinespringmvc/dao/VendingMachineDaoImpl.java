@@ -119,6 +119,18 @@ public class VendingMachineDaoImpl implements VendingMachineDao {
     public Item getItemById(int itemId) {
         return items.get(itemId);
     }
+    
+//    @Override
+//    public int getChange(Change change) {
+//        int quarters = change.getQuarters();
+//        int dimes = change.getDimes();
+//        int nickels = change.getNickels();
+//        int pennies = change.getPennies();
+//
+//        
+//    }
 }
+
+
 
 
