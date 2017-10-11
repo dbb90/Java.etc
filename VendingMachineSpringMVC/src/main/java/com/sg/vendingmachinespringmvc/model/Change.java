@@ -16,6 +16,22 @@ public class Change {
     private int dimes;
     private int nickels;
     private int pennies;
+    
+
+    public Change(int totalPennies) {
+
+       this.quarters = Math.floorDiv(totalPennies, 25);
+       int penniesLeft = totalPennies - (this.quarters * 25);
+       
+       this.dimes = Math.floorDiv(penniesLeft, 10);
+       penniesLeft -= (this.dimes * 10);
+       
+       this.nickels = Math.floorDiv(penniesLeft, 5);
+       penniesLeft -= (this.nickels * 5);
+       
+       this.pennies = penniesLeft;
+   }
+
 
     public int getQuarters() {
         return quarters;

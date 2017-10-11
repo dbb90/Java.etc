@@ -23,26 +23,26 @@
             <hr/>
             <div class="col-md-8 column" style="text-align: center">
                 <c:forEach var="itemsArray" items="${items}">
-                    <div onclick="selectItem(${itemsArray.id})" class="col-md-3 col-md-offset-1" style='border: 1px solid black; padding-top: 12px; padding-right: 2px; padding-bottom: 12px; padding-left: 12px; margin: 12px 12px'>
-                        ${currentItem.id}
+                    <div onclick="selectItem(${itemsArray.id})" class="col-md-3 col-md-offset-1" style='border: 1px solid black; padding-top: 12px; padding-right: 2px; padding-bottom: 12px; padding-left: 12px; margin: 12px 12px; cursor: pointer'>
+                        ${itemsArray.id}
                         <br/><br/>
-                        ${currentItem.name}
+                        ${itemsArray.name}
                         <br/><br/>
-                        ${currentItem.price}
+                        ${itemsArray.price}
                         <br/><br/>
-                        ${currentItem.quantity}
+                        ${itemsArray.quantity}
                     </div>
                 </c:forEach>
             </div>
             <div class="col-md-4 column" id="buttonsDiv">
                 <div id="totalIn" class="col-md-12 row">
                     <h2>Total $ In</h2>
-                    <input type="number" value="0.00" id="moneyIn" readonly><br/>
+                    <input type="number" value="0.00" id="moneyIn" value="${userBalance}" readonly><br/>
                     <div class="btn-group">
-                        <button type="button" id="addDollar" width="120px" class="btn btn-default">Add Dollar</button>
+                        <button type="button" id="addDollar" class="btn btn-default">Add Dollar</button>
                         <button type="button" id="addQuarter" class="btn btn-default">Add Quarter</button>
-                        <br/>
-                        <button type="button" id="addDime" width="120px" class="btn btn-default" style="padding-right: 15px;padding-left: 15px">Add dime</button>
+                        <br/><br/>
+                        <button type="button" id="addDime" class="btn btn-default" style="padding-right: 15px;padding-left: 15px">Add dime</button>
                         <button id="addNickel" class="btn btn-default" style="padding-right: 18px;padding-left: 16px">Add Nickel</button>
                     </div>
                     <hr/>
@@ -50,7 +50,7 @@
                 <div id="messages" class="col-md-12 row">
                     <div>
                         <h2>Messages</h2>
-                        <input type="text" id="messageOut" readonly style="padding-left: 37px"><br/>
+                        <input type="text" id="messageOut" value="${message}" readonly style="padding-left: 37px"><br/>
                     </div>
                     <div>
                         <label for="itemOut">Item:</label>
@@ -64,7 +64,7 @@
                 <div id="change" class="col-md-12 row">
                     <div>
                         <h2>Change</h2>
-                        <input type="text" id="changeOut" name="changeOut">
+                        <input type="text" id="changeOut" name="changeOut" value="${change}" readonly>
                     </div>
                     <div>
                         <button type="button" class="btn btn-default" id="returnChange">Change Return</button>
