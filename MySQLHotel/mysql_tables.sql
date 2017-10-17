@@ -112,3 +112,4 @@ Total NUMERIC NOT NULL,
 PRIMARY KEY(Billid),
 FOREIGN KEY(Resid) REFERENCES Res(Resid)
 );
+
