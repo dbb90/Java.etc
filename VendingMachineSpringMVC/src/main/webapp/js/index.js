@@ -101,3 +101,77 @@ $("Document").ready(function () {
 function displayItem(id) {
   $("#itemOut").val(id);
 }
+
+//function purchaseItem (id, money) {
+//      $("#messageOut").val("Thank You!!!");
+//      $("#itemOut").empty();
+//      $("#moneyIn").val(0.00);
+//      $("itemsDiv").empty();
+//
+//
+//      $("#changeOut").val("");
+//      var quarters = parseInt(data.quarters);
+//      var dimes = parseInt(data.dimes);
+//      var nickels = parseInt(data.nickels);
+//      var pennies = parseInt(data.pennies);
+//
+//
+//      if (!(id.quarters === 0)) {
+//        if (id.quarters === 1) {
+//          var quartersyntax = " Quarter "
+//        } else {
+//          var quartersyntax = " Quarters "
+//        }
+//
+//        var output = $("#changeOut").val();
+//        output = output + quarters + " " + quartersyntax + " ";
+//        $("#changeOut").val(output);
+//
+//      }
+//
+//
+//      if (!(dimes === 0)) {
+//        if (dimes === 1) {
+//          var syntax = " Dime "
+//        } else {
+//          var syntax = " Dimes "
+//        }
+//
+//        var output = $("#changeOut").val();
+//        output = output + dimes + " " + syntax + " ";
+//        $("#changeOut").val(output);
+//      }
+//
+//      if (!(nickels === 0)) {
+//        if (nickels === 1) {
+//          var syntax = " Nickel "
+//        } else {
+//          var syntax = " Nickels "
+//        }
+//
+//        var output = $("#changeOut").val();
+//        output = output + nickels + " " + syntax + " ";
+//        $("#changeOut").val(output);
+//      }
+//
+//      if (!(pennies === 0)) {
+//        if (pennies === 1) {
+//          var syntax = " A Lonely Penny "
+//        } else {
+//          var syntax = " Pennies "
+//        }
+//
+//        var output = $("#changeOut").val();
+//        output = output + pennies + " " + syntax + " ";
+//        $("#changeOut").val(output);
+//      }
+//
+//
+//
+//
+//    },
+//    error: function(error) {
+//      console.error("failure!");
+//    }
+//  });
+//});

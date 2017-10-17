@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Vending Machine</title>
   <!-- Bootstrap CSS -->
@@ -21,59 +22,60 @@
 }
 </style>
 -->
+
 <body>
-      <div class="container-fluid">
-          <h1 style="text-align: center">
+  <div class="container-fluid">
+    <h1 style="text-align: center">
             Vending Machine</h1>
-          <ul class="list-group" id="errors">
-          </ul>
-          <hr/>
+    <ul class="list-group" id="errors">
+    </ul>
+    <hr/>
     <div class="column col-md-8" id="itemsDiv" style="text-align: center">
-<!--itemsDiv loaded from js-->
+      <!--itemsDiv loaded from js-->
     </div>
     <div class="col-md-4 column" id="buttonsDiv">
-        <div id="totalIn" class="col-md-12 row">
-            <h2>Total $ In</h2>
-            <input type="number" value="0.00" id="moneyIn" readonly><br/>
-            <div class="btn-group">
-   <button type="button" id="addDollar" width="120px" class="btn btn-default">Add Dollar</button>
-   <button type="button"id="addQuarter" class="btn btn-default">Add Quarter</button>
- <br/>
-   <button type="button"id="addDime" width="120px" class="btn btn-default" style="padding-right: 15px;padding-left: 15px">Add dime</button>
-   <button id="addNickel" class="btn btn-default" style="padding-right: 18px;padding-left: 16px">Add Nickel</button>
-</div>
-            <hr/>
+      <div id="totalIn" class="col-md-12 row">
+        <h2>Total $ In</h2>
+        <input type="number" value="0.00" id="moneyIn" readonly><br/>
+        <div class="btn-group">
+          <button type="button" id="addDollar" width="120px" class="btn btn-default">Add Dollar</button>
+          <button type="button" id="addQuarter" class="btn btn-default">Add Quarter</button>
+          <br/>
+          <button type="button" id="addDime" width="120px" class="btn btn-default" style="padding-right: 15px;padding-left: 15px">Add dime</button>
+          <button id="addNickel" class="btn btn-default" style="padding-right: 18px;padding-left: 16px">Add Nickel</button>
         </div>
-        <div id="messages" class="col-md-12 row">
-            <div>
-                <h2>Messages</h2>
-                <input type="text" id="messageOut" readonly  style="padding-left: 37px"><br/>
-            </div>
-            <div>
-                <label for="itemOut">Item:</label>
-                <input type="number" id="itemOut" min="0">
-            </div>
-            <div>
-                <button id="makePurchase" class="btn btn-default">Make Purchase</button>
-                <hr/>
-            </div>
-          </div>
-            <div id="change" class="col-md-12 row">
-                <div>
-                    <h2>Change</h2>
-                    <input type="text" id="changeOut" name="changeOut">
-                </div>
-                <div>
-                    <button type="button" class="btn btn-default" id="returnChange">Change Return</button>
-                </div>
-                <hr/>
-            </div>
-            <hr/>
+        <hr/>
+      </div>
+      <div id="messages" class="col-md-12 row">
+        <div>
+          <h2>Messages</h2>
+          <input type="text" id="messageOut" readonly style="padding-left: 37px"><br/>
         </div>
+        <div>
+          <label for="itemOut">Item:</label>
+          <input type="number" id="itemOut" min="0" readonly>
+        </div>
+        <div>
+          <button id="makePurchase" class="btn btn-default">Make Purchase</button>
+          <hr/>
+        </div>
+      </div>
+      <div id="change" class="col-md-12 row">
+        <div>
+          <h2>Change</h2>
+          <input type="text" id="changeOut" name="changeOut" readonly>
+        </div>
+        <div>
+          <button type="button" class="btn btn-default" id="returnChange">Change Return</button>
+        </div>
+        <hr/>
+      </div>
+      <hr/>
     </div>
   </div>
 
-<!--scripts at bottom to load page faster-->
+
+  <!--scripts at bottom to load page faster-->
   <script src="js/jquery-2.2.4.min.js"></script>
   <script src="js/bootstrap.js"></script>
   <script src="js/home.js"></script>

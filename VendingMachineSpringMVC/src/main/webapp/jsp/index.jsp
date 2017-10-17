@@ -56,7 +56,7 @@
                     </div>
                     <div>
                         <label for="itemOut">Item:</label>
-                        <input type="number" id="itemOut" min="0">
+                        <input type="number" id="itemOut" min="0" readonly>
                     </div>
                     <div>
                         <button id="makePurchase" class="btn btn-default">Make Purchase</button>
