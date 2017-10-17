@@ -4,8 +4,10 @@ DROP DATABASE IF EXISTS SGHotel;
 CREATE DATABASE SGHotel;
 USE SGHotel;
 
--- Creating our Type and room tables
-CREATE TABLE Type
+-- Creating our Type and room tables 
+-- naming a table Type ran fine but messed with the Workbench parser, modified
+
+CREATE TABLE RoomType
 
 (Typeid INT NOT NULL,
 TypeName VARCHAR(255),
@@ -17,12 +19,10 @@ CREATE TABLE Rooms
 (RoomNum INT NOT NULL,
 FloorNum INT NOT NULL,
 MaxOcc INT NOT NULL,
-Type INT NOT NULL,
+RoomType INT NOT NULL,
 PRIMARY KEY(RoomNum),
-FOREIGN KEY(Type) REFERENCES Type(Typeid)
+FOREIGN KEY(RoomType) REFERENCES RoomType(Typeid)
 );
-
--- this is a bridge
 
 CREATE TABLE TypeRate(
 
@@ -32,13 +32,13 @@ Price NUMERIC,
 DateStart DATE,
 DateLast DATE,
 PRIMARY KEY(TypeRateid),
-FOREIGN KEY(Typeid)REFERENCES Type(Typeid));
+FOREIGN KEY(Typeid)REFERENCES RoomType(Typeid));
 
 create table Amenities(
 
 Amenityid INT NOT NULL,
 AmType VARCHAR(255),
-Price numeric,
+Price NUMERIC,
 PRIMARY KEY(Amenityid)
 );
 
@@ -47,8 +47,8 @@ create table RoomsAmenities(
 RoomsAmenitiesid INT,
 Roomid INT NOT NULL,
 Amenityid INT NOT NULL,
-PRIMARY KEY(RoomAmenitiesid),
-FOREIGN KEY(Roomid) REFERENCES Room(RoomNum),
+PRIMARY KEY(RoomsAmenitiesid),
+FOREIGN KEY(Roomid) REFERENCES Rooms(RoomNum),
 FOREIGN KEY(Amenityid) REFERENCES Amenities(Amenityid));
 
 create table Customer(
