@@ -33,8 +33,8 @@ function loadItems() {
       });
 
     },
-    error: function() {
-      console.error();
+    error: function(error) {
+      $("#messageOut").val(error.responseJSON.message);
     }
   });
 }
@@ -68,7 +68,11 @@ $("#makePurchase").click(function() {
 
 
 
+
   var item = $("#itemOut").val();
+
+
+
   var userBalance = parseFloat($("#moneyIn").val());
   userBalance = userBalance.toFixed(2);
 
@@ -85,6 +89,7 @@ $("#makePurchase").click(function() {
       $("itemsDiv").empty();
 
       loadItems();
+
 
       $("#changeOut").val("");
       var quarters = parseInt(data.quarters);
@@ -144,12 +149,12 @@ $("#makePurchase").click(function() {
       }
 
 
-
-
     },
     error: function(error) {
-      console.error("failure!");
+      $("#messageOut").val(error.responseJSON.message);
     }
+
+
   });
 });
 
