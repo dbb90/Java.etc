@@ -42,11 +42,8 @@
     </bean>
     
     <!-- make the dang testDao bean so that we can use it. @Inject might have worked on the test constructor but that's probably pushing it -->    
-    <bean id="testHeroDaoBean" class="com.sguild.superheroes.dao.HeroesDaoJdbcIml">
+    <bean id="testMasterDaoBean" class="com.sguild.superheroes.dao.MasterDaoJdbcIml">
         <constructor-arg ref="jdbcTemplateBean" />
     </bean>
     
-        <bean id="testPowerDaoBean" class="com.sguild.superheroes.dao.PowersDaoJdbcIml">
-        <constructor-arg ref="jdbcTemplateBean" />
-    </bean>
 </beans>

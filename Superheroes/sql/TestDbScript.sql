@@ -35,11 +35,25 @@ Villain BOOLEAN NOT NULL DEFAULT 0,
 PRIMARY KEY(Heroid))
 ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
+-- Team Venture
+INSERT INTO HEROES (Heroid, HeroName, HeroDesc, Villain) values (1, "Dr. Thaddeus Venture", "Dubious super-scientist and unworthy successor of the late Jonas Venture.", false);
+INSERT INTO HEROES (Heroid, HeroName, HeroDesc, Villain) values (2, "Hank Venture", "One of the Venture twins, son of Thaddeus. Is more interested in sports and adventure than science.", false);
+INSERT INTO HEROES (Heroid, HeroName, HeroDesc, Villain) values (2, "Dean Venture", "the other Venture twin, son of Thaddeus. The more science-minded son, as well as the most awkward.", false);
+INSERT INTO HEROES (Heroid, HeroName, HeroDesc, Villain) values (2, "Sergeant Hatred", "Massive bodyguard of Dr. Venture. A former supervillain, and apparently reformed(behavior modified) pedophile.", false);
+INSERT INTO HEROES (Heroid, HeroName, HeroDesc, Villain) values (2, "H.E.L.P.eR.", "Helpful Electronic Lab Partner Robot", false);
+INSERT INTO HEROES (Heroid, HeroName, HeroDesc, Villain) values (2, "Master Billy Quizboy", "Hydrocephalic; eye-patch; self-proclaimed boy genius; bionic arm; speech impediment", false);
+INSERT INTO HEROES (Heroid, HeroName, HeroDesc, Villain) values (2, "Pete White", "An albino computer technologist, and co-founder of 'Conjectural Technologies' along with Billy Quizboy. ", false);
+INSERT INTO HEROES (Heroid, HeroName, HeroDesc, Villain) values (2, "Dr. Orpheus", "A melodramatic necromancer", false);
+INSERT INTO HEROES (Heroid, HeroName, HeroDesc, Villain) values (2, "Jonas Venture Jr.", "", false);
+INSERT INTO HEROES (Heroid, HeroName, HeroDesc, Villain) values (2, "Brock Samson", "", false);
 
-
-INSERT INTO Heroes (HeroName) VALUES
-("Superman"), ("Batman"), ("The Flash"), 
-("The Joker"), ("Powdered Toast Man"), ("Quail Boy");
+INSERT INTO HEROES (Heroid, HeroName, HeroDesc, Villain) values (2, "", "", false);
+INSERT INTO HEROES (Heroid, HeroName, HeroDesc, Villain) values (2, "", "", false);
+INSERT INTO HEROES (Heroid, HeroName, HeroDesc, Villain) values (2, "", "", false);
+INSERT INTO HEROES (Heroid, HeroName, HeroDesc, Villain) values (2, "", "", false);
+INSERT INTO HEROES (Heroid, HeroName, HeroDesc, Villain) values (2, "", "", false);
+INSERT INTO HEROES (Heroid, HeroName, HeroDesc, Villain) values (2, "", "", false);
+INSERT INTO HEROES (Heroid, HeroName, HeroDesc, Villain) values (2, "", "", false);
 
 CREATE TABLE HeroesPowers(
 
@@ -71,6 +85,31 @@ OrgDesc VARCHAR(255),
 PRIMARY KEY(Orgid)
 );
 
+
+INSERT INTO ORGS (Orgid, OrgName, OrgDesc) VALUES (1, "Team Venture", "Dr. Thaddeus Venture, his boys Hank and Dean, and Brock Samson reluctantly save the world.");
+INSERT INTO ORGS (Orgid, OrgName, OrgDesc) VALUES (2, "Crusaders Action League", "The CAL offers protection against all threats, be they terrestrial, extra-terrestrial or super-natural in origin.  Not for free, of course.");
+INSERT INTO ORGS (Orgid, OrgName, OrgDesc) VALUES (3, "Order of the Triad", "The Order reunited when the Guild finally approved Orpheus' numerous petitions for a supervillain archenemy.");
+INSERT INTO ORGS (Orgid, OrgName, OrgDesc) VALUES (4, "The Fluttering Horde", "The (mighty) Monarch's band of henchmen.");
+INSERT INTO ORGS (Orgid, OrgName, OrgDesc) VALUES (5, "Guild of Calamitous Intent", "The Guild of Calamitous Intent is the largest organized labor group representing supervillains. Its direct competitors are The Peril Partnership and the Fraternity of Torment.");
+INSERT INTO ORGS (Orgid, OrgName, OrgDesc) VALUES (6, "Peril Partnership", "Even less competent than the Fraternity of Torment.  That's a feat, at least.");
+INSERT INTO ORGS (Orgid, OrgName, OrgDesc) VALUES (7, "Fraternity of Torment", "A Canadian alternative to the monolithic Guild of Calamitous Intent.  Sad!");
+INSERT INTO ORGS (Orgid, OrgName, OrgDesc) VALUES (8, "Council of 13", "The governing body of the Guild of Calamitous Intent, they only answer to the Sovereign.");
+INSERT INTO ORGS (Orgid, OrgName, OrgDesc) VALUES (9, "The Revenge Society", "The Revenge Society was founded by Phantom Limb after he was removed from The Guild of Calamitous Intent for staging a coup against the Sovereign David Bowie.");
+INSERT INTO ORGS (Orgid, OrgName, OrgDesc) VALUES (10, "S.P.H.I.N.X.", "A terrorist organization and enemy of the Office of Secret Intelligence until its defeat in the Pyramid Wars of 1987. The S.P.H.I.N.X. was later revived.");
+INSERT INTO ORGS (Orgid, OrgName, OrgDesc) VALUES (11, "O.S.I.", "A government agency that (usually) protects the world from evil and is the primary nemesis of The Guild of Calamitous Intent. ");
+
+
+CREATE TABLE HeroesOrgs(
+Heroid INT NOT NULL,
+Orgid INT NOT NULL,
+FOREIGN KEY(Heroid) REFERENCES Heroes(Heroid),
+FOREIGN KEY(Orgid) REFERENCES Orgs(Orgid)
+);
+
+insert into HEROESORGS (HeroesOrgsid, Heroid, Orgid) values (1, 1, 1);
+
+
+
 CREATE TABLE Locs(
 
 Locid INT NOT NULL,
@@ -97,12 +136,6 @@ FOREIGN KEY(Heroid) REFERENCES Heroes(Heroid),
 FOREIGN KEY(Sightingid) REFERENCES Sightings(Sightingid)
 );
 
-CREATE TABLE HeroesOrgs(
-Heroid INT NOT NULL,
-Orgid INT NOT NULL,
-FOREIGN KEY(Heroid) REFERENCES Heroes(Heroid),
-FOREIGN KEY(Orgid) REFERENCES Orgs(Orgid)
-);
 
 
 

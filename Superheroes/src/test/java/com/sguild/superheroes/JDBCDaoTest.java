@@ -5,8 +5,7 @@
  */
 package com.sguild.superheroes;
 
-import com.sguild.superheroes.dao.HeroesDao;
-import com.sguild.superheroes.dao.PowersDao;
+import com.sguild.superheroes.dao.MasterDao;
 import com.sguild.superheroes.dto.Hero;
 import com.sguild.superheroes.dto.Power;
 import java.util.List;
@@ -20,14 +19,13 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class JDBCDaoTest {
 
-    HeroesDao testHeroDao;
-    PowersDao testPowerDao;
+    MasterDao testMasterDao;
 
     public JDBCDaoTest() {
 
         ApplicationContext factory = new ClassPathXmlApplicationContext("test-applicationContext.xml");
-        testHeroDao = factory.getBean(HeroesDao.class);
-        testPowerDao = factory.getBean(PowersDao.class);
+        testMasterDao = factory.getBean(MasterDao.class);
+     
 
     }
 
@@ -39,35 +37,35 @@ public class JDBCDaoTest {
     @Test
     public void testConnection() {
         System.out.println("Testing...");
-        List<Power> powers = testPowerDao.getAllPowers();
-        Hero heroAdded = testHeroDao.addHero(new Hero(9, "The Bat", "Hank Venture in a most convincing costume",
+        List<Power> powers = testMasterDao.getAllPowers();
+        Hero heroAdded = testMasterDao.addHero(new Hero(9, "The Bat", "Hank Venture in a most convincing costume",
                 false, powers)
         );
 
         System.out.println("THE ID: " + heroAdded.getHeroid());
 
         System.out.println("List of heroes:");
-        for (Hero hero : testHeroDao.getAllHeroes()) {
+        for (Hero hero : testMasterDao.getAllHeroes()) {
             System.out.println(hero.getHeroName());
             System.out.println(hero.getHeroDesc());
             System.out.println(hero.getVillain());
         }
 
         System.out.println("Hero # 9:");
-        Hero hero = testHeroDao.getHero(8);
+        Hero hero = testMasterDao.getHero(8);
         System.out.println(hero.getHeroName());
         System.out.println(hero.getHeroDesc());
         System.out.println(hero.getVillain());
         
-        List<Hero> heroes = testHeroDao.getAllHeroes();
+        List<Hero> heroes = testMasterDao.getAllHeroes();
 
-        Power powerAdded = testPowerDao.addPower(new Power(7, "Invincibility",
+        Power powerAdded = testMasterDao.addPower(new Power(7, "Invincibility",
                 "untouchable!"));
 
         System.out.println("THE ID: " + powerAdded.getPowerid());
 
         System.out.println("List of powers:");
-        for (Power power : testPowerDao.getAllPowers()) {
+        for (Power power : testMasterDao.getAllPowers()) {
             System.out.println(power.getPowerName());
             System.out.println(power.getPowerDesc());
         }
@@ -81,8 +79,8 @@ public class JDBCDaoTest {
         int maximum = heroes.size();
         int i = 1;
         while (i < maximum) {
-        Hero heroToCheck = testHeroDao.getHero(i);
-        heroToCheck.setPowers(testHeroDao.getPowersOfHero(heroToCheck));
+        Hero heroToCheck = testMasterDao.getHero(i);
+        heroToCheck.setPowers(testMasterDao.getPowersOfHero(heroToCheck));
         System.out.println(heroToCheck.getPowers());
         i++;
         }
