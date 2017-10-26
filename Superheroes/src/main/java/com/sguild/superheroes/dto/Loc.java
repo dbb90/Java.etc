@@ -29,6 +29,7 @@ public class Loc {
     private String locName;
     private String locDesc;
     private String locAddress;
-    private String locLatLong;
+    private String locLat;
+    private String locLong;
 
 }

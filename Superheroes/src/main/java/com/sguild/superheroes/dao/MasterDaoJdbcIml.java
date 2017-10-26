@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 package com.sguild.superheroes.dao;
+
+import com.sguild.superheroes.dto.Contact;
 import com.sguild.superheroes.dto.Hero;
 import com.sguild.superheroes.dto.Loc;
 import com.sguild.superheroes.dto.Org;
@@ -32,7 +34,6 @@ public class MasterDaoJdbcIml implements MasterDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    
 //    _    _                          _____              
 //   | |  | |                        |  __ \             
 //   | |__| | ___ _ __ ___   ___  ___| |  | | __ _  ___  
@@ -41,8 +42,6 @@ public class MasterDaoJdbcIml implements MasterDao {
 //   |_|  |_|\___|_|  \___/ \___||___/_____/ \__,_|\___/ 
 //                                                       
 //   
-    
-    
     private static final String SQL_ADD_HERO
             = "INSERT INTO Heroes (heroname, herodesc, villain)"
             //            + " VALUES('Dont Starve', 'PC', 'Fantasyish Survival', 'Klei', 11)";
@@ -121,8 +120,7 @@ public class MasterDaoJdbcIml implements MasterDao {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    
-        private static final String SQL_SELECT_POWERS_BY_HEROID
+    private static final String SQL_SELECT_POWERS_BY_HEROID
             = "select powers.powerid, powers.powername, powers.powerdesc from powers join heroespowers on powers.powerid = heroespowers.powerid where heroespowers.heroid = ?";
 
     @Override
@@ -132,8 +130,6 @@ public class MasterDaoJdbcIml implements MasterDao {
                 heroToCheck.getHeroid());
     }
 
-    
-    
 //    _____                           _____              
 //   |  __ \                         |  __ \             
 //   | |__) |____      _____ _ __ ___| |  | | __ _  ___  
@@ -142,7 +138,7 @@ public class MasterDaoJdbcIml implements MasterDao {
 //   |_|   \___/ \_/\_/ \___|_|  |___/_____/ \__,_|\___/ 
 //                                                       
 // 
-        private static final String SQL_ADD_Power
+    private static final String SQL_ADD_Power
             = "INSERT INTO powers (Powername, Powerdesc)"
             + " VALUES(?, ?)";
 
@@ -185,7 +181,6 @@ public class MasterDaoJdbcIml implements MasterDao {
 
     }
 
-
     private static final String SQL_UPDATE_Power
             = "update powers set Powername = ?, Powerdesc = ? where Powerid =  ?";
 
@@ -218,9 +213,6 @@ public class MasterDaoJdbcIml implements MasterDao {
     public Power removeAndReturnPower(int powerid) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    
-    
 
 //   ____                _____              
 //  / __ \              |  __ \             
@@ -230,9 +222,6 @@ public class MasterDaoJdbcIml implements MasterDao {
 //  \____/|_|  \__, |___/_____/ \__,_|\___/ 
 //              __/ |                       
 //             |___/                        
-
-
-    
     private static final String SQL_ADD_ORG
             = "INSERT INTO Orgs (orgname, orgdesc)"
             //            + " VALUES('Dont Starve', 'PC', 'Fantasyish Survival', 'Klei', 11)";
@@ -309,8 +298,7 @@ public class MasterDaoJdbcIml implements MasterDao {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    
-        private static final String SQL_SELECT_HEROES_BY_ORGID
+    private static final String SQL_SELECT_HEROES_BY_ORGID
             = "select heroes.heroid, heroes.heroname, heroes.herodesc, heroes.villain from heroes join heroesorgs on heroes.heroid = heroesorgs.heroid where heroesorgs.orgid = ?";
 
     @Override
@@ -320,51 +308,309 @@ public class MasterDaoJdbcIml implements MasterDao {
                 orgToCheck.getOrgid());
     }
 
+//
+//  _                _____              
+// | |              |  __ \             
+// | |     ___   ___| |  | | __ _  ___  
+// | |    / _ \ / __| |  | |/ _` |/ _ \ 
+// | |___| (_) | (__| |__| | (_| | (_) |
+// |______\___/ \___|_____/ \__,_|\___/ 
+//                                      
+    private static final String SQL_ADD_LOC
+            = "INSERT INTO LOCS (locname, locdesc, locaddress, loclat, loclong"
+            //            + " VALUES('Dont Starve', 'PC', 'Fantasyish Survival', 'Klei', 11)";
+            + " VALUES(?, ?, ?, ?, ?)";
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+    public Loc addLoc(Loc locToAdd) {
+
+        // First do the insert
+        jdbcTemplate.update(SQL_ADD_LOC,
+                locToAdd.getLocName(),
+                locToAdd.getLocDesc(),
+                locToAdd.getLocAddress(),
+                locToAdd.getLocLat(),
+                locToAdd.getLocLong());
+
+        // Then get the id
+        int myId = jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
+        // Then stuff it in the object
+        locToAdd.setLocid(myId);
+        return locToAdd;
+    }
+
+    private static final String SQL_GET_ALL_LOCS = "SELECT * FROM Locs";
+
+    @Override
+    public List<Loc> getAllLocs() {
+
+        List<Loc> theDatabaseLocs
+                = jdbcTemplate.query(SQL_GET_ALL_LOCS, new LocMapper());
+        return theDatabaseLocs;
+
+    }
+
+    private static final String SQL_GET_LOC_BY_LOCID = "SELECT * FROM Locs WHERE locid = ?";
+
+    @Override
+    public Loc getLoc(int locid) {
+        try {
+            return jdbcTemplate.queryForObject(SQL_GET_LOC_BY_LOCID, new LocMapper(), locid);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    private static final String SQL_UPDATE_LOC
+            = "update locs set locname = ?, locdesc = ?, locaddress = ?, loclatlong = ? where locid =  ?";
+
+    @Override
+    public void updateLoc(Loc locToUpdate) {
+        jdbcTemplate.update(SQL_UPDATE_LOC,
+                locToUpdate.getLocName(),
+                locToUpdate.getLocDesc(),
+                locToUpdate.getLocAddress(),
+                locToUpdate.getLocLat(),
+                locToUpdate.getLocLong());
+    }
+
+    private static final String SQL_DELETE_LOC_BY_NAME
+            = "delete from locs where locname = ?";
+
+    @Override
+    public Loc removeLoc(Loc locToRemove) {
+        jdbcTemplate.update(SQL_DELETE_LOC_BY_NAME, locToRemove);
+        return locToRemove;
+    }
+
+    private static final String SQL_DELETE_LOC
+            = "delete from locs where locid = ?";
+
+    @Override
+    public void removeLoc(int locid) {
+        jdbcTemplate.update(SQL_DELETE_LOC, locid);
+    }
+
+    @Override
+    public Loc removeAndReturnLoc(int locid) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+//   _____ _       _     _   _             _____              
+//  / ____(_)     | |   | | (_)           |  __ \             
+// | (___  _  __ _| |__ | |_ _ _ __   __ _| |  | | __ _  ___  
+//  \___ \| |/ _` | '_ \| __| | '_ \ / _` | |  | |/ _` |/ _ \ 
+//  ____) | | (_| | | | | |_| | | | | (_| | |__| | (_| | (_) |
+// |_____/|_|\__, |_| |_|\__|_|_| |_|\__, |_____/ \__,_|\___/ 
+//            __/ |                   __/ |                   
+//           |___/                   |___/                    
+    private static final String SQL_ADD_SIGHTING
+            = "INSERT INTO SIGHTINGS (locid, datesighted)"
+            //            + " VALUES('Dont Starve', 'PC', 'Fantasyish Survival', 'Klei', 11)";
+            + " VALUES(?, ?)";
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+    public Sighting addSighting(Sighting sightingToAdd) {
+
+        // First do the insert
+        jdbcTemplate.update(SQL_ADD_SIGHTING,
+                sightingToAdd.getLocid(),
+                sightingToAdd.getDateSighted());
+
+        // Then get the id
+        int myId = jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
+        // Then stuff it in the object
+        sightingToAdd.setLocid(myId);
+        return sightingToAdd;
+    }
+
+    private static final String SQL_GET_ALL_SIGHTINGS = "SELECT * FROM Sightings";
+
+    @Override
+    public List<Sighting> getAllSightings() {
+
+        List<Sighting> theDatabaseSightings
+                = jdbcTemplate.query(SQL_GET_ALL_SIGHTINGS, new SightingMapper());
+        return theDatabaseSightings;
+
+    }
+
+    private static final String SQL_GET_SIGHTING_BY_SIGHTINGID = "SELECT * FROM Sightings WHERE sightingid = ?";
+
+    @Override
+    public Sighting getSighting(int sightingid) {
+        try {
+            return jdbcTemplate.queryForObject(SQL_GET_SIGHTING_BY_SIGHTINGID, new SightingMapper(), sightingid);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    private static final String SQL_UPDATE_SIGHTING
+            = "update sightings set locid = ?, datesighted = ? where sightingid =  ?";
+
+    @Override
+    public void updateSighting(Sighting sightingToUpdate) {
+        jdbcTemplate.update(SQL_UPDATE_SIGHTING,
+                sightingToUpdate.getLocid(),
+                sightingToUpdate.getDateSighted());
+    }
+
+    private static final String SQL_DELETE_SIGHTING_BY_LOCID
+            = "delete from sightings where locid = ?";
+
+    @Override
+    public Sighting removeSighting(Sighting sightingToRemove) {
+        jdbcTemplate.update(SQL_DELETE_SIGHTING_BY_LOCID, sightingToRemove);
+        return sightingToRemove;
+    }
+
+    private static final String SQL_DELETE_SIGHTING
+            = "delete from sightings where sightingid = ?";
+
+    @Override
+    public void removeSighting(int sightingid) {
+        jdbcTemplate.update(SQL_DELETE_SIGHTING, sightingid);
+    }
+
+    @Override
+    public Sighting removeAndReturnSighting(int sightingid) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     
+    private static final String SQL_SELECT_HEROES_BY_SIGHTINGID
+            = "select heroes.heroid, heroes.heroname, heroes.herodesc, heroes.villain from heroes join heroessightings on heroes.heroid = heroessightings.heroid where heroessightings.sightingid = ?";
     
     
-    
-    
-    
-    
-    
+        @Override
+    public List<Hero> getHeroesSighted(Sighting sightingToCheck) {
+        return jdbcTemplate.query(SQL_SELECT_HEROES_BY_SIGHTINGID,
+                new HeroMapper(),
+                sightingToCheck.getSightingid());
+    }
     
     
 
-    
+    //
+//   _____            _             _   _____              
+//  / ____|          | |           | | |  __ \             
+// | |     ___  _ __ | |_ __ _  ___| |_| |  | | __ _  ___  
+// | |    / _ \| '_ \| __/ _` |/ __| __| |  | |/ _` |/ _ \ 
+// | |___| (_) | | | | || (_| | (__| |_| |__| | (_| | (_) |
+//  \_____\___/|_| |_|\__\__,_|\___|\__|_____/ \__,_|\___/ 
+//                                                         
+//   
+    private static final String SQL_ADD_CONTACT
+            = "INSERT INTO CONTACTS (contactid, orgid, locid, phone, email)"
+            //            + " VALUES('Dont Starve', 'PC', 'Fantasyish Survival', 'Klei', 11)";
+            + " VALUES(?, ?, ?, ?, ?)";
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+    public Contact addContact(Contact contactToAdd) {
+
+        // First do the insert
+        jdbcTemplate.update(SQL_ADD_CONTACT,
+                contactToAdd.getContactid(),
+                contactToAdd.getOrgid(),
+                contactToAdd.getLocid(),
+                contactToAdd.getPhone(),
+                contactToAdd.getEmail());
+
+        // Then get the id
+        int myId = jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
+        // Then stuff it in the object
+        contactToAdd.setLocid(myId);
+        return contactToAdd;
+    }
+
+    private static final String SQL_GET_ALL_CONTACTS = "SELECT * FROM Contacts";
+
+    @Override
+    public List<Contact> getAllContacts() {
+
+        List<Contact> theDatabaseContacts
+                = jdbcTemplate.query(SQL_GET_ALL_CONTACTS, new ContactMapper());
+        return theDatabaseContacts;
+
+    }
+
+    private static final String SQL_GET_CONTACT_BY_CONTACTID = "SELECT * FROM Contacts WHERE contactid = ?";
+
+    @Override
+    public Contact getContact(int contactid) {
+        try {
+            return jdbcTemplate.queryForObject(SQL_GET_CONTACT_BY_CONTACTID, new ContactMapper(), contactid);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    private static final String SQL_UPDATE_CONTACT
+            = "update contacts set orgid = ?, locid = ?, phone = ?, email = ? where contactid =  ?";
+
+    @Override
+    public void updateContact(Contact contactToUpdate) {
+        jdbcTemplate.update(SQL_UPDATE_CONTACT,
+                contactToUpdate.getOrgid(),
+                contactToUpdate.getLocid(),
+                contactToUpdate.getPhone(),
+                contactToUpdate.getEmail());
+    }
+
+    private static final String SQL_DELETE_CONTACT_BY_ORGID
+            = "delete from contacts where orgid = ?";
+
+    @Override
+    public Contact removeContact(Contact contactToRemove) {
+        jdbcTemplate.update(SQL_DELETE_CONTACT_BY_ORGID, contactToRemove);
+        return contactToRemove;
+    }
+
+    private static final String SQL_DELETE_CONTACT
+            = "delete from contacts where contacts = ?";
+
+    @Override
+    public void removeContact(int contactid) {
+        jdbcTemplate.update(SQL_DELETE_CONTACT, contactid);
+    }
+
+    @Override
+    public Contact removeAndReturnContact(int contactid) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     //   _                                                          
 //  | |__   ___ _ __ ___  _ __ ___   __ _ _ __  _ __   ___ _ __ 
 //  | '_ \ / _ \ '__/ _ \| '_ ` _ \ / _` | '_ \| '_ \ / _ \ '__|
 //  | | | |  __/ | | (_) | | | | | | (_| | |_) | |_) |  __/ |   
 //  |_| |_|\___|_|  \___/|_| |_| |_|\__,_| .__/| .__/ \___|_|   
 //                                       |_|   |_|              
-    
-    
     public static final class HeroMapper implements RowMapper<Hero> {
 
-    @Override
-    public Hero mapRow(ResultSet rs, int i) throws SQLException {
-        Hero heroFromRecord = new Hero();
+        @Override
+        public Hero mapRow(ResultSet rs, int i) throws SQLException {
+            Hero heroFromRecord = new Hero();
 
-        heroFromRecord.setHeroid(rs.getInt("heroid"));
+            heroFromRecord.setHeroid(rs.getInt("heroid"));
 
-        heroFromRecord.setHeroName(rs.getString("heroname"));
-        heroFromRecord.setHeroDesc(rs.getString("herodesc"));
-        heroFromRecord.setVillain(rs.getBoolean("villain"));
+            heroFromRecord.setHeroName(rs.getString("heroname"));
+            heroFromRecord.setHeroDesc(rs.getString("herodesc"));
+            heroFromRecord.setVillain(rs.getBoolean("villain"));
 
-        return heroFromRecord;
+            return heroFromRecord;
+        }
     }
-}
-    
+
 //                                                                      
 //   _ __   _____      _____ _ __ _ __ ___   __ _ _ __  _ __   ___ _ __ 
 //  | '_ \ / _ \ \ /\ / / _ \ '__| '_ ` _ \ / _` | '_ \| '_ \ / _ \ '__|
 //  | |_) | (_) \ V  V /  __/ |  | | | | | | (_| | |_) | |_) |  __/ |   
 //  | .__/ \___/ \_/\_/ \___|_|  |_| |_| |_|\__,_| .__/| .__/ \___|_|   
 //  |_|                                          |_|   |_|              
-    
-
     public static final class PowerMapper implements RowMapper<Power> {
 
         @Override
@@ -379,11 +625,7 @@ public class MasterDaoJdbcIml implements MasterDao {
             return powerFromRecord;
         }
     }
-    
-    
 
-                                                        
-                                                        
 //   ___  _ __ __ _ _ __ ___   __ _ _ __  _ __   ___ _ __ 
 //  / _ \| '__/ _` | '_ ` _ \ / _` | '_ \| '_ \ / _ \ '__|
 // | (_) | | | (_| | | | | | | (_| | |_) | |_) |  __/ |   
@@ -391,11 +633,7 @@ public class MasterDaoJdbcIml implements MasterDao {
 //             __/ |               | |   | |              
 //            |___/                |_|   |_|              
 //
-
-    
-    
-    
-        public static final class OrgMapper implements RowMapper<Org> {
+    public static final class OrgMapper implements RowMapper<Org> {
 
         @Override
         public Org mapRow(ResultSet rs, int i) throws SQLException {
@@ -409,9 +647,6 @@ public class MasterDaoJdbcIml implements MasterDao {
             return orgFromRecord;
         }
     }
-    
-    
-    
 
 //      _       _     _   _                                                   
 //     (_)     | |   | | (_)                                                  
@@ -422,9 +657,7 @@ public class MasterDaoJdbcIml implements MasterDao {
 //         __/ |                   __/ |               | |   | |              
 //        |___/                   |___/                |_|   |_|              
 //
-
-        
-        public static final class SightingMapper implements RowMapper<Sighting> {
+    public static final class SightingMapper implements RowMapper<Sighting> {
 
         @Override
         public Sighting mapRow(ResultSet rs, int i) throws SQLException {
@@ -438,40 +671,6 @@ public class MasterDaoJdbcIml implements MasterDao {
             return sightingFromRecord;
         }
     }
-    
-    
-
-//
-//  _                _____              
-// | |              |  __ \             
-// | |     ___   ___| |  | | __ _  ___  
-// | |    / _ \ / __| |  | |/ _` |/ _ \ 
-// | |___| (_) | (__| |__| | (_| | (_) |
-// |______\___/ \___|_____/ \__,_|\___/ 
-//                                      
-                                      
-
-
-        
-        
-        
-
-
-//   _____ _       _     _   _             _____              
-//  / ____(_)     | |   | | (_)           |  __ \             
-// | (___  _  __ _| |__ | |_ _ _ __   __ _| |  | | __ _  ___  
-//  \___ \| |/ _` | '_ \| __| | '_ \ / _` | |  | |/ _` |/ _ \ 
-//  ____) | | (_| | | | | |_| | | | | (_| | |__| | (_| | (_) |
-// |_____/|_|\__, |_| |_|\__|_|_| |_|\__, |_____/ \__,_|\___/ 
-//            __/ |                   __/ |                   
-//           |___/                   |___/                    
-
-
-        
-        
-        
-        
-
 
 //  _                                                  
 // | |                                                 
@@ -483,9 +682,7 @@ public class MasterDaoJdbcIml implements MasterDao {
 //                              |_|   |_|              
 //
 //
-
-    
-        public static final class LocMapper implements RowMapper<Loc> {
+    public static final class LocMapper implements RowMapper<Loc> {
 
         @Override
         public Loc mapRow(ResultSet rs, int i) throws SQLException {
@@ -495,10 +692,35 @@ public class MasterDaoJdbcIml implements MasterDao {
             locFromRecord.setLocName(rs.getString("locname"));
             locFromRecord.setLocDesc(rs.getString("locdesc"));
             locFromRecord.setLocAddress(rs.getString("locaddress"));
-            locFromRecord.setLocLatLong(rs.getString("loclatlong"));
+            locFromRecord.setLocLat(rs.getString("loclat"));
+            locFromRecord.setLocLong(rs.getString("loclong"));
 
             return locFromRecord;
         }
     }
-        
+
+//                  _             _                                         
+//                 | |           | |                                        
+//   ___ ___  _ __ | |_ __ _  ___| |_ _ __ ___   __ _ _ __  _ __   ___ _ __ 
+//  / __/ _ \| '_ \| __/ _` |/ __| __| '_ ` _ \ / _` | '_ \| '_ \ / _ \ '__|
+// | (_| (_) | | | | || (_| | (__| |_| | | | | | (_| | |_) | |_) |  __/ |   
+//  \___\___/|_| |_|\__\__,_|\___|\__|_| |_| |_|\__,_| .__/| .__/ \___|_|   
+//                                                   | |   | |              
+//                                                   |_|   |_|              
+    public static final class ContactMapper implements RowMapper<Contact> {
+
+        @Override
+        public Contact mapRow(ResultSet rs, int i) throws SQLException {
+            Contact contactFromRecord = new Contact();
+            contactFromRecord.setContactid(rs.getInt("contactid"));
+
+            contactFromRecord.setOrgid(rs.getInt("orgid"));
+            contactFromRecord.setLocid(rs.getInt("locid"));
+            contactFromRecord.setPhone(rs.getString("phone"));
+            contactFromRecord.setEmail(rs.getString("email"));
+
+            return contactFromRecord;
+        }
+    }
+
 }

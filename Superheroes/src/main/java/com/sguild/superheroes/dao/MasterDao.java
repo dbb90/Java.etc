@@ -5,6 +5,7 @@
  */
 package com.sguild.superheroes.dao;
 
+import com.sguild.superheroes.dto.Contact;
 import com.sguild.superheroes.dto.Hero;
 import com.sguild.superheroes.dto.Loc;
 import com.sguild.superheroes.dto.Org;
@@ -93,21 +94,16 @@ public interface MasterDao {
     public Org getOrg(int orgid);
 
     public List<Hero> getHeroesInOrg(Org orgToCheck);
-    
-    
+
     // UPDATE
     public void updateOrg(Org orgToUpdpate);
 
     // DELETE
     public Org removeOrg(Org orgToRemove);
-    
+
     public void removeOrg(int orgid);
-    
+
     public Org removeAndReturnOrg(int orgid);
-
-
-
-
 
 //
 //  _                _____              
@@ -118,21 +114,19 @@ public interface MasterDao {
 // |______\___/ \___|_____/ \__,_|\___/ 
 //                                      
 //                                      
+    public Loc addLoc(Loc locToAdd);
 
-public Loc addLoc(Loc locToAdd);
+    public List<Loc> getAllLocs();
 
-public  List<Loc> getAllLocs();
+    public Loc getLoc(int locid);
 
-public Loc getLoc(int locid);
+    public void updateLoc(Loc locToUpdate);
 
-public void updateLoc(Loc locToUpdate);
+    public Loc removeLoc(Loc locToRemove);
 
-public Loc removeLcc(Loc locToRemove);
+    public void removeLoc(int locid);
 
-public void removeLoc(int locid);
-
-public Loc removeAndReturnLoc(int locid);
-
+    public Loc removeAndReturnLoc(int locid);
 
 //
 //   _____ _       _     _   _             _____              
@@ -144,23 +138,43 @@ public Loc removeAndReturnLoc(int locid);
 //            __/ |                   __/ |                   
 //           |___/                   |___/                    
 //
+    public Sighting addSighting(Sighting sightingToAdd);
 
-public Sighting addSighting(Sighting sightingToAdd);
+    public List<Sighting> getAllSightings();
 
-public List<Sighting> getAllSightings();
+    public Sighting getSighting(int sightingid);
 
-public Sighting getSighting(int sightingid);
+    public List<Hero> getHeroesSighted(Sighting sightingToCheck);
+    
+    public void updateSighting(Sighting sightingToUpdate);
 
-public void updateSighting(Loc locToUpdate);
+    public Sighting removeSighting(Sighting sightingToRemove);
 
-public 
+    public void removeSighting(int sightingid);
 
+    public Sighting removeAndReturnSighting(int sightingid);
 
+//
+//   _____            _             _   _____              
+//  / ____|          | |           | | |  __ \             
+// | |     ___  _ __ | |_ __ _  ___| |_| |  | | __ _  ___  
+// | |    / _ \| '_ \| __/ _` |/ __| __| |  | |/ _` |/ _ \ 
+// | |___| (_) | | | | || (_| | (__| |_| |__| | (_| | (_) |
+//  \_____\___/|_| |_|\__\__,_|\___|\__|_____/ \__,_|\___/ 
+//                                                         
+//                                                         
+    public Contact addContact(Contact contactToAdd);
 
+    public List<Contact> getAllContacts();
 
+    public Contact getContact(int contactid);
 
+    public void updateContact(Contact contactToUpdate);
 
+    public Contact removeContact(Contact contactToRemove);
 
+    public void removeContact(int contactid);
 
+    public Contact removeAndReturnContact(int contactid);
 
 }

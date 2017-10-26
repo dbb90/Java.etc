@@ -5,8 +5,6 @@
  */
 package com.sguild.superheroes.dto;
 
-import java.sql.Date;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,18 +23,12 @@ import lombok.ToString;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Sighting {
+public class Contact {
     
-    private int sightingid;
+    private int contactid;
+    private int orgid;
     private int locid;
-    private Date dateSighted;
-    private List<Hero> heroes;
+    private String Phone;
+    private String Email;
 
-    public List<Hero> getHeroes() {
-        return heroes;
-    }
-
-    public void setHeroes(List<Hero> heroes) {
-        this.heroes = heroes;
-    }
 }

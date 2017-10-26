@@ -7,8 +7,10 @@ package com.sguild.superheroes;
 
 import com.sguild.superheroes.dao.MasterDao;
 import com.sguild.superheroes.dto.Hero;
+import com.sguild.superheroes.dto.Loc;
 import com.sguild.superheroes.dto.Org;
 import com.sguild.superheroes.dto.Power;
+import com.sguild.superheroes.dto.Sighting;
 import java.util.List;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -60,6 +62,7 @@ public class JDBCDaoTest {
         
         List<Hero> heroes = testMasterDao.getAllHeroes();
         List<Org> orgs = testMasterDao.getAllOrgs();
+        List<Sighting> sightings = testMasterDao.getAllSightings();
 
         Power powerAdded = testMasterDao.addPower(new Power(7, "Invincibility",
                 "untouchable!"));
@@ -108,6 +111,30 @@ public class JDBCDaoTest {
         i++;
         }
 
+                        System.out.println("heroes and location for each sighting:");
+        maximum = sightings.size();
+        i = 1;
+        while (i < maximum) {
+        Sighting sightingToCheck = testMasterDao.getSighting(i);
+        sightingToCheck.setHeroes(testMasterDao.getHeroesSighted(sightingToCheck));
+                    System.out.println("***********");
+            System.out.println("[ID: " + sightingToCheck.getSightingid() + "]");
+            Loc thisLoc = testMasterDao.getLoc(sightingToCheck.getLocid());
+            System.out.println("[Location: " + thisLoc.getLocName() + "]");
+            System.out.println("[Date Sighted: " + sightingToCheck.getDateSighted() + "]");
+                        System.out.println("Heroes present:");
+        List<Hero> temp;
+            temp = sightingToCheck.getHeroes();
+            for (Hero zero : temp) {
+                System.out.println(zero.getHeroName());
+            }
+                
+        i++;
+        }
+        
+        
+        
+        
     }
 
 }
