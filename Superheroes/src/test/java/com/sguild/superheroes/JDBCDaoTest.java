@@ -7,6 +7,7 @@ package com.sguild.superheroes;
 
 import com.sguild.superheroes.dao.MasterDao;
 import com.sguild.superheroes.dto.Hero;
+import com.sguild.superheroes.dto.Org;
 import com.sguild.superheroes.dto.Power;
 import java.util.List;
 import org.junit.Test;
@@ -58,6 +59,7 @@ public class JDBCDaoTest {
         System.out.println(hero.getVillain());
         
         List<Hero> heroes = testMasterDao.getAllHeroes();
+        List<Org> orgs = testMasterDao.getAllOrgs();
 
         Power powerAdded = testMasterDao.addPower(new Power(7, "Invincibility",
                 "untouchable!"));
@@ -81,10 +83,30 @@ public class JDBCDaoTest {
         while (i < maximum) {
         Hero heroToCheck = testMasterDao.getHero(i);
         heroToCheck.setPowers(testMasterDao.getPowersOfHero(heroToCheck));
+            System.out.println("---" + heroToCheck.getHeroName() + "---");
+            for (Power thisPower : heroToCheck.getPowers()) {
+                System.out.println(thisPower.getPowerName());
+                System.out.println(thisPower.getPowerDesc());
+            }
         System.out.println(heroToCheck.getPowers());
         i++;
         }
         
+                System.out.println("heroes of orgs:");
+        maximum = orgs.size();
+        i = 1;
+        while (i < maximum) {
+        Org orgToCheck = testMasterDao.getOrg(i);
+        orgToCheck.setHeroes(testMasterDao.getHeroesInOrg(orgToCheck));
+            System.out.println("---" + orgToCheck.getOrgName() + "---");
+        List<Hero> temp;
+            temp = orgToCheck.getHeroes();
+            for (Hero zero : temp) {
+                System.out.println(zero.getHeroName());
+            }
+                
+        i++;
+        }
 
     }
 
