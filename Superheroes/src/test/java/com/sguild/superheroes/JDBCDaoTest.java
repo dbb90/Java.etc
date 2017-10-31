@@ -6,135 +6,162 @@
 package com.sguild.superheroes;
 
 import com.sguild.superheroes.dao.MasterDao;
-import com.sguild.superheroes.dto.Hero;
 import com.sguild.superheroes.dto.Loc;
-import com.sguild.superheroes.dto.Org;
 import com.sguild.superheroes.dto.Power;
-import com.sguild.superheroes.dto.Sighting;
-import java.util.List;
+import org.junit.After;
+import org.junit.AfterClass;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  *
- * @author ahill
+ * @author dbb09
  */
 public class JDBCDaoTest {
 
-    MasterDao testMasterDao;
+    MasterDao dao;
+    JdbcTemplate template;
+
+    public void setJdbcTemplate(JdbcTemplate template) {
+        this.template = template;
+    }
 
     public JDBCDaoTest() {
-
-        ApplicationContext factory = new ClassPathXmlApplicationContext("test-applicationContext.xml");
-        testMasterDao = factory.getBean(MasterDao.class);
-     
-
     }
 
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
+    @BeforeClass
+    public static void setUpClass() {
+    }
+
+    @AfterClass
+    public static void tearDownClass() {
+    }
+
+    @Before
+    public void setUp() {
+        ApplicationContext ctx = new ClassPathXmlApplicationContext("test-applicationContext.xml");
+        dao = ctx.getBean("testMasterDao", MasterDao.class);
+        template = ctx.getBean("jdbcTemplateBean", JdbcTemplate.class);
+
+        template.execute("DELETE FROM contacts WHERE 1 = 1");
+        template.execute("DELETE FROM heroessightings WHERE 1 = 1");
+        template.execute("DELETE FROM sightings WHERE 1 = 1");
+        template.execute("DELETE FROM locs WHERE 1 = 1");
+        template.execute("DELETE FROM heroesorgs WHERE 1 = 1");
+        template.execute("DELETE FROM orgs WHERE 1 = 1");
+        template.execute("DELETE FROM heroespowers WHERE 1 = 1");
+        template.execute("DELETE FROM heroes WHERE 1 = 1");
+        template.execute("DELETE FROM powers WHERE 1 = 1");
+    }
+
+    @After
+    public void tearDown() {
+    }
+
     @Test
-    public void testConnection() {
-        System.out.println("Testing...");
-        List<Power> powers = testMasterDao.getAllPowers();
-        Hero heroAdded = testMasterDao.addHero(new Hero(9, "The Bat", "Hank Venture in a most convincing costume",
-                false, powers)
-        );
-
-        System.out.println("THE ID: " + heroAdded.getHeroid());
-
-        System.out.println("List of heroes:");
-        for (Hero hero : testMasterDao.getAllHeroes()) {
-            System.out.println(hero.getHeroName());
-            System.out.println(hero.getHeroDesc());
-            System.out.println(hero.getVillain());
-        }
-
-        System.out.println("Hero # 9:");
-        Hero hero = testMasterDao.getHero(8);
-        System.out.println(hero.getHeroName());
-        System.out.println(hero.getHeroDesc());
-        System.out.println(hero.getVillain());
+    public void testAddAndRetrievePower() {
+        Power power = new Power();
+        power.setPowerName("First Power");
+        power.setPowerDesc("First Power Desc");
+        dao.addPower(power);
         
-        List<Hero> heroes = testMasterDao.getAllHeroes();
-        List<Org> orgs = testMasterDao.getAllOrgs();
-        List<Sighting> sightings = testMasterDao.getAllSightings();
-
-        Power powerAdded = testMasterDao.addPower(new Power(7, "Invincibility",
-                "untouchable!"));
-
-        System.out.println("THE ID: " + powerAdded.getPowerid());
-
-        System.out.println("List of powers:");
-        for (Power power : testMasterDao.getAllPowers()) {
-            System.out.println(power.getPowerName());
-            System.out.println(power.getPowerDesc());
-        }
-
-       // System.out.println("Hero # 9:");
-       // Power power = testPowerDao.getPower(7);
-       // System.out.println(power.getPowerName());
-      //  System.out.println(power.getPowerDesc());
-        
-        System.out.println("powers of heroes:");
-        int maximum = heroes.size();
-        int i = 1;
-        while (i < maximum) {
-        Hero heroToCheck = testMasterDao.getHero(i);
-        heroToCheck.setPowers(testMasterDao.getPowersOfHero(heroToCheck));
-            System.out.println("---" + heroToCheck.getHeroName() + "---");
-            for (Power thisPower : heroToCheck.getPowers()) {
-                System.out.println(thisPower.getPowerName());
-                System.out.println(thisPower.getPowerDesc());
-            }
-        System.out.println(heroToCheck.getPowers());
-        i++;
-        }
-        
-                System.out.println("heroes of orgs:");
-        maximum = orgs.size();
-        i = 1;
-        while (i < maximum) {
-        Org orgToCheck = testMasterDao.getOrg(i);
-        orgToCheck.setHeroes(testMasterDao.getHeroesInOrg(orgToCheck));
-            System.out.println("---" + orgToCheck.getOrgName() + "---");
-        List<Hero> temp;
-            temp = orgToCheck.getHeroes();
-            for (Hero zero : temp) {
-                System.out.println(zero.getHeroName());
-            }
-                
-        i++;
-        }
-
-                        System.out.println("heroes and location for each sighting:");
-        maximum = sightings.size();
-        i = 1;
-        while (i < maximum) {
-        Sighting sightingToCheck = testMasterDao.getSighting(i);
-        sightingToCheck.setHeroes(testMasterDao.getHeroesSighted(sightingToCheck));
-                    System.out.println("***********");
-            System.out.println("[ID: " + sightingToCheck.getSightingid() + "]");
-            Loc thisLoc = testMasterDao.getLoc(sightingToCheck.getLocid());
-            System.out.println("[Location: " + thisLoc.getLocName() + "]");
-            System.out.println("[Date Sighted: " + sightingToCheck.getDateSighted() + "]");
-                        System.out.println("Heroes present:");
-        List<Hero> temp;
-            temp = sightingToCheck.getHeroes();
-            for (Hero zero : temp) {
-                System.out.println(zero.getHeroName());
-            }
-                
-        i++;
-        }
-        
-        
-        
-        
+        int thisid = power.getPowerid();
+        Power fromMem = new Power();
+        fromMem = dao.getPower(thisid);
+//        String powerString = power.toString();
+//        String fromMemString = fromMem.toString();
+//        System.out.println(powerString);
+        assertEquals(power, fromMem);
     }
 
+    @Test
+    public void testRemovePower() {
+        Power power = new Power();
+        power.setPowerName("First Power!");
+        power.setPowerDesc("First Power Desc!");
+        dao.addPower(power);
+        int thisid = power.getPowerid();
+        Power fromMem = dao.getPower(thisid);
+//        String powerString = power.toString();
+//        String fromMemString = fromMem.toString();
+        assertEquals(power, fromMem);
+        dao.removePower(thisid);
+        assertNull(dao.getPower(thisid));
+    }
+
+    @Test
+    public void testUpdatePower() {
+        Power power = new Power();
+        power.setPowerName("First Power!");
+        power.setPowerDesc("First Power Desc!");
+        dao.addPower(power);
+
+        Power fromMem = dao.getPower(power.getPowerid());
+        assertEquals(power, fromMem);
+
+        Power powerTwo = new Power();
+
+        powerTwo.setPowerid(power.getPowerid());
+        powerTwo.setPowerName("Second Power!");
+        powerTwo.setPowerDesc("Second Power Desc!");
+        dao.updatePower(powerTwo);
+
+        Power fromMemTwo = dao.getPower(power.getPowerid());
+
+        assertNotEquals(fromMemTwo, fromMem);
+
+        assertEquals(fromMemTwo, powerTwo);
+
+    }
+
+    @Test
+    public void testGetAllPowers() {
+        
+        //check to ensure db is empty
+        assertEquals(0, dao.getAllPowers().size());
+
+        Power power = new Power();
+        power.setPowerName("First Power!");
+        power.setPowerDesc("First Power Desc!");
+        dao.addPower(power);
+
+        Power fromMem = dao.getPower(power.getPowerid());
+        assertEquals(power, fromMem);
+
+        Power powerTwo = new Power();
+
+        powerTwo.setPowerid(power.getPowerid() + 1);
+        powerTwo.setPowerName("Second Power!");
+        powerTwo.setPowerDesc("Second Power Desc!");
+        dao.addPower(powerTwo);
+
+        Power fromMemTwo = dao.getPower(powerTwo.getPowerid());
+
+        assertEquals(powerTwo, fromMemTwo);
+        assertEquals(2, dao.getAllPowers().size());
+    }
+
+    @Test
+    public void testAddGetLocation() {
+        Loc testLoc = new Loc();
+        testLoc.setLocName("1st loc");
+        testLoc.setLocDesc("1st loc desc");
+        testLoc.setLocAddress("Address One");
+        testLoc.setLocLat("11.11");
+        testLoc.setLocLong("22.22");
+        dao.addLoc(testLoc);
+
+        Loc fromMem = dao.getLoc(testLoc.getLocid());
+        assertEquals(fromMem, testLoc);
+    }
+
+    
+    
 }

@@ -1,7 +1,7 @@
 
-DROP DATABASE IF EXISTS Superhero;
-CREATE DATABASE Superhero;
-USE Superhero;
+DROP DATABASE IF EXISTS Superhero_test;
+CREATE DATABASE Superhero_test;
+USE Superhero_test;
 
 -- Creating our Type and room tables 
 -- naming a table Type ran fine but messed with the Workbench parser, modified
@@ -14,8 +14,7 @@ CREATE TABLE Powers
 PowerName VARCHAR(50),
 PowerDesc VARCHAR(255),
 PRIMARY KEY(Powerid)
-)
-ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+);
 
 
 insert into POWERS (PowerName, PowerDesc) values ("Super Speed", "Super Speed is simple to use, cheap, fast, and safe, but is very much restricted by terrain since it offers no way to gain altitude.");
@@ -32,14 +31,13 @@ Heroid INT(11) NOT NULL AUTO_INCREMENT,
 HeroName VARCHAR(50),
 HeroDesc VARCHAR(255),
 Villain BOOLEAN NOT NULL DEFAULT 0,
-PRIMARY KEY(Heroid))
-ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+PRIMARY KEY(Heroid));
 
 -- Team Venture
 INSERT INTO HEROES (Heroid, HeroName, HeroDesc, Villain) values (1, "Dr. Thaddeus Venture", "Dubious super-scientist and unworthy successor of the late Jonas Venture.", false);
 INSERT INTO HEROES (Heroid, HeroName, HeroDesc, Villain) values (2, "Hank Venture", "One of the Venture twins, son of Thaddeus. Is more interested in sports and adventure than science.", false);
 INSERT INTO HEROES (Heroid, HeroName, HeroDesc, Villain) values (3, "Dean Venture", "the other Venture twin, son of Thaddeus. The more science-minded son, as well as the most awkward.", false);
-INSERT INTO HEROES (Heroid, HeroName, HeroDesc, Villain) values (4, "Sergeant Hatred", "Massive bodyguard of Dr. Venture. A former supervillain, and apparently reformed(behavior modified) pedophile.", false);
+INSERT INTO HEROES (Heroid, HeroName, HeroDesc, Villain) values (4, "Sergeant Hatred", "Massive bodyguard of Dr. Venture. A former supervillain, and apparently reformed(behavior modified) criminal.", false);
 INSERT INTO HEROES (Heroid, HeroName, HeroDesc, Villain) values (5, "H.E.L.P.eR.", "Helpful Electronic Lab Partner Robot", false);
 INSERT INTO HEROES (Heroid, HeroName, HeroDesc, Villain) values (6, "Master Billy Quizboy", "Hydrocephalic; eye-patch; self-proclaimed boy genius; bionic arm; speech impediment", false);
 INSERT INTO HEROES (Heroid, HeroName, HeroDesc, Villain) values (7, "Pete White", "An albino computer technologist, and co-founder of 'Conjectural Technologies' along with Billy Quizboy. ", false);
@@ -73,6 +71,8 @@ INSERT INTO HEROES (Heroid, HeroName, HeroDesc, Villain) values (26, "Baron Wern
 INSERT INTO HEROES (Heroid, HeroName, HeroDesc, Villain) values (27, "The Sovereign", "Shapeshifter and one-time leader of the Guild of Calamitous Intent", true);
 INSERT INTO HEROES (Heroid, HeroName, HeroDesc, Villain) values (28, "Radical Left", "A psychotic supervillain imprisoned at Dunwitch Asylum who has half of his body severely disfigured.", true);
 INSERT INTO HEROES (Heroid, HeroName, HeroDesc, Villain) values (29, "Phantom Limb", "Phantom Limb's arms and legs are completely invisible. He possesses the ability to kill or incapacitate others through physical contact.", true);
+
+
 -- more GoCI
 
 
@@ -99,7 +99,7 @@ PRIMARY KEY(HeroesPowersid),
 FOREIGN KEY(Heroid) REFERENCES Heroes(Heroid),
 FOREIGN KEY(Powerid) REFERENCES Powers(Powerid));
 
-insert into HEROESPOWERS (HeroesPowersid, Heroid, Powerid) values (1, 1, 1);
+ insert into HEROESPOWERS (HeroesPowersid, Heroid, Powerid) values (1, 1, 1);
  insert into HEROESPOWERS (HeroesPowersid, Heroid, Powerid) values (2, 1, 2);
  insert into HEROESPOWERS (HeroesPowersid, Heroid, Powerid) values (3, 1, 3);
  insert into HEROESPOWERS (HeroesPowersid, Heroid, Powerid) values (4, 2, 1);
@@ -175,161 +175,160 @@ insert into HEROESORGS (HeroesOrgsid, Heroid, Orgid, Active) values (22, 11, 11,
 
 
 
-CREATE TABLE Locs(
+CREATE TABLE Locs
 
-Locid INT NOT NULL,
+(locid INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 LocName VARCHAR(255) NOT NULL,
 LocDesc VARCHAR(1024) DEFAULT 'Unknown.',
 LocAddress VARCHAR(255) DEFAULT 'Unknown.',
 LocLat VARCHAR(50) DEFAULT 'Unknown.',
-LocLong VARCHAR(50) DEFAULT 'Unknown.',
-PRIMARY KEY(Locid)
+LocLong VARCHAR(50) DEFAULT 'Unknown.'
+
 );
 
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (1, 'It Is a Mystery', 'Uknown', 'Unknown', -6.5643956, 106.2522143);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (2, 'Brisby Dome', 'Maecenas tristique, est et tempus semper, est quam pharetra magna, ac consequat metus sapien ut nunc. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Mauris viverra diam vitae quam. Suspendisse potenti. Nullam porttitor lacus at turpis. Donec posuere metus vitae ipsum. Aliquam non mauris. Morbi non lectus. Aliquam sit amet diam in magna bibendum imperdiet. Nullam orci pede, venenatis non, sodales sed, tincidunt eu, felis.', 'Unknown', 1.130349, -77.550994);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (3, 'Brisby Land', 'Morbi ut odio. Cras mi pede, malesuada in, imperdiet et, commodo vulputate, justo. In blandit ultrices enim. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Proin interdum mauris non ligula pellentesque ultrices. Phasellus id sapien in sapien iaculis congue. Vivamus metus arcu, adipiscing molestie, hendrerit at, vulputate vitae, nisl. Aenean lectus.', '02595 Toban Parkway', 48.8834042, 2.333434);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (4, 'Chairman Waos Chow House', 'Vivamus vel nulla eget eros elementum pellentesque. Quisque porta volutpat erat. Quisque erat eros, viverra eget, congue eget, semper rutrum, nulla. Nunc purus. Phasellus in felis. Donec semper sapien a libero. Nam dui. Proin leo odio, porttitor id, consequat in, consequat ut, nulla. Sed accumsan felis.', '247 Scoville Drive', 37.932976, 102.665494);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (5, 'Community University of Mexico at Tijuana', 'Vivamus tortor. Duis mattis egestas metus. Aenean fermentum. Donec ut mauris eget massa tempor convallis. Nulla neque libero, convallis eget, eleifend luctus, ultricies eu, nibh. Quisque id justo sit amet sapien dignissim vestibulum.', '2465 Eastlawn Junction', -26.3749827, -49.0615086);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (6, 'Don Hells', 'Integer pede justo, lacinia eget, tincidunt eget, tempus vel, pede. Morbi porttitor lorem id ligula. Suspendisse ornare consequat lectus. In est risus, auctor sed, tristique in, tempus sit amet, sem. Fusce consequat.', '014 Burrows Road', 56.0265492, 12.8055694);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (7, 'Dunwitch Asylum for the Criminally Obsessive', 'Suspendisse potenti. In eleifend quam a odio. In hac habitasse platea dictumst. Maecenas ut massa quis augue luctus tincidunt. Nulla mollis molestie lorem.', '5 Marcy Place', 35.8939566, 117.9249002);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (8, 'Gargantua I', 'Integer non velit. Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi. Integer ac neque.', '5948 Red Cloud Hill', 2.7239834, 101.9476452);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (9, 'Gargantua II', 'Nam ultrices, libero non mattis pulvinar, nulla pede ullamcorper augue, a suscipit nulla elit ac nulla. Sed vel enim sit amet nunc viverra dapibus. Nulla suscipit ligula in lacus. Curabitur at ipsum ac tellus semper interdum.', '52 North Street', -15.5404411, -47.3374297);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (10, 'Hall of Sorrows', 'Nulla ut erat id mauris vulputate elementum. Nullam varius. Nulla facilisi. Cras non velit nec nisi vulputate nonummy. Maecenas tincidunt lacus at velit. Vivamus vel nulla eget eros elementum pellentesque. Quisque porta volutpat erat. Quisque erat eros, viverra eget, congue eget, semper rutrum, nulla. Nunc purus. Phasellus in felis.', '279 Eliot Alley', 37.62, -77.61);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (11, 'Malice', 'Aenean fermentum. Donec ut mauris eget massa tempor convallis. Nulla neque libero, convallis eget, eleifend luctus, ultricies eu, nibh. Quisque id justo sit amet sapien dignissim vestibulum.', '1938 Kensington Plaza', 21.4906113, -77.6049218);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (12, 'Meteor Majeure', 'Sed accumsan felis. Ut at dolor quis odio consequat varius. Integer ac leo. Pellentesque ultrices mattis odio. Donec vitae nisi.', '4725 Homewood Street', 37.841046, 140.5203882);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (13, 'Morpho Cave', 'Quisque erat eros, viverra eget, congue eget, semper rutrum, nulla. Nunc purus. Phasellus in felis. Donec semper sapien a libero. Nam dui. Proin leo odio, porttitor id, consequat in, consequat ut, nulla. Sed accumsan felis. Ut at dolor quis odio consequat varius.', '48 Eagan Road', 18.3440652, -78.0171776);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (14, 'Nightin Ales', 'Quisque ut erat. Curabitur gravida nisi at nibh. In hac habitasse platea dictumst. Aliquam augue quam, sollicitudin vitae, consectetuer eget, rutrum at, lorem. Integer tincidunt ante vel ipsum. Praesent blandit lacinia erat. Vestibulum sed magna at nunc commodo placerat. Praesent blandit. Nam nulla. Integer pede justo, lacinia eget, tincidunt eget, tempus vel, pede.', '8292 Rieder Crossing', 34.8591956, 134.5488877);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (15, 'Specialty Tailoring', 'Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi. Integer ac neque. Duis bibendum. Morbi non quam nec dui luctus rutrum. Nulla tellus. In sagittis dui vel nisl. Duis ac nibh. Fusce lacus purus, aliquet at, feugiat non, pretium quis, lectus.', '6 Darwin Park', 50.1209479, 17.3831619);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (16, 'Spider-Skull Island', 'Suspendisse potenti. Cras in purus eu magna vulputate luctus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vivamus vestibulum sagittis sapien. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Etiam vel augue. Vestibulum rutrum rutrum neque. Aenean auctor gravida sem. Praesent id massa id nisl venenatis lacinia.', '88 David Crossing', 24.160878, 113.433561);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (17, 'State University', 'Fusce lacus purus, aliquet at, feugiat non, pretium quis, lectus. Suspendisse potenti. In eleifend quam a odio. In hac habitasse platea dictumst. Maecenas ut massa quis augue luctus tincidunt.', '3 Paget Avenue', 9.6026645, 122.4656415);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (18, 'Stuyvesant University', null, '17 Oak Valley Road', 29.5530941, 118.9353968);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (19, 'The Cocoon', null, '05 Veith Crossing', null, null);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (20, 'The United Nations', null, '0253 Florence Point', 52.0404442, 8.4770585);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (21, 'The Venture Compound - Panic Room', 'Nullam molestie nibh in lectus. Pellentesque at nulla. Suspendisse potenti. Cras in purus eu magna vulputate luctus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vivamus vestibulum sagittis sapien. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Etiam vel augue. Vestibulum rutrum rutrum neque. Aenean auctor gravida sem.', '16 Basil Court', -16.2803207, 27.4732571);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (22, 'The Venture Compound - Pool', 'Duis at velit eu est congue elementum. In hac habitasse platea dictumst. Morbi vestibulum, velit id pretium iaculis, diam erat fermentum justo, nec condimentum neque sapien placerat ante. Nulla justo. Aliquam quis turpis eget elit sodales scelerisque. Mauris sit amet eros.', '5200 Fallview Park', -34.7277137, -58.3326356);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (23, 'The Venture Compound - Venture Industries Lobby', 'Duis consequat dui nec nisi volutpat eleifend. Donec ut dolor. Morbi vel lectus in quam fringilla rhoncus. Mauris enim leo, rhoncus sed, vestibulum sit amet, cursus id, turpis. Integer aliquet, massa id lobortis convallis, tortor risus dapibus augue, vel accumsan tellus nisi eu orci. Mauris lacinia sapien quis libero. Nullam sit amet turpis elementum ligula vehicula consequat. Morbi a ipsum. Integer a nibh.', '41424 Huxley Crossing', 59.3146154, 18.0001365);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (24, 'The Venture Compound - Bodyguard Quarters', 'In sagittis dui vel nisl. Duis ac nibh. Fusce lacus purus, aliquet at, feugiat non, pretium quis, lectus. Suspendisse potenti. In eleifend quam a odio. In hac habitasse platea dictumst. Maecenas ut massa quis augue luctus tincidunt.', '953 Chinook Parkway', 26.789958, 114.908872);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (25, 'The Venture Compound - Rustys Bedroom', 'Morbi odio odio, elementum eu, interdum eu, tincidunt in, leo. Maecenas pulvinar lobortis est. Phasellus sit amet erat.', '7491 Logan Pass', 37.3743044, 60.5008307);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (26, 'The Venture Compound - Hangar', 'Ut at dolor quis odio consequat varius. Integer ac leo. Pellentesque ultrices mattis odio. Donec vitae nisi. Nam ultrices, libero non mattis pulvinar, nulla pede ullamcorper augue, a suscipit nulla elit ac nulla. Sed vel enim sit amet nunc viverra dapibus. Nulla suscipit ligula in lacus.', '08 Bartelt Hill', -32.9321855, -60.7222767);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (27, 'The Venture Compound - Kitchen', 'Cras non velit nec nisi vulputate nonummy. Maecenas tincidunt lacus at velit. Vivamus vel nulla eget eros elementum pellentesque. Quisque porta volutpat erat. Quisque erat eros, viverra eget, congue eget, semper rutrum, nulla.', '0096 Rutledge Point', -24.7869452, -65.4128686);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (28, 'The Venture Compound - Cloning Lab', 'Aliquam augue quam, sollicitudin vitae, consectetuer eget, rutrum at, lorem. Integer tincidunt ante vel ipsum. Praesent blandit lacinia erat. Vestibulum sed magna at nunc commodo placerat. Praesent blandit. Nam nulla. Integer pede justo, lacinia eget, tincidunt eget, tempus vel, pede. Morbi porttitor lorem id ligula. Suspendisse ornare consequat lectus.', null, 22.3577742, 103.2493721);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (29, 'The Venture Compound - Hank and Deans Room', 'Nulla ut erat id mauris vulputate elementum. Nullam varius. Nulla facilisi. Cras non velit nec nisi vulputate nonummy. Maecenas tincidunt lacus at velit. Vivamus vel nulla eget eros elementum pellentesque. Quisque porta volutpat erat. Quisque erat eros, viverra eget, congue eget, semper rutrum, nulla. Nunc purus. Phasellus in felis.', '883 Mitchell Street', 15.1955811, 104.8304807);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (30, 'The Venture Compound - Deans Room (Attic)', 'Vestibulum rutrum rutrum neque. Aenean auctor gravida sem. Praesent id massa id nisl venenatis lacinia. Aenean sit amet justo. Morbi ut odio. Cras mi pede, malesuada in, imperdiet et, commodo vulputate, justo. In blandit ultrices enim. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Proin interdum mauris non ligula pellentesque ultrices.', '8 Moland Hill', 48.8547803, 16.5671697);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (31, 'The Venture Compound - Surveillance Room', 'Integer tincidunt ante vel ipsum. Praesent blandit lacinia erat. Vestibulum sed magna at nunc commodo placerat.', '2 Golden Leaf Trail', 7.5286908, 1.1305049);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (32, 'The Venture Compound - Underground Tunnel', 'Morbi non lectus. Aliquam sit amet diam in magna bibendum imperdiet. Nullam orci pede, venenatis non, sodales sed, tincidunt eu, felis. Fusce posuere felis sed lacus. Morbi sem mauris, laoreet ut, rhoncus aliquet, pulvinar sed, nisl.', '42 Tennessee Terrace', 41.0919871, -7.8038268);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (33, 'The Venture Compound - E-Den', 'Pellentesque viverra pede ac diam. Cras pellentesque volutpat dui. Maecenas tristique, est et tempus semper, est quam pharetra magna, ac consequat metus sapien ut nunc. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Mauris viverra diam vitae quam.', '4119 Troy Alley', -34.7932249, -58.4103552);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (34, 'The Venture Compound - Laboratory', 'Curabitur in libero ut massa volutpat convallis. Morbi odio odio, elementum eu, interdum eu, tincidunt in, leo. Maecenas pulvinar lobortis est. Phasellus sit amet erat. Nulla tempus. Vivamus in felis eu sapien cursus vestibulum. Proin eu mi. Nulla ac enim.', '29672 Macpherson Circle', 0.3268809, -79.4647633);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (35, 'The Venture Compound Manufacturing Wing', 'Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Duis faucibus accumsan odio. Curabitur convallis. Duis consequat dui nec nisi volutpat eleifend. Donec ut dolor. Morbi vel lectus in quam fringilla rhoncus. Mauris enim leo, rhoncus sed, vestibulum sit amet, cursus id, turpis.', '85796 Tennyson Drive', 29.137138, 89.499642);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (36, 'The Venture Compound - Venture Industries Arachnid Research', 'Morbi vel lectus in quam fringilla rhoncus. Mauris enim leo, rhoncus sed, vestibulum sit amet, cursus id, turpis. Integer aliquet, massa id lobortis convallis, tortor risus dapibus augue, vel accumsan tellus nisi eu orci. Mauris lacinia sapien quis libero. Nullam sit amet turpis elementum ligula vehicula consequat. Morbi a ipsum. Integer a nibh.', '60 3rd Court', 39.7992062, 44.7723968);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (37, 'Tophet Tower', null, '25097 Eggendart Terrace', 5.301832, -1.9930466);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (38, 'VenTech Tower', 'Nulla ac enim. In tempor, turpis nec euismod scelerisque, quam turpis adipiscing lorem, vitae mattis nibh ligula nec sem. Duis aliquam convallis nunc. Proin at turpis a pede posuere nonummy. Integer non velit. Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi. Integer ac neque. Duis bibendum.', '27 Mifflin Crossing', 34.8412176, 32.4297369);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (39, 'Venture Industries', null, '34 Bowman Plaza', 48.019573, 66.923684);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (40, 'Vincenzos', 'In eleifend quam a odio. In hac habitasse platea dictumst. Maecenas ut massa quis augue luctus tincidunt. Nulla mollis molestie lorem. Quisque ut erat. Curabitur gravida nisi at nibh. In hac habitasse platea dictumst. Aliquam augue quam, sollicitudin vitae, consectetuer eget, rutrum at, lorem. Integer tincidunt ante vel ipsum. Praesent blandit lacinia erat.', '8839 Susan Court', 48.8902362, 36.308001);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (41, 'Ye Olde Battleaxe', 'Phasellus id sapien in sapien iaculis congue. Vivamus metus arcu, adipiscing molestie, hendrerit at, vulputate vitae, nisl. Aenean lectus. Pellentesque eget nunc. Donec quis orci eget orci vehicula condimentum. Curabitur in libero ut massa volutpat convallis. Morbi odio odio, elementum eu, interdum eu, tincidunt in, leo. Maecenas pulvinar lobortis est.', null, 8.9705754, 37.7609688);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (42, 'Yumi', 'Vestibulum sed magna at nunc commodo placerat. Praesent blandit. Nam nulla. Integer pede justo, lacinia eget, tincidunt eget, tempus vel, pede. Morbi porttitor lorem id ligula. Suspendisse ornare consequat lectus. In est risus, auctor sed, tristique in, tempus sit amet, sem.', '56 Dunning Court', -28.7245183, -52.8444231);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (43, 'Underland', 'Fusce consequat. Nulla nisl. Nunc nisl. Duis bibendum, felis sed interdum venenatis, turpis enim blandit mi, in porttitor pede justo eu massa. Donec dapibus. Duis at velit eu est congue elementum.', '2 Porter Plaza', 50.7917257, 21.2322042);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (44, 'Hello Hill Mall', 'Integer non velit. Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi. Integer ac neque.', '341 Trailsway Road', 14.55647, 121.018975);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (45, 'West Entrance Bus Stop', null, '2113 Del Sol Point', 31.491169, 120.31191);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (46, 'St. Sebastians Medical Center', 'Pellentesque eget nunc. Donec quis orci eget orci vehicula condimentum. Curabitur in libero ut massa volutpat convallis. Morbi odio odio, elementum eu, interdum eu, tincidunt in, leo. Maecenas pulvinar lobortis est. Phasellus sit amet erat. Nulla tempus. Vivamus in felis eu sapien cursus vestibulum. Proin eu mi. Nulla ac enim.', '2 Morningstar Junction', 46.0036703, 14.5753497);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (47, 'Trailer Park', 'In hac habitasse platea dictumst. Maecenas ut massa quis augue luctus tincidunt. Nulla mollis molestie lorem. Quisque ut erat. Curabitur gravida nisi at nibh. In hac habitasse platea dictumst. Aliquam augue quam, sollicitudin vitae, consectetuer eget, rutrum at, lorem.', '5 Lakewood Gardens Way', 63.9727688, -22.5764849);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (48, 'Grand Canyon', 'Donec ut mauris eget massa tempor convallis. Nulla neque libero, convallis eget, eleifend luctus, ultricies eu, nibh. Quisque id justo sit amet sapien dignissim vestibulum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nulla dapibus dolor vel est. Donec odio justo, sollicitudin ut, suscipit a, feugiat et, eros. Vestibulum ac est lacinia nisi venenatis tristique.', '0246 Judy Drive', 1.3031434, 101.0259275);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (49, 'Redusas House', 'Praesent blandit lacinia erat. Vestibulum sed magna at nunc commodo placerat. Praesent blandit. Nam nulla.', '6 Ridgeway Road', 44.780865, 128.447649);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (50, 'The Monarchs Home', 'Etiam justo. Etiam pretium iaculis justo. In hac habitasse platea dictumst. Etiam faucibus cursus urna. Ut tellus. Nulla ut erat id mauris vulputate elementum. Nullam varius. Nulla facilisi. Cras non velit nec nisi vulputate nonummy. Maecenas tincidunt lacus at velit.', '1 Weeping Birch Circle', '55.9', '37.55');
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (51, 'Pete and Billys Residence', null, '999 Mitchell Street', 32.849276, 35.068929);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (52, 'Augustus St Clouds Manse', null, '262 Quincy Pass', null, null);
-insert into LOCS (Locid, LocName, LocDesc, LocAddress, LocLat, LocLong) values (53, 'OSI Headquarters', 'Nulla tempus. Vivamus in felis eu sapien cursus vestibulum. Proin eu mi. Nulla ac enim. In tempor, turpis nec euismod scelerisque, quam turpis adipiscing lorem, vitae mattis nibh ligula nec sem. Duis aliquam convallis nunc. Proin at turpis a pede posuere nonummy. Integer non velit. Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi.', '9 Di Loreto Park', -6.6889038, 107.6185727);
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('It Is a Mystery', 'Uknown', 'Unknown', '-6.5643956', '106.2522143');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('Brisby Dome', 'Maecenas tristique, est et tempus semper, est quam pharetra magna, ac consequat metus sapien ut nunc. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Mauris viverra diam vitae quam. Suspendisse potenti. Nullam porttitor lacus at turpis. Donec posuere metus vitae ipsum. Aliquam non mauris. Morbi non lectus. Aliquam sit amet diam in magna bibendum imperdiet. Nullam orci pede, venenatis non, sodales sed, tincidunt eu, felis.', 'Unknown', '1.130349', '-77.550994');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('Brisby Land', 'Morbi ut odio. Cras mi pede, malesuada in, imperdiet et, commodo vulputate, justo. In blandit ultrices enim. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Proin interdum mauris non ligula pellentesque ultrices. Phasellus id sapien in sapien iaculis congue. Vivamus metus arcu, adipiscing molestie, hendrerit at, vulputate vitae, nisl. Aenean lectus.', '02595 Toban Parkway', '48.8834042', '2.333434');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('Chairman Waos Chow House', 'Vivamus vel nulla eget eros elementum pellentesque. Quisque porta volutpat erat. Quisque erat eros, viverra eget, congue eget, semper rutrum, nulla. Nunc purus. Phasellus in felis. Donec semper sapien a libero. Nam dui. Proin leo odio, porttitor id, consequat in, consequat ut, nulla. Sed accumsan felis.', '247 Scoville Drive', '37.932976', '102.665494');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('Community University of Mexico at Tijuana', 'Vivamus tortor. Duis mattis egestas metus. Aenean fermentum. Donec ut mauris eget massa tempor convallis. Nulla neque libero, convallis eget, eleifend luctus, ultricies eu, nibh. Quisque id justo sit amet sapien dignissim vestibulum.', '2465 Eastlawn Junction', '-26.3749827', '-49.0615086');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('Don Hells', 'Integer pede justo, lacinia eget, tincidunt eget, tempus vel, pede. Morbi porttitor lorem id ligula. Suspendisse ornare consequat lectus. In est risus, auctor sed, tristique in, tempus sit amet, sem. Fusce consequat.', '014 Burrows Road', '56.026549', '12.8055694');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('Dunwitch Asylum for the Criminally Obsessive', 'Suspendisse potenti. In eleifend quam a odio. In hac habitasse platea dictumst. Maecenas ut massa quis augue luctus tincidunt. Nulla mollis molestie lorem.', '5 Marcy Place', '35.8939566', '117.9249002');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('Gargantua I', 'Integer non velit. Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi. Integer ac neque.', '5948 Red Cloud Hill', '2.7239834', '101.9476452');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('Gargantua II', 'Nam ultrices, libero non mattis pulvinar, nulla pede ullamcorper augue, a suscipit nulla elit ac nulla. Sed vel enim sit amet nunc viverra dapibus. Nulla suscipit ligula in lacus. Curabitur at ipsum ac tellus semper interdum.', '52 North Street', '-15.5404411', '-47.3374297');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('Hall of Sorrows', 'Nulla ut erat id mauris vulputate elementum. Nullam varius. Nulla facilisi. Cras non velit nec nisi vulputate nonummy. Maecenas tincidunt lacus at velit. Vivamus vel nulla eget eros elementum pellentesque. Quisque porta volutpat erat. Quisque erat eros, viverra eget, congue eget, semper rutrum, nulla. Nunc purus. Phasellus in felis.', '279 Eliot Alley', '37.62', '-77.61');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('Malice', 'Aenean fermentum. Donec ut mauris eget massa tempor convallis. Nulla neque libero, convallis eget, eleifend luctus, ultricies eu, nibh. Quisque id justo sit amet sapien dignissim vestibulum.', '1938 Kensington Plaza', '21.4906113', '-77.6049218');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('Meteor Majeure', 'Sed accumsan felis. Ut at dolor quis odio consequat varius. Integer ac leo. Pellentesque ultrices mattis odio. Donec vitae nisi.', '4725 Homewood Street', '37.841046', '140.5203882');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('Morpho Cave', 'Quisque erat eros, viverra eget, congue eget, semper rutrum, nulla. Nunc purus. Phasellus in felis. Donec semper sapien a libero. Nam dui. Proin leo odio, porttitor id, consequat in, consequat ut, nulla. Sed accumsan felis. Ut at dolor quis odio consequat varius.', '48 Eagan Road', '18.3440652', '-78.0171776');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('Nightin Ales', 'Quisque ut erat. Curabitur gravida nisi at nibh. In hac habitasse platea dictumst. Aliquam augue quam, sollicitudin vitae, consectetuer eget, rutrum at, lorem. Integer tincidunt ante vel ipsum. Praesent blandit lacinia erat. Vestibulum sed magna at nunc commodo placerat. Praesent blandit. Nam nulla. Integer pede justo, lacinia eget, tincidunt eget, tempus vel, pede.', '8292 Rieder Crossing', '34.8591956', '134.5488877');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('Specialty Tailoring', 'Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi. Integer ac neque. Duis bibendum. Morbi non quam nec dui luctus rutrum. Nulla tellus. In sagittis dui vel nisl. Duis ac nibh. Fusce lacus purus, aliquet at, feugiat non, pretium quis, lectus.', '6 Darwin Park', '50.1209479', '17.3831619');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('Spider-Skull Island', 'Suspendisse potenti. Cras in purus eu magna vulputate luctus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vivamus vestibulum sagittis sapien. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Etiam vel augue. Vestibulum rutrum rutrum neque. Aenean auctor gravida sem. Praesent id massa id nisl venenatis lacinia.', '88 David Crossing', '24.160878', '113.433561');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('State University', 'Fusce lacus purus, aliquet at, feugiat non, pretium quis, lectus. Suspendisse potenti. In eleifend quam a odio. In hac habitasse platea dictumst. Maecenas ut massa quis augue luctus tincidunt.', '3 Paget Avenue', '9.6026645', '122.4656415');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('Stuyvesant University', null, '17 Oak Valley Road', '29.5530941', '118.9353968');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('The Cocoon', null, '05 Veith Crossing', null, null);
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('The United Nations', null, '0253 Florence Point', '52.0404442', '8.4770585');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('The Venture Compound - Panic Room', 'Nullam molestie nibh in lectus. Pellentesque at nulla. Suspendisse potenti. Cras in purus eu magna vulputate luctus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vivamus vestibulum sagittis sapien. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Etiam vel augue. Vestibulum rutrum rutrum neque. Aenean auctor gravida sem.', '16 Basil Court', '-16.2803207', '27.4732571');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('The Venture Compound - Pool', 'Duis at velit eu est congue elementum. In hac habitasse platea dictumst. Morbi vestibulum, velit id pretium iaculis, diam erat fermentum justo, nec condimentum neque sapien placerat ante. Nulla justo. Aliquam quis turpis eget elit sodales scelerisque. Mauris sit amet eros.', '5200 Fallview Park', '34.7277137', '-58.3326356');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('The Venture Compound - Venture Industries Lobby', 'Duis consequat dui nec nisi volutpat eleifend. Donec ut dolor. Morbi vel lectus in quam fringilla rhoncus. Mauris enim leo, rhoncus sed, vestibulum sit amet, cursus id, turpis. Integer aliquet, massa id lobortis convallis, tortor risus dapibus augue, vel accumsan tellus nisi eu orci. Mauris lacinia sapien quis libero. Nullam sit amet turpis elementum ligula vehicula consequat. Morbi a ipsum. Integer a nibh.', '41424 Huxley Crossing', '59.3146154', '18.0001365');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('The Venture Compound - Bodyguard Quarters', 'In sagittis dui vel nisl. Duis ac nibh. Fusce lacus purus, aliquet at, feugiat non, pretium quis, lectus. Suspendisse potenti. In eleifend quam a odio. In hac habitasse platea dictumst. Maecenas ut massa quis augue luctus tincidunt.', '953 Chinook Parkway', '26.789958', '114.908872');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('The Venture Compound - Rustys Bedroom', 'Morbi odio odio, elementum eu, interdum eu, tincidunt in, leo. Maecenas pulvinar lobortis est. Phasellus sit amet erat.', '7491 Logan Pass', '37.3743044', '60.5008307');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('The Venture Compound - Hangar', 'Ut at dolor quis odio consequat varius. Integer ac leo. Pellentesque ultrices mattis odio. Donec vitae nisi. Nam ultrices, libero non mattis pulvinar, nulla pede ullamcorper augue, a suscipit nulla elit ac nulla. Sed vel enim sit amet nunc viverra dapibus. Nulla suscipit ligula in lacus.', '08 Bartelt Hill', '-32.9321855', '-60.7222767');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('The Venture Compound - Kitchen', 'Cras non velit nec nisi vulputate nonummy. Maecenas tincidunt lacus at velit. Vivamus vel nulla eget eros elementum pellentesque. Quisque porta volutpat erat. Quisque erat eros, viverra eget, congue eget, semper rutrum, nulla.', '0096 Rutledge Point', '-24.7869452', '65.4128686');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('The Venture Compound - Cloning Lab', 'Aliquam augue quam, sollicitudin vitae, consectetuer eget, rutrum at, lorem. Integer tincidunt ante vel ipsum. Praesent blandit lacinia erat. Vestibulum sed magna at nunc commodo placerat. Praesent blandit. Nam nulla. Integer pede justo, lacinia eget, tincidunt eget, tempus vel, pede. Morbi porttitor lorem id ligula. Suspendisse ornare consequat lectus.', null, '22.3577742', '103.2493721');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('The Venture Compound - Hank and Deans Room', 'Nulla ut erat id mauris vulputate elementum. Nullam varius. Nulla facilisi. Cras non velit nec nisi vulputate nonummy. Maecenas tincidunt lacus at velit. Vivamus vel nulla eget eros elementum pellentesque. Quisque porta volutpat erat. Quisque erat eros, viverra eget, congue eget, semper rutrum, nulla. Nunc purus. Phasellus in felis.', '883 Mitchell Street', '15.1955811', '104.8304807');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('The Venture Compound - Deans Room (Attic)', 'Vestibulum rutrum rutrum neque. Aenean auctor gravida sem. Praesent id massa id nisl venenatis lacinia. Aenean sit amet justo. Morbi ut odio. Cras mi pede, malesuada in, imperdiet et, commodo vulputate, justo. In blandit ultrices enim. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Proin interdum mauris non ligula pellentesque ultrices.', '8 Moland Hill', '48.8547803', '16.567169');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('The Venture Compound - Surveillance Room', 'Integer tincidunt ante vel ipsum. Praesent blandit lacinia erat. Vestibulum sed magna at nunc commodo placerat.', '2 Golden Leaf Trail', '7.5286908', '1.1305049');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('The Venture Compound - Underground Tunnel', 'Morbi non lectus. Aliquam sit amet diam in magna bibendum imperdiet. Nullam orci pede, venenatis non, sodales sed, tincidunt eu, felis. Fusce posuere felis sed lacus. Morbi sem mauris, laoreet ut, rhoncus aliquet, pulvinar sed, nisl.', '42 Tennessee Terrace', '41.0919871', '-7.8038268');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('The Venture Compound - E-Den', 'Pellentesque viverra pede ac diam. Cras pellentesque volutpat dui. Maecenas tristique, est et tempus semper, est quam pharetra magna, ac consequat metus sapien ut nunc. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Mauris viverra diam vitae quam.', '4119 Troy Alley', '-34.793224', '-58.4103552');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('The Venture Compound - Laboratory', 'Curabitur in libero ut massa volutpat convallis. Morbi odio odio, elementum eu, interdum eu, tincidunt in, leo. Maecenas pulvinar lobortis est. Phasellus sit amet erat. Nulla tempus. Vivamus in felis eu sapien cursus vestibulum. Proin eu mi. Nulla ac enim.', '29672 Macpherson Circle', '0.3268809', '-79.4647633');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('The Venture Compound Manufacturing Wing', 'Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Duis faucibus accumsan odio. Curabitur convallis. Duis consequat dui nec nisi volutpat eleifend. Donec ut dolor. Morbi vel lectus in quam fringilla rhoncus. Mauris enim leo, rhoncus sed, vestibulum sit amet, cursus id, turpis.', '85796 Tennyson Drive', '29.137138', '89.499642');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('The Venture Compound - Venture Industries Arachnid Research', 'Morbi vel lectus in quam fringilla rhoncus. Mauris enim leo, rhoncus sed, vestibulum sit amet, cursus id, turpis. Integer aliquet, massa id lobortis convallis, tortor risus dapibus augue, vel accumsan tellus nisi eu orci. Mauris lacinia sapien quis libero. Nullam sit amet turpis elementum ligula vehicula consequat. Morbi a ipsum. Integer a nibh.', '60 3rd Court', '39.7992062', '44.7723968');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('Tophet Tower', null, '25097 Eggendart Terrace', '5.301832', '-1.9930466');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('VenTech Tower', 'Nulla ac enim. In tempor, turpis nec euismod scelerisque, quam turpis adipiscing lorem, vitae mattis nibh ligula nec sem. Duis aliquam convallis nunc. Proin at turpis a pede posuere nonummy. Integer non velit. Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi. Integer ac neque. Duis bibendum.', '27 Mifflin Crossing', '34.8412176', '32.4297369');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('Venture Industries', null, '34 Bowman Plaza', '48.019573', '66.923684');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('Vincenzos', 'In eleifend quam a odio. In hac habitasse platea dictumst. Maecenas ut massa quis augue luctus tincidunt. Nulla mollis molestie lorem. Quisque ut erat. Curabitur gravida nisi at nibh. In hac habitasse platea dictumst. Aliquam augue quam, sollicitudin vitae, consectetuer eget, rutrum at, lorem. Integer tincidunt ante vel ipsum. Praesent blandit lacinia erat.', '8839 Susan Court', '48.8902362', '6.308001');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('Ye Olde Battleaxe', 'Phasellus id sapien in sapien iaculis congue. Vivamus metus arcu, adipiscing molestie, hendrerit at, vulputate vitae, nisl. Aenean lectus. Pellentesque eget nunc. Donec quis orci eget orci vehicula condimentum. Curabitur in libero ut massa volutpat convallis. Morbi odio odio, elementum eu, interdum eu, tincidunt in, leo. Maecenas pulvinar lobortis est.', null, '8.9705754', '37.7609688');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('Yumi', 'Vestibulum sed magna at nunc commodo placerat. Praesent blandit. Nam nulla. Integer pede justo, lacinia eget, tincidunt eget, tempus vel, pede. Morbi porttitor lorem id ligula. Suspendisse ornare consequat lectus. In est risus, auctor sed, tristique in, tempus sit amet, sem.', '56 Dunning Court', '-28.7245183', '-52.8444231');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('Underland', 'Fusce consequat. Nulla nisl. Nunc nisl. Duis bibendum, felis sed interdum venenatis, turpis enim blandit mi, in porttitor pede justo eu massa. Donec dapibus. Duis at velit eu est congue elementum.', '2 Porter Plaza', '50.7917257', '21.2322042');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('Hello Hill Mall', 'Integer non velit. Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi. Integer ac neque.', '341 Trailsway Road', '14.55647', '121.018975');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('West Entrance Bus Stop', null, '2113 Del Sol Point', '31.491169', '120.31191');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('St. Sebastians Medical Center', 'Pellentesque eget nunc. Donec quis orci eget orci vehicula condimentum. Curabitur in libero ut massa volutpat convallis. Morbi odio odio, elementum eu, interdum eu, tincidunt in, leo. Maecenas pulvinar lobortis est. Phasellus sit amet erat. Nulla tempus. Vivamus in felis eu sapien cursus vestibulum. Proin eu mi. Nulla ac enim.', '2 Morningstar Junction', '46.003670', '14.5753497');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('Trailer Park', 'In hac habitasse platea dictumst. Maecenas ut massa quis augue luctus tincidunt. Nulla mollis molestie lorem. Quisque ut erat. Curabitur gravida nisi at nibh. In hac habitasse platea dictumst. Aliquam augue quam, sollicitudin vitae, consectetuer eget, rutrum at, lorem.', '5 Lakewood Gardens Way', '63.9727688', '-22.5764849');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('Grand Canyon', 'Donec ut mauris eget massa tempor convallis. Nulla neque libero, convallis eget, eleifend luctus, ultricies eu, nibh. Quisque id justo sit amet sapien dignissim vestibulum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nulla dapibus dolor vel est. Donec odio justo, sollicitudin ut, suscipit a, feugiat et, eros. Vestibulum ac est lacinia nisi venenatis tristique.', '0246 Judy Drive', '1.3031434', '101.0259275');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('Redusas House', 'Praesent blandit lacinia erat. Vestibulum sed magna at nunc commodo placerat. Praesent blandit. Nam nulla.', '6 Ridgeway Road', '44.780865', '28.447649');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('The Monarchs Home', 'Etiam justo. Etiam pretium iaculis justo. In hac habitasse platea dictumst. Etiam faucibus cursus urna. Ut tellus. Nulla ut erat id mauris vulputate elementum. Nullam varius. Nulla facilisi. Cras non velit nec nisi vulputate nonummy. Maecenas tincidunt lacus at velit.', '1 Weeping Birch Circle', '55.9', '37.55');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('Pete and Billys Residence', null, '999 Mitchell Street', '32.849276', '35.068929');
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('Augustus St Clouds Manse', null, '262 Quincy Pass', null, null);
+insert into LOCS (LocName, LocDesc, LocAddress, LocLat, LocLong) values ('OSI Headquarters', 'Nulla tempus. Vivamus in felis eu sapien cursus vestibulum. Proin eu mi. Nulla ac enim. In tempor, turpis nec euismod scelerisque, quam turpis adipiscing lorem, vitae mattis nibh ligula nec sem. Duis aliquam convallis nunc. Proin at turpis a pede posuere nonummy. Integer non velit. Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi.', '9 Di Loreto Park', '-6.6889038', '107.6185727');
 
 
 CREATE TABLE Sightings(
 
-Sightingid INT NOT NULL,
-Locid INT NOT NULL,
+Sightingid INT NOT NULL AUTO_INCREMENT,
+SightingLocid INT NOT NULL,
 DateSighted DATE NOT NULL,
-PRIMARY KEY(Sightingid),
-FOREIGN KEY(Locid) REFERENCES Locs(Locid)
+PRIMARY KEY(Sightingid)
 );
 
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (1, 16, '2017-07-25 20:09:26');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (2, 53, '2017-03-08 02:42:58');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (3, 37, '2017-04-28 07:24:38');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (4, 39, '2016-12-14 05:23:30');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (5, 39, '2017-03-08 11:18:05');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (6, 48, '2017-03-23 17:17:28');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (7, 44, '2017-06-15 04:40:53');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (8, 24, '2016-11-24 16:39:22');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (9, 37, '2017-06-14 08:33:42');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (10, 51, '2017-06-24 13:38:42');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (11, 10, '2017-05-04 07:35:03');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (12, 30, '2017-03-17 00:39:07');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (13, 51, '2017-03-08 18:19:57');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (14, 22, '2017-07-27 19:14:06');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (15, 45, '2017-02-26 04:56:19');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (16, 2, '2016-11-04 13:37:36');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (17, 50, '2017-07-04 11:19:39');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (18, 47, '2017-08-21 12:48:04');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (19, 44, '2017-05-26 17:54:20');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (20, 33, '2016-12-21 16:31:24');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (21, 4, '2016-12-06 11:47:03');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (22, 44, '2017-08-25 19:36:19');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (23, 20, '2017-03-14 20:39:56');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (24, 39, '2017-03-22 10:56:52');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (25, 8, '2017-04-01 17:47:49');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (26, 22, '2017-09-17 17:53:30');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (27, 28, '2017-01-29 17:09:35');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (28, 28, '2017-04-06 12:52:34');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (29, 7, '2017-01-28 07:28:57');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (30, 38, '2017-07-16 14:33:14');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (31, 2, '2017-07-02 13:24:02');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (32, 9, '2017-06-25 20:52:07');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (33, 52, '2017-03-21 07:20:43');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (34, 34, '2017-03-13 23:54:22');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (35, 32, '2017-08-29 19:06:18');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (36, 50, '2016-12-25 06:26:10');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (37, 28, '2017-07-30 12:22:12');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (38, 19, '2017-06-10 17:33:24');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (39, 13, '2016-11-11 23:34:42');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (40, 45, '2017-06-03 20:42:48');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (41, 15, '2017-01-24 03:57:48');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (42, 17, '2017-01-19 17:27:25');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (43, 24, '2016-11-05 17:02:49');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (44, 32, '2017-06-14 00:13:50');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (45, 26, '2017-06-10 20:12:46');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (46, 22, '2017-03-12 06:00:21');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (47, 52, '2017-08-23 13:37:35');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (48, 5, '2017-04-29 18:37:06');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (49, 15, '2017-03-18 12:13:39');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (50, 30, '2017-04-03 04:50:23');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (51, 27, '2017-01-30 15:01:59');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (52, 18, '2016-11-20 23:48:06');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (53, 27, '2017-10-11 22:19:00');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (54, 23, '2016-12-05 19:00:31');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (55, 19, '2017-09-30 06:44:09');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (56, 53, '2017-06-19 23:43:26');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (57, 19, '2017-01-09 13:21:51');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (58, 22, '2017-07-22 09:01:29');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (59, 40, '2017-01-07 01:21:59');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (60, 36, '2017-06-20 20:37:22');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (61, 15, '2017-04-10 12:25:23');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (62, 16, '2017-06-22 02:09:42');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (63, 5, '2017-01-21 07:23:13');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (64, 34, '2017-09-07 04:39:22');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (65, 8, '2017-06-26 06:54:48');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (66, 11, '2016-11-22 00:23:09');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (67, 41, '2016-11-25 10:57:50');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (68, 15, '2017-01-03 00:54:01');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (69, 24, '2017-05-25 01:38:27');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (70, 33, '2017-02-18 12:20:24');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (71, 51, '2017-09-10 14:32:11');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (72, 53, '2017-07-16 11:18:21');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (73, 18, '2017-06-28 22:49:51');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (74, 38, '2017-10-17 00:45:46');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (75, 17, '2017-01-21 08:02:43');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (76, 44, '2017-09-28 21:47:56');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (77, 18, '2016-12-23 09:17:18');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (78, 29, '2017-03-15 04:21:26');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (79, 41, '2017-09-25 04:20:29');
-insert into SIGHTINGS (Sightingid, Locid, DateSighted) values (80, 24, '2017-09-25 12:28:01');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (1, 16, '2017-07-25 20:09:26');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (2, 53, '2017-03-08 02:42:58');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (3, 37, '2017-04-28 07:24:38');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (4, 39, '2016-12-14 05:23:30');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (5, 39, '2017-03-08 11:18:05');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (6, 48, '2017-03-23 17:17:28');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (7, 44, '2017-06-15 04:40:53');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (8, 24, '2016-11-24 16:39:22');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (9, 37, '2017-06-14 08:33:42');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (10, 51, '2017-06-24 13:38:42');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (11, 10, '2017-05-04 07:35:03');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (12, 30, '2017-03-17 00:39:07');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (13, 51, '2017-03-08 18:19:57');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (14, 22, '2017-07-27 19:14:06');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (15, 45, '2017-02-26 04:56:19');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (16, 2, '2016-11-04 13:37:36');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (17, 50, '2017-07-04 11:19:39');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (18, 47, '2017-08-21 12:48:04');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (19, 44, '2017-05-26 17:54:20');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (20, 33, '2016-12-21 16:31:24');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (21, 4, '2016-12-06 11:47:03');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (22, 44, '2017-08-25 19:36:19');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (23, 20, '2017-03-14 20:39:56');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (24, 39, '2017-03-22 10:56:52');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (25, 8, '2017-04-01 17:47:49');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (26, 22, '2017-09-17 17:53:30');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (27, 28, '2017-01-29 17:09:35');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (28, 28, '2017-04-06 12:52:34');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (29, 7, '2017-01-28 07:28:57');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (30, 38, '2017-07-16 14:33:14');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (31, 2, '2017-07-02 13:24:02');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (32, 9, '2017-06-25 20:52:07');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (33, 52, '2017-03-21 07:20:43');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (34, 34, '2017-03-13 23:54:22');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (35, 32, '2017-08-29 19:06:18');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (36, 50, '2016-12-25 06:26:10');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (37, 28, '2017-07-30 12:22:12');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (38, 19, '2017-06-10 17:33:24');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (39, 13, '2016-11-11 23:34:42');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (40, 45, '2017-06-03 20:42:48');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (41, 15, '2017-01-24 03:57:48');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (42, 17, '2017-01-19 17:27:25');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (43, 24, '2016-11-05 17:02:49');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (44, 32, '2017-06-14 00:13:50');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (45, 26, '2017-06-10 20:12:46');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (46, 22, '2017-03-12 06:00:21');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (47, 52, '2017-08-23 13:37:35');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (48, 5, '2017-04-29 18:37:06');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (49, 15, '2017-03-18 12:13:39');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (50, 30, '2017-04-03 04:50:23');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (51, 27, '2017-01-30 15:01:59');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (52, 18, '2016-11-20 23:48:06');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (53, 27, '2017-10-11 22:19:00');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (54, 23, '2016-12-05 19:00:31');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (55, 19, '2017-09-30 06:44:09');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (56, 53, '2017-06-19 23:43:26');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (57, 19, '2017-01-09 13:21:51');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (58, 22, '2017-07-22 09:01:29');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (59, 40, '2017-01-07 01:21:59');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (60, 36, '2017-06-20 20:37:22');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (61, 15, '2017-04-10 12:25:23');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (62, 16, '2017-06-22 02:09:42');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (63, 5, '2017-01-21 07:23:13');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (64, 34, '2017-09-07 04:39:22');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (65, 8, '2017-06-26 06:54:48');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (66, 11, '2016-11-22 00:23:09');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (67, 41, '2016-11-25 10:57:50');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (68, 15, '2017-01-03 00:54:01');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (69, 24, '2017-05-25 01:38:27');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (70, 33, '2017-02-18 12:20:24');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (71, 51, '2017-09-10 14:32:11');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (72, 53, '2017-07-16 11:18:21');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (73, 18, '2017-06-28 22:49:51');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (74, 38, '2017-10-17 00:45:46');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (75, 17, '2017-01-21 08:02:43');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (76, 44, '2017-09-28 21:47:56');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (77, 18, '2016-12-23 09:17:18');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (78, 29, '2017-03-15 04:21:26');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (79, 41, '2017-09-25 04:20:29');
+insert into SIGHTINGS (Sightingid, SightingLocid, DateSighted) values (80, 24, '2017-09-25 12:28:01');
 
 
 

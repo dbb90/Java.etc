@@ -40,6 +40,10 @@
     <bean id="jdbcTemplateBean" class="org.springframework.jdbc.core.JdbcTemplate">
         <property name="dataSource" ref="dataSourceBean" />
     </bean>
+        <!-- make the dang testDao bean so that we can use it. @Inject might have worked on the test constructor but that's probably pushing it -->    
+    <bean id="masterDaoBean" class="com.sguild.superheroes.dao.MasterDaoJdbcIml">
+        <constructor-arg ref="jdbcTemplateBean" />
+    </bean>
     
     
 </beans>

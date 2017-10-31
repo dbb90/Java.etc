@@ -27,16 +27,21 @@ import lombok.ToString;
 public class Hero {
     
     private int heroid;
-    private String HeroName;
-    private String HeroDesc;
-    private Boolean Villain;
-    private List<Power> powers;
+    private String heroName;
+    private String heroDesc;
+    private Boolean villain;
+    public List<Power> powers;
 
     public List<Power> getPowers() {
         return powers;
     }
 
-    public void setHeroes(List<Power> powers) {
+    public void setPowers(List<Power> powers) {
         this.powers = powers;
     }
+    
+    
+    
+    
+    
 }

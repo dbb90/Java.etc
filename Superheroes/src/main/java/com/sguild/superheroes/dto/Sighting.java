@@ -7,6 +7,7 @@ package com.sguild.superheroes.dto;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,9 +29,10 @@ import lombok.ToString;
 public class Sighting {
     
     private int sightingid;
-    private int locid;
-    private Date dateSighted;
-    private List<Hero> heroes;
+    public int sightinglocid;
+    public Date dateSighted;
+    public List<Hero> heroes;
+    public String loc;
 
     public List<Hero> getHeroes() {
         return heroes;
@@ -39,4 +41,47 @@ public class Sighting {
     public void setHeroes(List<Hero> heroes) {
         this.heroes = heroes;
     }
+
+
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 13 * hash + this.sightingid;
+        hash = 13 * hash + this.sightinglocid;
+        hash = 13 * hash + Objects.hashCode(this.dateSighted);
+        hash = 13 * hash + Objects.hashCode(this.heroes);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Sighting other = (Sighting) obj;
+        if (this.sightingid != other.sightingid) {
+            return false;
+        }
+        if (this.sightinglocid != other.sightinglocid) {
+            return false;
+        }
+        if (!Objects.equals(this.dateSighted, other.dateSighted)) {
+            return false;
+        }
+        if (!Objects.equals(this.heroes, other.heroes)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
+    
+    
 }

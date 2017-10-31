@@ -141,6 +141,8 @@ public interface MasterDao {
     public Sighting addSighting(Sighting sightingToAdd);
 
     public List<Sighting> getAllSightings();
+    
+     public List<Sighting> getAllSightingsOrdered();
 
     public Sighting getSighting(int sightingid);
 
