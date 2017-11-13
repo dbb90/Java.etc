@@ -9,18 +9,48 @@
         <!-- Bootstrap core CSS -->
         <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">        
     </head>
-    <body background="${pageContext.request.contextPath}/img/bg.jpg">
+    <body background="${pageContext.request.contextPath}/img/grid.jpg">
         <div class="container-fluid">
-            <center><h1>Billy Quizboy's QUiZBOT - Cast List</h1></center>
-            <hr/>
-            <div class="navbar">
-                <ul class="nav nav-tabs">
-                    <li role="presentation" class="active"><a href="${pageContext.request.contextPath}/">Home</a></li>
-                    <li role="presentation"><a href="${pageContext.request.contextPath}/heroes">Characters</a></li>
-                </ul>    
+<nav role="navigation" class="navbar navbar-default navbar-static-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                    <a class="navbar-brand navbar-brand-centered" href="${pageContext.request.contextPath}/">QUIZBOT</a>
+                </div>
+                <div id="navbarCollapse" class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-left">
+                        <li id="homeNav"><a href="${pageContext.request.contextPath}/">Home</a></li>
+                        <li id="heroesNav"><a href="${pageContext.request.contextPath}/heroes">Heroes</a></li>
+                        <li id="powersNav"><a href="${pageContext.request.contextPath}/powers">Powers</a></li>
+                        <li id="sightingsNav"><a href="${pageContext.request.contextPath}/sightings">Sightings</a></li>
+                        <li id="locationsNav"><a href="${pageContext.request.contextPath}/locations">Locations</a></li>
+                        <li id="orgsNav"><a href="${pageContext.request.contextPath}/organizations">Organizations</a></li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                Edit<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Edit Heroes</a></li>
+                                <li><a href="#">Edit Powers</a></li>
+                                <li><a href="#">Edit Sightings</a></li>
+                                <li><a href="#">Edit Locations</a></li>
+                                <li><a href="#">Edit Organizations</a></li>
+                            </ul>
+                        </li>
+      
+                    </ul>
+
+
+                </div>
             </div>
+        </nav>
             <div class="col-md-9" style="background:rgba(255,255,255,.7)">
-                <h2>-Cast List-</h2>
+                <h2>CHARACTERS</h2>
                 <table id="castTable" class="table table-hover">
                     <tr>
                         <th width="25%">Character</th>
@@ -31,7 +61,7 @@
                         <tr>
                             <td>
                                 <c:out value="${thisHero.heroName}"/>
-                                </a>
+                         
                             </td>
                             <td>
                                 <c:out value="${thisHero.heroDesc}"/>

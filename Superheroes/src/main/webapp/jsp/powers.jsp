@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
         <head>
-        <title>Billy Quizboy's Quizbot - Sightings</title>
+        <title>Billy Quizboy's Quizbot - Powers</title>
         <!-- Bootstrap core CSS -->
         <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">        
     </head>
@@ -20,11 +20,11 @@
                         <span class="icon-bar"></span>
                     </button>
 
-                    <a class="navbar-brand navbar-brand-centered" href="${pageContext.request.contextPath}/">QUIZBOT</a>
+                    <a class="navbar-brand navbar-brand-centered" href="${pageContext.request.contextPath}/index">QUIZBOT</a>
                 </div>
                 <div id="navbarCollapse" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-left">
-                        <li id="homeNav"><a href="${pageContext.request.contextPath}/">Home</a></li>
+                        <li id="homeNav"><a href="${pageContext.request.contextPath}/index">Home</a></li>
                         <li id="heroesNav"><a href="${pageContext.request.contextPath}/heroes">Heroes</a></li>
                         <li id="powersNav"><a href="${pageContext.request.contextPath}/powers">Powers</a></li>
                         <li id="sightingsNav"><a href="${pageContext.request.contextPath}/sightings">Sightings</a></li>
@@ -48,47 +48,24 @@
                 </div>
             </div>
         </nav>
-            <div class="col-md-9" style="background:rgba(255,255,255,.7)">
-                <h2>SIGHTINGS</h2>
+ <div class="col-md-9" style="background:rgba(255,255,255,.7)">
+                <h2>POWERS</h2>
                 <table id="castTable" class="table table-hover">
                     <tr>
-                        <th width="25%">Date Sighted</th>
-                        <th width="25%">location</th>
-                        <th width="25%">heroes present</th>
-                          <th width="25%">Buttons</th>
+                        <th width="25%">Power</th>
+                        <th width="75%">Description</th>
+
                     </tr>
-                    <c:forEach var="thisSighting" items="${sightingsList}">
+                    <c:forEach var="thisPower" items="${powersList}">
                         <tr>
                             <td>
-                              <c:out value="${thisSighting.dateSighted}"/>
-                              
+                                <c:out value="${thisPower.powerName}"/>
+                                
                             </td>
                             <td>
-                        
-                                        
-                  
-                                    <c:out value="${thisSighting.loc}"/>
-                                    
-                                   
-
-                        
+                                <c:out value="${thisPower.powerDesc}"/>
                             </td>
-                            <td>
-                            
-                                <c:forEach var="currentHero" items="${thisSighting.heroes}">
-                                        
-                  
-                                    <c:out value="${currentHero.heroName}"/>
-                                    <br/>
-                                   
 
-                                </c:forEach>
-                            
-                            </td>
-                            <td>
-                                                                    <c:out value="putbuttonshere"/>
-
-                            </td>
                         </tr>
                     </c:forEach>
                 </table>

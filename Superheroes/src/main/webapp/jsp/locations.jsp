@@ -49,7 +49,7 @@
             </div>
         </nav>
             <div class="col-md-9" style="background:rgba(255,255,255,.7)">
-                <h2>SIGHTINGS</h2>
+                <h2>-Cast List-</h2>
                 <table id="castTable" class="table table-hover">
                     <tr>
                         <th width="25%">Date Sighted</th>
@@ -97,7 +97,7 @@
             </div>
                 <br/>
                 <br/>
-
+        </div>
 
         <!-- Placed at the end of the document so the pages load faster -->
         <script src="${pageContext.request.contextPath}/js/jquery-3.1.1.min.js"></script>

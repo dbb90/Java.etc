@@ -71,7 +71,7 @@ public class JDBCDaoTest {
         power.setPowerName("First Power");
         power.setPowerDesc("First Power Desc");
         dao.addPower(power);
-        
+
         int thisid = power.getPowerid();
         Power fromMem = new Power();
         fromMem = dao.getPower(thisid);
@@ -123,7 +123,7 @@ public class JDBCDaoTest {
 
     @Test
     public void testGetAllPowers() {
-        
+
         //check to ensure db is empty
         assertEquals(0, dao.getAllPowers().size());
 
@@ -162,6 +162,4 @@ public class JDBCDaoTest {
         assertEquals(fromMem, testLoc);
     }
 
-    
-    
 }
